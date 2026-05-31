@@ -33,6 +33,7 @@ class AmalUsahaController extends Controller
             ->get()
             ->map(function ($item) {
                 return [
+                    'id'                => $item->id,
                     'email'             => $item->id,
                     'organisasi_otonom' => $item->organisasiOtonom?->nama,
                     'nama'              => $item->nama,

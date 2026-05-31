@@ -136,9 +136,10 @@ class NewsController extends Controller
 
         $berita->update($validated);
 
-        $prefix = auth()->user()->role === 'admin' ? 'admin' : 'penulis';
+        $role = auth()->user()->role;
+        $prefix = ($role === 'admin' || $role === 'superadmin') ? 'admin' : 'penulis';
 
-        return redirect()->route($prefix . '.berita')
+        return redirect()->route($prefix . '.berita.index')
             ->with('success', '✅ Berita berhasil diupdate!');
     }
 

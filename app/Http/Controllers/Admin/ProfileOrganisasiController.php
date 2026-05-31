@@ -80,7 +80,10 @@ class ProfileOrganisasiController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
+            if ($profile->image && Storage::disk('public')->exists($profile->image)) {
+                Storage::disk('public')->delete($profile->image);
+            }
+            $path = $request->file('image')->store('images-profile', 'public');
             $validated['image'] = $path;
         } else {
             $validated['image'] = $profile->image;

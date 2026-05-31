@@ -142,7 +142,7 @@ Route::prefix('bendahara')->name('bendahara.')->group(function () {
             ->name('2fa.check');
     });
 
-    Route::middleware(['auth', 'role:bendahara', 'bendahara.2fa'])->group(function () {
+    Route::middleware(['auth', 'role:bendahara,superadmin', 'bendahara.2fa'])->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');

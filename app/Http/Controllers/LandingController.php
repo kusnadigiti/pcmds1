@@ -42,11 +42,14 @@ class LandingController extends Controller
             ->get();
 
         $organisasis = Organisasi::aktif()
-            ->with(['pengurus' => function ($q) {
-                $q->where('level', 'inti')
-                    ->orderBy('urutan', 'asc')
-                    ->orderBy('jabatan', 'asc');
-            }])
+            ->with([
+                'pengurus' => function ($q) {
+                    $q->where('level', 'inti')
+                        ->orderBy('urutan', 'asc')
+                        ->orderBy('jabatan', 'asc');
+                },
+                'amalUsaha'
+            ])
             ->orderBy('tipe')
             ->orderBy('nama')
             ->get();

@@ -14,19 +14,20 @@ class TwoFactorController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->google2fa_secret) {
-            $google2fa = new Google2FA();
-
-            $user->google2fa_secret = $google2fa->generateSecretKey();
-            $user->save();
+        if ($user->google2fa_enabled) {
+            return redirect()->route('bendahara.dashboard')->with('info', 'Google 2FA sudah aktif.');
         }
 
         $google2fa = new Google2FA();
+        
+        // Cek apakah secret key sudah ada di session, jika tidak, generate baru
+        $secret = session('google2fa_secret') ?: $google2fa->generateSecretKey();
+        session(['google2fa_secret' => $secret]);
 
         $qrCodeUrl = $google2fa->getQRCodeUrl(
             'PCMDurenSawit01',
             $user->email,
-            $user->google2fa_secret
+            $secret
         );
 
         $qrCode = QrCode::size(200)->generate($qrCodeUrl);
@@ -40,9 +41,14 @@ class TwoFactorController extends Controller
 
         $user = Auth::user();
         $google2fa = new Google2FA();
+        
+        $secret = session('google2fa_secret');
+        if (!$secret) {
+            return redirect()->route('bendahara.2fa.setup')->withErrors(['otp' => 'Sesi setup habis. Silakan coba lagi.']);
+        }
 
         $valid = $google2fa->verifyKey(
-            $user->google2fa_secret,
+            $secret,
             $request->otp
         );
 
@@ -50,9 +56,11 @@ class TwoFactorController extends Controller
             return back()->withErrors(['otp' => 'Kode salah']);
         }
 
+        $user->google2fa_secret = $secret;
         $user->google2fa_enabled = true;
         $user->save();
 
+        session()->forget('google2fa_secret');
         session(['2fa_passed' => true]);
 
         return redirect()->route('bendahara.dashboard');
@@ -68,13 +76,6 @@ class TwoFactorController extends Controller
         $request->validate(['otp' => 'required']);
 
         $user = Auth::user();
-
-        if (!$user->google2fa_secret) {
-            return redirect()
-                ->route('bendahara.2fa.setup')
-                ->with('error', 'Silakan aktifkan Google Authenticator terlebih dahulu.');
-        }
-
         $google2fa = new Google2FA();
 
         $valid = $google2fa->verifyKey(

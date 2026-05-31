@@ -167,7 +167,7 @@
     </div>
 
     {{-- Table --}}
-    <div class="dt-table-wrap rounded-xl border border-zinc-200 bg-white overflow-x-auto">
+    <div class="dt-table-wrap rounded-t-xl border border-zinc-200 bg-white overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-zinc-100 bg-zinc-50">
@@ -266,6 +266,62 @@
                 </template>
             </tbody>
         </table>
+    </div>
+
+    {{-- Pagination --}}
+    <div class="flex items-center justify-between border border-t-0 border-zinc-200 bg-white px-4 py-3 sm:px-6 rounded-b-xl">
+        <div class="flex flex-1 justify-between sm:hidden">
+            <button @click="currentPage > 1 ? currentPage-- : null" :disabled="currentPage === 1"
+                class="relative inline-flex items-center rounded-md border border-zinc-300 bg-white px-4 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 disabled:bg-zinc-50 disabled:text-zinc-400 disabled:border-zinc-200 disabled:cursor-not-allowed transition-colors">
+                Sebelumnya
+            </button>
+            <button @click="currentPage < totalPages ? currentPage++ : null" :disabled="currentPage === totalPages"
+                class="relative ml-3 inline-flex items-center rounded-md border border-zinc-300 bg-white px-4 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 disabled:bg-zinc-50 disabled:text-zinc-400 disabled:border-zinc-200 disabled:cursor-not-allowed transition-colors">
+                Berikutnya
+            </button>
+        </div>
+        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+                <p class="text-xs text-zinc-700">
+                    Menampilkan
+                    <span class="font-medium" x-text="filteredRows.length > 0 ? (currentPage - 1) * perPage + 1 : 0"></span>
+                    sampai
+                    <span class="font-medium" x-text="Math.min(currentPage * perPage, filteredRows.length)"></span>
+                    dari
+                    <span class="font-medium" x-text="filteredRows.length"></span>
+                    hasil
+                </p>
+            </div>
+            <div>
+                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                    <button @click="currentPage = 1" :disabled="currentPage === 1"
+                        class="relative inline-flex items-center rounded-l-md px-2.5 py-2 text-zinc-500 bg-white border border-zinc-300 hover:bg-zinc-50 hover:text-zinc-800 focus:z-20 focus:outline-none disabled:bg-zinc-50 disabled:text-zinc-300 disabled:border-zinc-200 disabled:cursor-not-allowed transition-colors">
+                        <span class="sr-only">First</span>
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-left-icon lucide-chevrons-left"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg>
+                    </button>
+                    <button @click="currentPage > 1 ? currentPage-- : null" :disabled="currentPage === 1"
+                        class="relative inline-flex items-center px-2.5 py-2 text-zinc-500 bg-white border border-zinc-300 hover:bg-zinc-50 hover:text-zinc-800 focus:z-20 focus:outline-none disabled:bg-zinc-50 disabled:text-zinc-300 disabled:border-zinc-200 disabled:cursor-not-allowed transition-colors">
+                        <span class="sr-only">Previous</span>
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    
+                    <span class="relative inline-flex items-center px-4 py-2 text-xs font-semibold text-zinc-700 bg-white border border-zinc-300 focus:outline-none gap-1">
+                        Halaman <span class="mx-1 text-zinc-900 font-bold" x-text="currentPage"></span> dari <span class="ml-1 text-zinc-900 font-bold" x-text="totalPages || 1"></span>
+                    </span>
+
+                    <button @click="currentPage < totalPages ? currentPage++ : null" :disabled="currentPage === totalPages"
+                        class="relative inline-flex items-center px-2.5 py-2 text-zinc-500 bg-white border border-zinc-300 hover:bg-zinc-50 hover:text-zinc-800 focus:z-20 focus:outline-none disabled:bg-zinc-50 disabled:text-zinc-300 disabled:border-zinc-200 disabled:cursor-not-allowed transition-colors">
+                        <span class="sr-only">Next</span>
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                    <button @click="currentPage = totalPages" :disabled="currentPage === totalPages"
+                        class="relative inline-flex items-center rounded-r-md px-2.5 py-2 text-zinc-500 bg-white border border-zinc-300 hover:bg-zinc-50 hover:text-zinc-800 focus:z-20 focus:outline-none disabled:bg-zinc-50 disabled:text-zinc-300 disabled:border-zinc-200 disabled:cursor-not-allowed transition-colors">
+                        <span class="sr-only">Last</span>
+                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-right-icon lucide-chevrons-right"><path d="m6 18 5-5-5-5"/><path d="m13 18 5-5-5-5"/></svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
     </div>
 
     {{-- ==================== MODAL DELETE SINGLE ==================== --}}
