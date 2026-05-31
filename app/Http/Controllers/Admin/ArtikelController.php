@@ -36,8 +36,8 @@ class ArtikelController extends Controller
                 'content' => Str::limit(strip_tags($article->content), 50),
                 'thumbnail' => asset(
                     $article->thumbnail
-                        ? 'storage/' . $article->thumbnail
-                        : 'https://picsum.photos/100/100?random=' . $article->id
+                    ? 'storage/' . $article->thumbnail
+                    : 'https://picsum.photos/100/100?random=' . $article->id
                 ),
                 'status' => ucfirst($article->status ?? 'draft'),
                 'created_at' => $article->created_at?->format('d M Y') ?? 'N/A',
@@ -87,7 +87,7 @@ class ArtikelController extends Controller
             ->with('success', '✅ Artikel berhasil dibuat!');
     }
 
-    public function edit($id)
+    public function edit(string $id)
     {
         $article = Article::findOrFail($id);
 
@@ -102,7 +102,7 @@ class ArtikelController extends Controller
         return view('pages.admin.articles.edit', compact('article'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $article = Article::findOrFail($id);
 
@@ -145,7 +145,8 @@ class ArtikelController extends Controller
 
         $article->update($validated);
 
-        $prefix = auth()->user()->role;
+        $role = auth()->user()->role;
+        $prefix = ($role === 'admin' || $role === 'superadmin') ? 'admin' : 'penulis';
 
         return redirect()->route($prefix . '.articles')
             ->with('success', '✅ Artikel berhasil diperbarui!');

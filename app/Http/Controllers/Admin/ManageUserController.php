@@ -89,6 +89,13 @@ class ManageUserController extends Controller
 
     public function destroy($id)
     {
+        if (auth()->id() == $id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak dapat menghapus akun Anda sendiri!'
+            ], 400);
+        }
+
         $user = User::findOrFail($id);
 
         $user->delete();

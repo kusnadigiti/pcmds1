@@ -22,19 +22,28 @@ class DatabaseSeeder extends Seeder
             'role' => 'superadmin',
         ]);
 
-        User::factory()->create([
-            'name' => 'Penulis 1',
-            'email' => 'penulis@example.com',
-            'password' => bcrypt('penulis123'),
-            'role' => 'penulis',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Penulis 1',
+        //     'email' => 'penulis@example.com',
+        //     'password' => bcrypt('penulis123'),
+        //     'role' => 'penulis',
+        // ]);
 
-        User::factory()->create([
-            'name' => 'Penulis 2',
-            'email' => 'penulis2@example.com',
-            'password' => bcrypt('penulis123'),
-            'role' => 'penulis',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Penulis 2',
+        //     'email' => 'penulis2@example.com',
+        //     'password' => bcrypt('penulis123'),
+        //     'role' => 'penulis',
+        // ]);
+
+        for ($i=0; $i < 100; $i++) { 
+            User::factory()->create([
+                'name' => 'Penulis '.$i,
+                'email' => 'penulis'.$i.'@example.com',
+                'password' => bcrypt('penulis123'),
+                'role' => 'penulis',
+            ]);
+        }
 
         // $this->call([
         //     ArticleSeeder::class,
