@@ -30,6 +30,24 @@
                         onclick="handleNav(event,'amal-usaha')">Amal Usaha</a></li>
                 <li><a href="/#kontak" class="text-heading hover:text-fg-brand text-sm transition"
                         onclick="handleNav(event,'kontak')">Kontak</a></li>
+                @auth
+                    @php
+                        $dashboardRoute = match (auth()->user()->role) {
+                            'superadmin' => route('admin.dashboard'),
+                            'admin' => route('admin.dashboard'),
+                            'penulis' => route('penulis.dashboard'),
+                            'bendahara' => route('bendahara.dashboard'),
+                            default => route('dashboard'),
+                        };
+                    @endphp
+
+                    <li>
+                        <a href="{{ $dashboardRoute }}"
+                            class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-emerald-700 transition">
+                            Dashboard
+                        </a>
+                    </li>
+                @endauth
             </ul>
         </div>
 

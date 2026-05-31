@@ -10,20 +10,23 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TwoFactorController extends Controller
 {
-  public function setup()
+    public function setup()
     {
         $user = Auth::user();
 
-        $google2fa = new Google2FA();
-        $secret = $google2fa->generateSecretKey();
+        if (!$user->google2fa_secret) {
+            $google2fa = new Google2FA();
 
-        $user->google2fa_secret = $secret;
-        $user->save();
+            $user->google2fa_secret = $google2fa->generateSecretKey();
+            $user->save();
+        }
+
+        $google2fa = new Google2FA();
 
         $qrCodeUrl = $google2fa->getQRCodeUrl(
             'PCMDurenSawit01',
             $user->email,
-            $secret
+            $user->google2fa_secret
         );
 
         $qrCode = QrCode::size(200)->generate($qrCodeUrl);
@@ -65,6 +68,13 @@ class TwoFactorController extends Controller
         $request->validate(['otp' => 'required']);
 
         $user = Auth::user();
+
+        if (!$user->google2fa_secret) {
+            return redirect()
+                ->route('bendahara.2fa.setup')
+                ->with('error', 'Silakan aktifkan Google Authenticator terlebih dahulu.');
+        }
+
         $google2fa = new Google2FA();
 
         $valid = $google2fa->verifyKey(
