@@ -12,7 +12,7 @@ class OrganisasiController extends Controller
 {
     public function index()
     {
-        $organisasis = Organisasi::latest()->get();
+        $organisasis = Organisasi::latest('created_at')->get();
 
         $columns = [
             ['key' => 'nama',      'label' => 'Nama Organisasi', 'sortable' => true],

@@ -202,9 +202,16 @@
                                 <!-- Kondisi untuk FOTO/GAMBAR -->
                                 <template
                                     x-if="col.key === 'image' || col.key === 'thumbnail' || col.key === 'gambar' || col.key === 'logo' || col.key === 'foto'">
-                                    <img :src="row[col.key]" alt="image"
-                                        class="w-10 h-10 object-cover rounded-md border border-zinc-200"
-                                        onerror="this.src='https://ui-avatars.com/api/?name='+encodeURIComponent(row.nama || 'User')+'&background=0D8ABC&color=fff'">
+                                    <div>
+                                        <template x-if="row[col.key]">
+                                            <img :src="row[col.key]" alt="image"
+                                                class="w-10 h-10 object-cover rounded-md border border-zinc-200"
+                                                x-on:error.once="$el.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(row.nama || row.judul || 'User') + '&background=0D8ABC&color=fff'" />
+                                        </template>
+                                        <template x-if="!row[col.key]">
+                                            <span class="text-zinc-400">-</span>
+                                        </template>
+                                    </div>
                                 </template>
 
                                 <template x-if="col.key === 'file'">
