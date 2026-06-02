@@ -14,9 +14,12 @@ class TwoFactorController extends Controller
     {
         $user = Auth::user();
 
+        if ($user->google2fa_enabled) {
+            return redirect()->route('bendahara.dashboard');
+        }
+
         if (!$user->google2fa_secret) {
             $google2fa = new Google2FA();
-
             $user->google2fa_secret = $google2fa->generateSecretKey();
             $user->save();
         }
@@ -30,8 +33,9 @@ class TwoFactorController extends Controller
         );
 
         $qrCode = QrCode::size(200)->generate($qrCodeUrl);
+        $secretKey = $user->google2fa_secret;
 
-        return view('auth.2fa-setup', compact('qrCode'));
+        return view('auth.2fa-setup', compact('qrCode', 'secretKey'));
     }
 
     public function activate(Request $request)
@@ -60,6 +64,16 @@ class TwoFactorController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
+
+        if (!$user->google2fa_enabled) {
+            return redirect()->route('bendahara.2fa.setup');
+        }
+
+        if (session('2fa_passed')) {
+            return redirect()->route('bendahara.dashboard');
+        }
+
         return view('auth.2fa');
     }
 
