@@ -51,9 +51,13 @@ class TwoFactorController extends Controller
             'server_time' => now()->toDateTimeString(),
         ]);
 
+        // Hapus spasi jika user tidak sengaja mengetik spasi
+        $otp = str_replace(' ', '', $request->otp);
+
         $valid = $google2fa->verifyKey(
             $user->google2fa_secret,
-            $request->otp
+            $otp,
+            10 // Toleransi ekstrim (sekitar 5 menit)
         );
 
         if (!$valid) {
@@ -109,9 +113,13 @@ class TwoFactorController extends Controller
 
         $google2fa = new Google2FA();
 
+        // Hapus spasi jika user tidak sengaja mengetik spasi
+        $otp = str_replace(' ', '', $request->otp);
+
         $valid = $google2fa->verifyKey(
             $user->google2fa_secret,
-            $request->otp
+            $otp,
+            10 // Toleransi ekstrim (sekitar 5 menit)
         );
 
         if (!$valid) {

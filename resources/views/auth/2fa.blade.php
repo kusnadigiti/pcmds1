@@ -74,7 +74,7 @@
                 </label>
 
                 <input
-                    type="text"
+                    type="number"
                     id="otp"
                     name="otp"
                     value="{{ old('otp') }}"
