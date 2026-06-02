@@ -51,7 +51,7 @@ class OrganisasiController extends Controller
         $validated = $request->validate([
             'nama'            => 'required|string|max:200',
             'singkatan'       => 'required|string|max:10',
-            'tipe'            => 'required|in:otonom,lembaga,majelis',
+            'tipe'            => 'required|in:ortonom,lembaga,majelis',
             'deskripsi'       => 'nullable|string',
             'logo'            => 'nullable|image|mimes:png,jpg,webp|max:2048',
             'periode_mulai'   => 'required|digits:4|integer|min:1900|max:2100',
@@ -86,7 +86,7 @@ class OrganisasiController extends Controller
         $validated = $request->validate([
             'nama'            => 'required|string|max:200',
             'singkatan'       => 'required|string|max:10',
-            'tipe'            => 'required|in:otonom,lembaga,majelis',
+            'tipe'            => 'required|in:ortonom,lembaga,majelis',
             'deskripsi'       => 'nullable|string',
             'logo'            => 'nullable|image|mimes:png,jpg,webp|max:2048',
             'periode_mulai'   => 'required|digits:4|integer|min:1900|max:2100',

@@ -255,8 +255,8 @@
                                             class="field-input text-base font-semibold text-slate-900 h-12 pr-10 w-full select-custom"
                                             onchange="updateField(this.closest('.card-field'), this.value)">
                                             <option value="">Pilih tipe...</option>
-                                            <option value="otonom"
-                                                {{ old('tipe', $organisasi->tipe) == 'otonom' ? 'selected' : '' }}>
+                                            <option value="ortonom"
+                                                {{ old('tipe', $organisasi->tipe) == 'ortonom' ? 'selected' : '' }}>
                                                 Otonom</option>
                                             <option value="lembaga"
                                                 {{ old('tipe', $organisasi->tipe) == 'lembaga' ? 'selected' : '' }}>

@@ -41,7 +41,7 @@
 
     {{-- Filter Tabs --}}
     <div class="flex border-b border-gray-100 px-4 md:px-8 max-w-7xl mx-auto overflow-x-auto">
-        @foreach ([['all', 'Semua'], ['otonom', 'Otonom'], ['lembaga', 'Lembaga'], ['majelis', 'Majelis']] as [$val, $label])
+        @foreach ([['all', 'Semua'], ['ortonom', 'Otonom'], ['lembaga', 'Lembaga'], ['majelis', 'Majelis']] as [$val, $label])
             <button
                 @click="active = '{{ $val }}'; activeFilter = '{{ $val }}'; selected = null"
                 :class="active === '{{ $val }}'

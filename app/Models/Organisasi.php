@@ -73,7 +73,7 @@ class Organisasi extends Model
 
     public function scopeOtonom($query)
     {
-        return $query->where('tipe', 'otonom');
+        return $query->where('tipe', 'ortonom');
     }
 
     public function scopeLembaga($query)
