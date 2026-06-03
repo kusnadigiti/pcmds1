@@ -256,7 +256,7 @@
                                             onchange="updateField(this.closest('.card-field'), this.value)">
                                             <option value="">Pilih tipe...</option>
                                             <option value="ortonom" {{ old('tipe') == 'ortonom' ? 'selected' : '' }}>
-                                                Otonom</option>
+                                                Ortonom</option>
                                             <option value="lembaga" {{ old('tipe') == 'lembaga' ? 'selected' : '' }}>
                                                 Lembaga</option>
                                             <option value="majelis" {{ old('tipe') == 'majelis' ? 'selected' : '' }}>

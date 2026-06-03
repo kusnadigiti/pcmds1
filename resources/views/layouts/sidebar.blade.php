@@ -182,6 +182,18 @@
                     <span class="nav-label">Amal Usaha</span>
                 </a>
 
+                {{-- KONTAK --}}
+                <a href="/admin/contact"
+                    class="nav-item {{ request()->routeIs('admin.contact*') ? 'active' : '' }}" data-label="Kontak">
+                    <div class="nav-icon">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4" />
+                            <path d="M8 4V8L11 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <span class="nav-label">Kontak</span>
+                </a>
+
                 {{-- KHUSUS SUPERADMIN --}}
                 @if (in_array(auth()->user()->role, ['superadmin', 'bendahara']))
                     <a href="{{ route('admin.manage-user') }}"

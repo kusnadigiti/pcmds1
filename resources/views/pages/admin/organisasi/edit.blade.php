@@ -257,7 +257,7 @@
                                             <option value="">Pilih tipe...</option>
                                             <option value="ortonom"
                                                 {{ old('tipe', $organisasi->tipe) == 'ortonom' ? 'selected' : '' }}>
-                                                Otonom</option>
+                                                Ortonom</option>
                                             <option value="lembaga"
                                                 {{ old('tipe', $organisasi->tipe) == 'lembaga' ? 'selected' : '' }}>
                                                 Lembaga</option>

@@ -23,7 +23,7 @@ class AmalUsahaController extends Controller
     public function index()
     {
         $columns = [
-            ['label' => 'Organisasi Otonom', 'key' => 'organisasi_otonom'],
+            ['label' => 'Organisasi Ortonom', 'key' => 'organisasi_otonom'],
             ['label' => 'Nama Amal Usaha',   'key' => 'nama'],
             ['label' => 'Tipe',              'key' => 'tipe'],
             ['label' => 'Deskripsi',         'key' => 'deskripsi'],
@@ -61,8 +61,8 @@ class AmalUsahaController extends Controller
             'tipe'                 => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
             'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
         ], [
-            'organisasi_otonom_id.required' => 'Organisasi otonom wajib dipilih.',
-            'organisasi_otonom_id.exists'   => 'Organisasi otonom tidak ditemukan.',
+            'organisasi_otonom_id.required' => 'Organisasi ortonom wajib dipilih.',
+            'organisasi_otonom_id.exists'   => 'Organisasi ortonom tidak ditemukan.',
             'nama.required'                 => 'Nama amal usaha wajib diisi.',
             'tipe.required'                 => 'Tipe bidang wajib dipilih.',
             'tipe.in'                       => 'Tipe bidang tidak valid.',
@@ -101,8 +101,8 @@ class AmalUsahaController extends Controller
             'tipe'                 => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
             'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
         ], [
-            'organisasi_otonom_id.required' => 'Organisasi otonom wajib dipilih.',
-            'organisasi_otonom_id.exists'   => 'Organisasi otonom tidak ditemukan.',
+            'organisasi_otonom_id.required' => 'Organisasi ortonom wajib dipilih.',
+            'organisasi_otonom_id.exists'   => 'Organisasi ortonom tidak ditemukan.',
             'nama.required'                 => 'Nama amal usaha wajib diisi.',
             'tipe.required'                 => 'Tipe bidang wajib dipilih.',
             'tipe.in'                       => 'Tipe bidang tidak valid.',

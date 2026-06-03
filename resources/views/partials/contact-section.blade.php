@@ -1,3 +1,23 @@
+@php
+    $contact = \App\Models\Contact::first();
+
+    // Default values jika data belum ada di database
+    $address = $contact->address ?? 'Gedung Dakwah Muhammadiyah, Jl. Duren Sawit Raya No. 1, Jakarta Timur';
+    $phone = $contact->phone ?? '+6285280136056';
+    $email = $contact->email ?? 'info@pcmdurensawit1.or.id';
+    $daysStart = $contact->operational_days_start ?? 'Senin';
+    $daysEnd = $contact->operational_days_end ?? 'Jumat';
+    $hoursStart = $contact ? \Carbon\Carbon::parse($contact->working_hours_start)->format('H:i') : '08:00';
+    $hoursEnd = $contact ? \Carbon\Carbon::parse($contact->working_hours_end)->format('H:i') : '16:00';
+    $mapsUrl = $contact->google_maps_url ?? 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15864.890283559207!2d106.91659!3d-6.234365!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698cb58ca1ebcb%3A0x59543a4090f070b0!2sDuren%20Sawit%2C%20Kec.%20Duren%20Sawit%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1778816259461!5m2!1sid!2sid';
+
+    // Format nomor WhatsApp (hanya angka, ganti 0 di depan dengan 62)
+    $waPhone = preg_replace('/[^0-9]/', '', $phone);
+    if (strpos($waPhone, '0') === 0) {
+        $waPhone = '62' . substr($waPhone, 1);
+    }
+@endphp
+
 <section id="kontak" class="py-16 md:py-24 px-4 md:px-8 max-w-7xl mx-auto">
 
     <div class="mb-12">
@@ -76,16 +96,14 @@
                         return;
                     }
 
-                    const nomorWA = '6285280136056';
+                    const nomorWA = '{{ $waPhone }}';
 
                     const teks =
                         `Assalamu'alaikum, PCM Duren Sawit 1.
-
-*Nama*: ${nama}
+\n*Nama*: ${nama}
 *Asal/Instansi*: ${asal || '-'}
 *Subjek*: ${subjek || '-'}
-
-*Pesan*:
+\n*Pesan*:
 ${pesan}`;
 
                     const url = `https://wa.me/${nomorWA}?text=${encodeURIComponent(teks)}`;
@@ -107,8 +125,7 @@ ${pesan}`;
                 </div>
                 <div>
                     <p class="text-[11px] uppercase tracking-[.08em] text-gray-400 mb-1">Alamat</p>
-                    <p class="text-sm text-gray-700 leading-snug">Gedung Dakwah Muhammadiyah,<br>Jl. Duren Sawit Raya
-                        No. 1,<br>Jakarta Timur</p>
+                    <p class="text-sm text-gray-700 leading-snug">{!! nl2br(e($address)) !!}</p>
                 </div>
             </div>
 
@@ -122,7 +139,7 @@ ${pesan}`;
                 </div>
                 <div>
                     <p class="text-[11px] uppercase tracking-[.08em] text-gray-400 mb-1">Telepon</p>
-                    <p class="text-sm text-gray-700">+6285280136056</p>
+                    <p class="text-sm text-gray-700">{{ $phone }}</p>
                 </div>
             </div>
 
@@ -136,7 +153,7 @@ ${pesan}`;
                 </div>
                 <div>
                     <p class="text-[11px] uppercase tracking-[.08em] text-gray-400 mb-1">Email</p>
-                    <p class="text-sm text-gray-700">info@pcmdurensawit1.or.id</p>
+                    <p class="text-sm text-gray-700">{{ $email }}</p>
                 </div>
             </div>
 
@@ -150,7 +167,7 @@ ${pesan}`;
                 </div>
                 <div>
                     <p class="text-[11px] uppercase tracking-[.08em] text-gray-400 mb-1">Jam Operasional</p>
-                    <p class="text-sm text-gray-700">Senin – Jumat<br>08.00 – 16.00 WIB</p>
+                    <p class="text-sm text-gray-700">{{ $daysStart }} – {{ $daysEnd }}<br>{{ $hoursStart }} – {{ $hoursEnd }} WIB</p>
                 </div>
             </div>
 
@@ -160,7 +177,7 @@ ${pesan}`;
     {{-- Map --}}
     <div class="mt-6 rounded-2xl overflow-hidden border border-gray-100 h-64 md:h-80">
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15864.890283559207!2d106.91659!3d-6.234365!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698cb58ca1ebcb%3A0x59543a4090f070b0!2sDuren%20Sawit%2C%20Kec.%20Duren%20Sawit%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1778816259461!5m2!1sid!2sid"
+            src="{{ $mapsUrl }}"
             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>

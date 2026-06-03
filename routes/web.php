@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Bendahara\FinanceController;
 use App\Http\Controllers\Bendahara\DashboardController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +85,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/amal-usaha/{id}/edit', [AmalUsahaController::class, 'edit'])->name('amal-usaha.edit');
         Route::put('/amal-usaha/{id}', [AmalUsahaController::class, 'update'])->name('amal-usaha.update');
         Route::delete('/amal-usaha/{id}', [AmalUsahaController::class, 'destroy'])->name('amal-usaha.destroy');
+
+        Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+        Route::get('/contact/edit', [ContactController::class, 'edit'])->name('contact.edit');
+        Route::put('/contact/update', [ContactController::class, 'update'])->name('contact.update');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -96,7 +96,7 @@
                         @csrf
                         <div class="space-y-4">
 
-                            {{-- ORGANISASI OTONOM --}}
+                            {{-- ORGANISASI ORTONOM --}}
                             <div class="card-field au d1 bg-white border border-gray-200 rounded-2xl p-5 hover:border-gray-300 hover:shadow-lg hover:shadow-black/5">
                                 <div class="flex items-start gap-4">
                                     <div class="icon-badge w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center shrink-0 transition-all duration-300">
@@ -107,13 +107,13 @@
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between mb-1">
-                                            <label class="text-sm font-semibold text-gray-700">Organisasi Otonom</label>
+                                            <label class="text-sm font-semibold text-gray-700">Organisasi Ortonom</label>
                                             <span class="filled-badge hidden text-xs font-semibold bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-md">✓ Diisi</span>
                                         </div>
                                         <select name="organisasi_otonom_id" id="select-orgs"
                                             class="field-input text-base text-gray-900 border-none py-1"
                                             onchange="syncOrg(this)">
-                                            <option value="" disabled selected>Pilih organisasi otonom...</option>
+                                            <option value="" disabled selected>Pilih organisasi ortonom...</option>
                                             @foreach($organisasiOtonoms as $org)
                                                 <option value="{{ $org->id }}" {{ old('organisasi_otonom_id') == $org->id ? 'selected' : '' }}>
                                                     {{ $org->nama }}
@@ -293,7 +293,7 @@
                                     </span>
                                     <span id="preview-org-badge"
                                         class="inline-flex items-center text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
-                                        Organisasi Otonom
+                                        Organisasi Ortonom
                                     </span>
                                 </div>
 
@@ -330,7 +330,7 @@
         }
 
         function syncOrg(select) {
-            const text = select.options[select.selectedIndex]?.text || 'Organisasi Otonom';
+            const text = select.options[select.selectedIndex]?.text || 'Organisasi Ortonom';
             document.getElementById('preview-org-badge').textContent = text;
             updateCompletion();
         }

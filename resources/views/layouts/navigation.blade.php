@@ -25,7 +25,7 @@
                 <li><a href="/#program" class="text-heading hover:text-fg-brand text-sm transition"
                         onclick="handleNav(event,'program')">Program</a></li>
                 <li><a href="/#organisasi" class="text-heading hover:text-fg-brand text-sm transition"
-                        onclick="handleNav(event,'organisasi')">Organisasi Otonom</a></li>
+                        onclick="handleNav(event,'organisasi')">Organisasi Ortonom</a></li>
                 <li><a href="/#amal-usaha" class="text-heading hover:text-fg-brand text-sm transition"
                         onclick="handleNav(event,'amal-usaha')">Amal Usaha</a></li>
                 <li><a href="/#kontak" class="text-heading hover:text-fg-brand text-sm transition"
@@ -88,7 +88,7 @@
             </li>
             <li><a href="/#organisasi" @click="open = false"
                     class="flex items-center py-3 text-sm text-gray-700 hover:text-emerald-600 border-b border-gray-50 transition">Organisasi
-                    Otonom</a></li>
+                    Ortonom</a></li>
             <li><a href="/#amal-usaha" @click="open = false"
                     class="flex items-center py-3 text-sm text-gray-700 hover:text-emerald-600 border-b border-gray-50 transition">Amal
                     Usaha</a></li>

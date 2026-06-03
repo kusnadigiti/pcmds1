@@ -1,3 +1,17 @@
+@php
+    $contact = \App\Models\Contact::first();
+
+    // Default values jika data belum ada di database
+    $address = $contact->address ?? 'Gedung Dakwah Muhammadiyah, Jl. Duren Sawit Raya No. 1, Jakarta Timur';
+    $phone = $contact->phone ?? '+6285280136056';
+    $email = $contact->email ?? 'info@pcmdurensawit1.or.id';
+    $daysStart = $contact->operational_days_start ?? 'Senin';
+    $daysEnd = $contact->operational_days_end ?? 'Jumat';
+    $hoursStart = $contact ? \Carbon\Carbon::parse($contact->working_hours_start)->format('H:i') : '08:00';
+    $hoursEnd = $contact ? \Carbon\Carbon::parse($contact->working_hours_end)->format('H:i') : '18:00';
+    $mapsUrl = $contact->google_maps_url ?? 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15864.890283559207!2d106.91659!3d-6.234365!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698cb58ca1ebcb%3A0x59543a4090f070b0!2sDuren%20Sawit%2C%20Kec.%20Duren%20Sawit%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1778816259461!5m2!1sid!2sid';
+@endphp
+
 <footer id="kontak" class="bg-slate-900 text-slate-300 pt-12">
     <div class="max-w-7xl mx-auto px-6">
 
@@ -24,7 +38,7 @@
                     <li><a href="#artikel" class="hover:text-white transition">› Artikel</a></li>
                     <li><a href="#berita" class="hover:text-white transition">› Berita</a></li>
                     <li><a href="#program" class="hover:text-white transition">› Program</a></li>
-                    <li><a href="#organisasi" class="hover:text-white transition">› Organisasi Otonom</a></li>
+                    <li><a href="#organisasi" class="hover:text-white transition">› Organisasi Ortonom</a></li>
                     <li><a href="#amal-usaha" class="hover:text-white transition">› Amal Usaha</a></li>
                 </ul>
             </div>
@@ -36,16 +50,20 @@
                     <div class="flex gap-2 items-start">
                         <span class="text-emerald-400 text-sm mt-0.5">📍</span>
                         <p class="text-sm max-w-[180px] leading-snug">
-                            Gedung Dakwah Muhammadiyah, Jl. Duren Sawit Raya No. 1, Jakarta Timur
+                            {{ $address }}
                         </p>
                     </div>
                     <div class="flex gap-2 items-center">
                         <span class="text-emerald-400 text-sm">📞</span>
-                        <p class="text-sm">+6285280136056</p>
+                        <p class="text-sm">{{ $phone }}</p>
                     </div>
                     <div class="flex gap-2 items-center">
                         <span class="text-emerald-400 text-sm">✉️</span>
-                        <p class="text-sm">info@pcmdurensawit1.or.id</p>
+                        <p class="text-sm">{{ $email }}</p>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <span class="text-emerald-400 text-sm">🕐</span>
+                        <p class="text-sm">{{ $daysStart }} – {{ $daysEnd }}, {{ $hoursStart }} – {{ $hoursEnd }} WIB</p>
                     </div>
                 </div>
             </div>
@@ -55,7 +73,7 @@
                 <h5 class="text-white font-bold mb-3 text-sm">Lokasi</h5>
                 <div class="rounded-xl overflow-hidden border border-slate-700 h-36">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15864.890283559207!2d106.91659!3d-6.234365!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698cb58ca1ebcb%3A0x59543a4090f070b0!2sDuren%20Sawit%2C%20Kec.%20Duren%20Sawit%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1778816259461!5m2!1sid!2sid"
+                        src="{{ $mapsUrl }}"
                         width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>

@@ -43,7 +43,7 @@
                     <div class="p-10 flex flex-col justify-between">
                         <div>
                             <span class="{{ $c['badge_bg'] }} {{ $c['badge_text'] }} px-4 py-1 rounded-full text-sm font-semibold w-fit mb-4 inline-block">
-                                {{ $group['organisasi']->tipe ?? 'Organisasi Otonom' }}
+                                {{ $group['organisasi']->tipe ?? 'Organisasi Ortonom' }}
                             </span>
 
                             <h2 class="text-3xl font-bold text-gray-900 mb-1 leading-tight">

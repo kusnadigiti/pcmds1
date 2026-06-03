@@ -7,7 +7,7 @@
         <div>
             <h1 class="font-serif text-[28px] md:text-[40px] leading-[1.18] tracking-tight font-normal">
                 Organisasi<br>
-                <em class="text-gray-400 not-italic">Otonom</em><br>
+                <em class="text-gray-400 not-italic">Ortonom</em><br>
                 Muhammadiyah
             </h1>
         </div>
@@ -41,7 +41,7 @@
 
     {{-- Filter Tabs --}}
     <div class="flex border-b border-gray-100 px-4 md:px-8 max-w-7xl mx-auto overflow-x-auto">
-        @foreach ([['all', 'Semua'], ['ortonom', 'Otonom'], ['lembaga', 'Lembaga'], ['majelis', 'Majelis']] as [$val, $label])
+        @foreach ([['all', 'Semua'], ['ortonom', 'Ortonom'], ['lembaga', 'Lembaga'], ['majelis', 'Majelis']] as [$val, $label])
             <button
                 @click="active = '{{ $val }}'; activeFilter = '{{ $val }}'; selected = null"
                 :class="active === '{{ $val }}'
