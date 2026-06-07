@@ -29,6 +29,84 @@ Route::get('/berita/detail/{berita}', [LandingController::class, 'showBerita'])-
 Route::get('/organisasi-otonom/{slug}', [LandingController::class, 'showOrganisasiOtonom'])->name('organisasi-otonom.show');
 Route::get('/anggota-organisasi/{slug}', [LandingController::class, 'showAnggotaOrganisasi'])->name('anggota-organisasi.show');
 
+Route::get('/sitemap.xml', function() {
+    $now = now()->toAtomString();
+    
+    // Get all articles, news, and active organizations
+    $articles = \App\Models\Article::where('status', 'published')->get();
+    $berita = \App\Models\Berita::where('status', 'published')->get();
+    $organisasis = \App\Models\Organisasi::where('is_active', true)->get();
+    
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    
+    // Homepage
+    $xml .= '<url>';
+    $xml .= '<loc>' . url('/') . '</loc>';
+    $xml .= '<lastmod>' . $now . '</lastmod>';
+    $xml .= '<changefreq>daily</changefreq>';
+    $xml .= '<priority>1.0</priority>';
+    $xml .= '</url>';
+    
+    // Struktur Organisasi
+    $xml .= '<url>';
+    $xml .= '<loc>' . route('struktur-organisasi') . '</loc>';
+    $xml .= '<lastmod>' . $now . '</lastmod>';
+    $xml .= '<changefreq>monthly</changefreq>';
+    $xml .= '<priority>0.7</priority>';
+    $xml .= '</url>';
+    
+    // Articles list
+    $xml .= '<url>';
+    $xml .= '<loc>' . route('articles.show-all') . '</loc>';
+    $xml .= '<lastmod>' . $now . '</lastmod>';
+    $xml .= '<changefreq>daily</changefreq>';
+    $xml .= '<priority>0.8</priority>';
+    $xml .= '</url>';
+    
+    // News list
+    $xml .= '<url>';
+    $xml .= '<loc>' . route('berita.all') . '</loc>';
+    $xml .= '<lastmod>' . $now . '</lastmod>';
+    $xml .= '<changefreq>daily</changefreq>';
+    $xml .= '<priority>0.8</priority>';
+    $xml .= '</url>';
+    
+    // Add individual articles
+    foreach ($articles as $article) {
+        $xml .= '<url>';
+        $xml .= '<loc>' . route('articles.show', $article->slug) . '</loc>';
+        $xml .= '<lastmod>' . $article->updated_at->toAtomString() . '</lastmod>';
+        $xml .= '<changefreq>weekly</changefreq>';
+        $xml .= '<priority>0.6</priority>';
+        $xml .= '</url>';
+    }
+    
+    // Add individual news
+    foreach ($berita as $item) {
+        $xml .= '<url>';
+        $xml .= '<loc>' . route('berita.show', $item->slug) . '</loc>';
+        $xml .= '<lastmod>' . $item->updated_at->toAtomString() . '</lastmod>';
+        $xml .= '<changefreq>weekly</changefreq>';
+        $xml .= '<priority>0.6</priority>';
+        $xml .= '</url>';
+    }
+
+    // Add individual organizations
+    foreach ($organisasis as $org) {
+        $xml .= '<url>';
+        $xml .= '<loc>' . route('organisasi-otonom.show', $org->slug) . '</loc>';
+        $xml .= '<lastmod>' . $org->updated_at->toAtomString() . '</lastmod>';
+        $xml .= '<changefreq>monthly</changefreq>';
+        $xml .= '<priority>0.5</priority>';
+        $xml .= '</url>';
+    }
+    
+    $xml .= '</urlset>';
+    
+    return response($xml)->header('Content-Type', 'text/xml');
+});
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth', 'role:admin,superadmin'])->group(function () {

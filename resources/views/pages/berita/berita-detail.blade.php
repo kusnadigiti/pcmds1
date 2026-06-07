@@ -2,6 +2,11 @@
 
 @section('title', $berita->judul . ' — PCM Duren Sawit 1')
 
+@section('meta_description', Str::limit(strip_tags($berita->isi), 150))
+@section('meta_keywords', 'Berita, PCM Duren Sawit 1, ' . ($berita->kategori ?? 'Umum') . ', ' . implode(', ', array_slice(explode(' ', $berita->judul), 0, 5)))
+@section('og_type', 'article')
+@section('og_image', $berita->gambar ? asset('storage/' . $berita->gambar) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
+
 @section('styles')
     <style>
         .serif { font-family: 'Playfair Display', serif; }

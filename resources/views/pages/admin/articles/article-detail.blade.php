@@ -6,6 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $article->title }} — PCM Duren Sawit 1</title>
 
+    <meta name="description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
+    <meta name="keywords" content="Artikel, PCM Duren Sawit 1, {{ $article->author ?? 'PCM Duren Sawit 1' }}, {{ implode(', ', array_slice(explode(' ', $article->title), 0, 5)) }}">
+    <meta name="author" content="{{ $article->author ?? 'PCM Duren Sawit 1' }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}" />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $article->title }} — PCM Duren Sawit 1">
+    <meta property="og:description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
+    <meta property="og:image" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
+    <meta property="og:image:secure_url" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="PCM Duren Sawit 1">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="{{ $article->title }} — PCM Duren Sawit 1">
+    <meta property="twitter:description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
+    <meta property="twitter:image" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
+
     {{-- Tailwind CDN --}}
     <script src="https://cdn.tailwindcss.com"></script>
 
