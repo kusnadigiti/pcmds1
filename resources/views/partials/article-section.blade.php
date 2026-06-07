@@ -26,7 +26,7 @@ ARTIKEL SECTION — Dark Islamic theme, fully styled with Tailwind CSS
                             inspirasi dan penguatan iman
                         </p>
                         <span class="text-xs text-secondary/70 font-medium">
-                            {{ $articles->count() }} Artikel Diterbitkan
+                            {{ $totalArticlesCount ?? $articles->count() }} Artikel Diterbitkan
                         </span>
                     </div>
                 </div>
@@ -35,7 +35,7 @@ ARTIKEL SECTION — Dark Islamic theme, fully styled with Tailwind CSS
             <!-- ARTICLE LIST -->
             @if ($articles->count() > 0)
                 <div class="flex flex-col gap-4">
-                    @foreach ($articles->take(3) as $article)
+                    @foreach ($articles as $article)
                             <a href="{{ route('articles.show', $article->slug) }}" class="group block no-underline">
                                 <div
                                     class="bg-white/5 border border-secondary/15 rounded-2xl overflow-hidden grid lg:grid-cols-12 transition-all duration-300 hover:bg-white/10 hover:border-secondary/35 hover:-translate-y-1">

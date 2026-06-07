@@ -22,8 +22,10 @@ class LandingController extends Controller
         $hero = ProfileOrganisasi::latest('created_at')->first();
         $heroSections = HeroSections::latest()->get();
 
+        $totalArticlesCount = Article::where('status', 'published')->count();
         $articles = Article::where('status', 'published')
             ->latest('created_at')
+            ->limit(3)
             ->get();
 
         $latestBerita = Berita::where('status', 'published')
@@ -109,6 +111,7 @@ class LandingController extends Controller
         return view('welcome', [
             'hero'            => $hero,
             'articles'        => $articles,
+            'totalArticlesCount' => $totalArticlesCount,
             'latestBerita'    => $latestBerita,
             'jadwals'         => $jadwals,
             'jadwalJson'      => $allJadwalsRaw->map(fn($j) => [
