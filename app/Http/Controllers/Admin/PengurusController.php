@@ -67,7 +67,7 @@ class PengurusController extends Controller
             'jabatan'              => 'required|string|max:100',
             'level'                => 'required|in:inti,majelis,lembaga',
             'bidang'               => 'nullable|string|max:100',
-            'foto'                 => 'nullable|image|mimes:png,jpg|max:2048',
+            'foto'                 => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
             'no_hp'                => 'nullable|string|max:20',
             'email'                => 'nullable|email|max:100',
             'periode_mulai' => [
@@ -101,7 +101,7 @@ class PengurusController extends Controller
             'level.required' => 'Level pengurus wajib dipilih',
             'level.in' => 'Level pengurus tidak valid',
             'foto.image' => 'File harus berupa gambar',
-            'foto.mimes' => 'Format foto harus PNG atau JPG',
+            'foto.mimes' => 'Format foto harus JPEG, PNG, JPG, WEBP, GIF, atau SVG',
             'foto.max' => 'Ukuran foto maksimal 2MB',
             'email.email' => 'Format email tidak valid',
         ];
@@ -147,7 +147,7 @@ class PengurusController extends Controller
             'jabatan'              => 'required|string|max:100',
             'level'                => 'required|in:inti,majelis,lembaga',
             'bidang'               => 'nullable|string|max:100',
-            'foto'                 => 'nullable|image|mimes:png,jpg|max:2048',
+            'foto'                 => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
             'no_hp'                => 'nullable|string|max:20',
             'email'                => 'nullable|email|max:100',
             'periode_mulai' => [

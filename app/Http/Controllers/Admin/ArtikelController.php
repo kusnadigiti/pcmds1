@@ -59,7 +59,7 @@ class ArtikelController extends Controller
             'title' => 'required|string|max:255',
             'author' => 'nullable|string|max:255',
             'content' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg,webp|max:2048',
             'status' => 'required|in:draft,published',
         ]);
 
@@ -117,7 +117,7 @@ class ArtikelController extends Controller
             'title' => 'required|string|max:255',
             'author' => 'nullable|string|max:255',
             'content' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg,webp|max:2048',
             'status' => 'required|in:draft,published',
         ]);
 

@@ -47,7 +47,7 @@ class ProfileOrganisasiController extends Controller
             'nama' => 'required|string|max:200',
             'visi' => 'required|string|max:200',
             'misi' => 'required|string|max:200',
-            'image' => 'required|mimes:png,jpg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
             'tagline' => 'required|string',
         ]);
 
@@ -75,7 +75,7 @@ class ProfileOrganisasiController extends Controller
             'nama' => 'required|string|max:200',
             'visi' => 'required|string|max:200',
             'misi' => 'required|string|max:200',
-            'image' => 'nullable|mimes:png,jpg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
             'tagline' => 'required|string',
         ]);
 

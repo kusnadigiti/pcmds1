@@ -107,11 +107,7 @@
             class="border-t border-secondary/15 mt-10 py-5 flex flex-col gap-2 justify-between items-center text-[11px] text-white/30 md:flex-row">
             <p class="m-0">© {{ date('Y') }} PCM Duren Sawit 1. All rights reserved.</p>
             <div class="flex flex-wrap justify-center gap-3">
-                <a href="#" class="text-white/30 hover:text-secondary no-underline transition duration-200">Kebijakan
-                    Privasi</a>
-                <a href="#" class="text-white/30 hover:text-secondary no-underline transition duration-200">Syarat &
-                    Ketentuan</a>
-                <span class="text-secondary/40">Created by @bintang.ydha_</span>
+                <span class="text-secondary/40">Created by @bintang.ydha_ & @ramtxh</span>
             </div>
         </div>
 

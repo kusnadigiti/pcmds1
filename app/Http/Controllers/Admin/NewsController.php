@@ -62,7 +62,7 @@ class NewsController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
             'kategori' => ['required', Rule::in(['dakwah', 'pendidikan', 'sosial', 'organisasi'])],
             'status' => ['required', Rule::in(['draft', 'published'])],
         ]);
@@ -116,7 +116,7 @@ class NewsController extends Controller
             'isi' => 'required|string',
             'kategori' => ['required', Rule::in(['dakwah', 'pendidikan', 'sosial', 'organisasi'])],
             'status' => ['required', Rule::in(['draft', 'published'])],
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('gambar')) {

@@ -59,7 +59,7 @@ class AmalUsahaController extends Controller
             'nama'                 => ['required', 'string', 'max:255'],
             'deskripsi'            => ['nullable', 'string'],
             'tipe'                 => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
-            'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
+            'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp,gif,svg', 'max:2048'],
         ], [
             'organisasi_otonom_id.required' => 'Organisasi ortonom wajib dipilih.',
             'organisasi_otonom_id.exists'   => 'Organisasi ortonom tidak ditemukan.',
@@ -67,7 +67,7 @@ class AmalUsahaController extends Controller
             'tipe.required'                 => 'Tipe bidang wajib dipilih.',
             'tipe.in'                       => 'Tipe bidang tidak valid.',
             'foto.image'                    => 'File harus berupa gambar.',
-            'foto.mimes'                    => 'Format gambar harus PNG, JPG, JPEG, atau WEBP.',
+            'foto.mimes'                    => 'Format gambar harus PNG, JPG, JPEG, WEBP, GIF, atau SVG.',
             'foto.max'                      => 'Ukuran gambar maksimal 2MB.',
         ]);
 
@@ -99,7 +99,7 @@ class AmalUsahaController extends Controller
             'nama'                 => ['required', 'string', 'max:255'],
             'deskripsi'            => ['nullable', 'string'],
             'tipe'                 => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
-            'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
+            'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp,gif,svg', 'max:2048'],
         ], [
             'organisasi_otonom_id.required' => 'Organisasi ortonom wajib dipilih.',
             'organisasi_otonom_id.exists'   => 'Organisasi ortonom tidak ditemukan.',
@@ -107,7 +107,7 @@ class AmalUsahaController extends Controller
             'tipe.required'                 => 'Tipe bidang wajib dipilih.',
             'tipe.in'                       => 'Tipe bidang tidak valid.',
             'foto.image'                    => 'File harus berupa gambar.',
-            'foto.mimes'                    => 'Format gambar harus PNG, JPG, JPEG, atau WEBP.',
+            'foto.mimes'                    => 'Format gambar harus PNG, JPG, JPEG, WEBP, GIF, atau SVG.',
             'foto.max'                      => 'Ukuran gambar maksimal 2MB.',
         ]);
 
