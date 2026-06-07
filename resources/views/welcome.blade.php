@@ -1,91 +1,23 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.frontend')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')
 
-    <title>PCM Duren Sawit 01 </title>
+@section('meta')
+    <meta name="description" content="Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit">
+@endsection
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
+@section('styles')
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* smooth carousel transition */
-        #sliderSistemV2 .carousel-item {
-            transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
-        }
-
-        /* kasih efek fade + scale biar modern */
-        #sliderSistemV2 .carousel-item {
-            opacity: 0.4;
-            transform: scale(0.98);
-        }
-
-        #sliderSistemV2 .carousel-item.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* hover effect tombol */
-        #sliderSistemV2 .carousel-control-prev-icon,
-        #sliderSistemV2 .carousel-control-next-icon {
-            transition: all 0.3s ease;
-            background-color: rgba(0, 0, 0, 0.6) !important;
-        }
-
-        #sliderSistemV2 .carousel-control-prev-icon:hover,
-        #sliderSistemV2 .carousel-control-next-icon:hover {
-            transform: scale(1.1);
-            background-color: rgba(0, 0, 0, 0.8) !important;
-        }
-
-        /* smooth text masuk */
-        #sliderSistemV2 h2,
-        #sliderSistemV2 h5,
-        #sliderSistemV2 p,
-        #sliderSistemV2 .badge {
-            animation: fadeUp 0.8s ease;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        html { scroll-behavior: smooth; }
     </style>
+@endsection
 
-    <!-- Styles / Scripts -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-    @endif
-</head>
-
-<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] min-h-screen flex flex-col">
-
-    @include('layouts.navigation')
-
+@section('content')
     <main class="flex-1">
 
         @include('partials.header-section')
 
-        <main class="pt-20 bg-gray-50">
+        <div class="pt-20 bg-cream">
             <section id="profil">
                 @include('partials.profile-section')
             </section>
@@ -102,15 +34,15 @@
                 @include('partials.program-unggulan-section')
             </section>
 
-            <section id="profil">
+            <section>
                 @include('partials.jadwal-modal')
             </section>
 
-            <section id="profil">
+            <section>
                 @include('partials.modal-sekolah')
             </section>
 
-            <section id="profil">
+            <section>
                 @include('partials.modal-jsm')
             </section>
 
@@ -125,22 +57,97 @@
             <section id="kontak">
                 @include('partials.contact-section')
             </section>
-        </main>
+        </div>
 
     </main>
+@endsection
 
-    @include('layouts.footer')
-
-    {{-- Ganti blok <script> yang lama di welcome.blade.php dengan ini --}}
+@section('scripts')
     <script>
+        // Handle smooth scrolling
         function handleNav(e, sectionId) {
             if (window.location.pathname === '/') {
                 e.preventDefault();
-                document.getElementById(sectionId)?.scrollIntoView({
+                let targetId = sectionId;
+                if (sectionId === 'beranda') {
+                    targetId = 'hero-header';
+                }
+                document.getElementById(targetId)?.scrollIntoView({
                     behavior: 'smooth'
                 });
             }
         }
+
+        // Scrollspy logic to highlight active navbar item
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.pathname !== '/') return;
+
+            const sections = [
+                { id: 'hero-header', nav: 'beranda' },
+                { id: 'profil', nav: 'profil' },
+                { id: 'artikel', nav: 'artikel' },
+                { id: 'berita', nav: 'berita' },
+                { id: 'program', nav: 'program' },
+                { id: 'organisasi', nav: 'organisasi' },
+                { id: 'amal-usaha', nav: 'amal-usaha' },
+                { id: 'kontak', nav: 'kontak' }
+            ];
+
+            const navLinks = document.querySelectorAll('[data-nav]');
+
+            function makeActive(navName) {
+                navLinks.forEach(link => {
+                    const isMobile = link.classList.contains('block');
+                    
+                    if (link.getAttribute('data-nav') === navName) {
+                        if (isMobile) {
+                            link.classList.remove('text-white/80');
+                            link.classList.add('text-secondary', 'bg-secondary/8', 'font-semibold');
+                        } else {
+                            link.classList.remove('text-white/80', 'font-medium');
+                            link.classList.add('text-secondary', 'font-semibold');
+                        }
+                    } else {
+                        if (isMobile) {
+                            link.classList.remove('text-secondary', 'bg-secondary/8', 'font-semibold');
+                            link.classList.add('text-white/80');
+                        } else {
+                            link.classList.remove('text-secondary', 'font-semibold');
+                            link.classList.add('text-white/80', 'font-medium');
+                        }
+                    }
+                });
+            }
+
+            function updateScrollspy() {
+                let scrollPosition = window.scrollY || document.documentElement.scrollTop;
+                const offset = 120; // accounting for navigation bar height
+                let activeNav = 'beranda';
+                
+                for (let i = 0; i < sections.length; i++) {
+                    const el = document.getElementById(sections[i].id);
+                    if (el) {
+                        const top = el.offsetTop - offset;
+                        const bottom = top + el.offsetHeight;
+                        
+                        if (scrollPosition >= top && scrollPosition < bottom) {
+                            activeNav = sections[i].nav;
+                            break;
+                        }
+                    }
+                }
+                
+                // Bottom of the page check
+                if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+                    activeNav = 'kontak';
+                }
+                
+                makeActive(activeNav);
+            }
+
+            window.addEventListener('scroll', updateScrollspy);
+            updateScrollspy(); // Run on load
+        });
 
         function toggleAcc(id) {
             const content = document.getElementById(id);
@@ -235,8 +242,4 @@
             });
         });
     </script>
-    </section>
-
-</body>
-
-</html>
+@endsection

@@ -22,8 +22,10 @@ class LandingController extends Controller
         $hero = ProfileOrganisasi::latest('created_at')->first();
         $heroSections = HeroSections::latest()->get();
 
+        $totalArticlesCount = Article::where('status', 'published')->count();
         $articles = Article::where('status', 'published')
             ->latest('created_at')
+            ->limit(3)
             ->get();
 
         $latestBerita = Berita::where('status', 'published')
@@ -109,6 +111,7 @@ class LandingController extends Controller
         return view('welcome', [
             'hero'            => $hero,
             'articles'        => $articles,
+            'totalArticlesCount' => $totalArticlesCount,
             'latestBerita'    => $latestBerita,
             'jadwals'         => $jadwals,
             'jadwalJson'      => $allJadwalsRaw->map(fn($j) => [
@@ -153,26 +156,31 @@ class LandingController extends Controller
         return view('struktur-organisasi', compact('strukturs'));
     }
 
-    public function showAllBerita()
+    public function showAllBerita(Request $request)
     {
-        $berita = Berita::where('status', 'published')
-            ->latest()
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id'         => $item->id,
-                    'judul'      => $item->judul,
-                    'slug'       => $item->slug,
-                    'isi'        => $item->isi,
-                    'excerpt'    => Str::limit(strip_tags($item->isi), 140),
-                    'gambar'     => $item->gambar ? asset('storage/' . $item->gambar) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&fit=crop',
-                    'kategori'   => $item->kategori,
-                    'status'     => $item->status,
-                    'created_at' => $item->created_at,
-                ];
-            });
+        $kategori = $request->query('kategori');
 
-        return view('pages.berita.berita-show', compact('berita'));
+        $query = Berita::where('status', 'published')->latest();
+
+        if ($kategori && in_array($kategori, ['dakwah', 'pendidikan', 'sosial', 'organisasi'])) {
+            $query->where('kategori', $kategori);
+        }
+
+        $berita = $query->paginate(10)->through(function ($item) {
+            return [
+                'id'         => $item->id,
+                'judul'      => $item->judul,
+                'slug'       => $item->slug,
+                'isi'        => $item->isi,
+                'excerpt'    => Str::limit(strip_tags($item->isi), 140),
+                'gambar'     => $item->gambar ? asset('storage/' . $item->gambar) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&fit=crop',
+                'kategori'   => $item->kategori,
+                'status'     => $item->status,
+                'created_at' => $item->created_at,
+            ];
+        });
+
+        return view('pages.berita.berita-show', compact('berita', 'kategori'));
     }
 
     public function showBerita($berita)

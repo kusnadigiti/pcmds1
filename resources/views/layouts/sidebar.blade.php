@@ -14,7 +14,7 @@
         </div>
     </div>
     <nav>
-        <div class="section-label">Menu</div>
+        {{-- <div class="section-label">Menu</div> --}}
 
         @auth
             @if (in_array(auth()->user()->role, ['superadmin', 'admin']))
@@ -366,16 +366,6 @@
     </div>
 </aside>
 
-<button class="mobile-menu-btn" onclick="toggleSidebar()" id="mobileMenuBtn">
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-        <line x1="2" y1="4.5" x2="16" y2="4.5" stroke="currentColor" stroke-width="1.6"
-            stroke-linecap="round" />
-        <line x1="2" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.6"
-            stroke-linecap="round" />
-        <line x1="2" y1="13.5" x2="16" y2="13.5" stroke="currentColor" stroke-width="1.6"
-            stroke-linecap="round" />
-    </svg>
-</button>
 
 {{-- OVERLAY (mobile) --}}
 <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
@@ -485,7 +475,6 @@
         color: #cbd5e1;
         letter-spacing: 0.07em;
         text-transform: uppercase;
-        padding: 10px 8px 4px;
         white-space: nowrap;
         overflow: hidden;
         transition: opacity 0.2s;
@@ -808,30 +797,6 @@
             display: none;
         }
 
-        /* Hamburger nongol */
-        .mobile-menu-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 14px;
-            left: 14px;
-            z-index: 45;
-            width: 36px;
-            height: 36px;
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 9px;
-            cursor: pointer;
-            color: #64748b;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-            transition: background 0.15s;
-        }
-
-        .mobile-menu-btn:hover {
-            background: #f8fafc;
-            color: #0f172a;
-        }
     }
 </style>
 
