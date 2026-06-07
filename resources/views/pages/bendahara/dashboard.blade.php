@@ -100,7 +100,7 @@
     .empty a:hover { text-decoration:underline; }
 
     /* sidebar */
-    .sidebar { display:flex; flex-direction:column; gap:20px; }
+    .sidebar-right { display:flex; flex-direction:column; gap:20px; }
 
     /* bar chart */
     .chart-body { padding:16px 22px 22px; }
@@ -132,7 +132,7 @@
     .act-pdf:hover { background:#dde1fd; }
 
     /* saldo banner */
-    .saldo-banner { background:var(--ink); color:#fff; border-radius:var(--radius); padding:20px 22px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .saldo-banner { background:var(--ink); color:#fff; border-radius:var(--radius); padding:20px 22px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:28px; }
     .saldo-banner .lbl { font-size:.72rem; font-weight:600; letter-spacing:.07em; text-transform:uppercase; opacity:.5; margin-bottom:4px; }
     .saldo-banner .val { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; }
     .saldo-banner .sub { font-size:.75rem; opacity:.5; margin-top:4px; }
@@ -177,8 +177,60 @@
         </div>
     </div>
 
-    {{-- Saldo Banner --}}
+    {{-- Stat Cards --}}
+    <div class="stat-grid">
+        <div class="stat s-inc">
+            <div class="stat-icon">↑</div>
+            <div class="stat-lbl">Total Pemasukan</div>
+            <div class="stat-val">{{ $totalPemasukan }}</div>
+            <div class="stat-sub"><span class="up">laporan</span> pemasukan</div>
+        </div>
+        <div class="stat s-exp">
+            <div class="stat-icon">↓</div>
+            <div class="stat-lbl">Total Pengeluaran</div>
+            <div class="stat-val">{{ $totalPengeluaran }}</div>
+            <div class="stat-sub"><span class="dn">laporan</span> pengeluaran</div>
+        </div>
+        <div class="stat s-net">
+            <div class="stat-icon">≈</div>
+            <div class="stat-lbl">Selisih Laporan</div>
+            <div class="stat-val">{{ abs($totalPemasukan - $totalPengeluaran) }}</div>
+            <div class="stat-sub">
+                @if($totalPemasukan >= $totalPengeluaran)
+                    <span class="up">↑ lebih banyak</span> pemasukan
+                @else
+                    <span class="dn">↓ lebih banyak</span> pengeluaran
+                @endif
+            </div>
+        </div>
+        <div class="stat s-doc">
+            <div class="stat-icon">📄</div>
+            <div class="stat-lbl">Total Dokumen</div>
+            <div class="stat-val">{{ $totalLaporan }}</div>
+            <div class="stat-sub">semua <span style="color:#4b6bfb;font-weight:600;">laporan</span> keuangan</div>
+        </div>
+    </div>
 
+    {{-- Saldo Banner --}}
+    @php
+        $ratioInc = $totalLaporan > 0 ? round(($totalPemasukan / $totalLaporan) * 100) : 0;
+    @endphp
+    <div class="saldo-banner">
+        <div>
+            <div class="lbl">Ringkasan Laporan</div>
+            <div class="val">{{ $totalLaporan }} Dokumen</div>
+            <div class="sub">Diinput oleh: {{ auth()->user()->name }}</div>
+        </div>
+        <div class="ratio-bar">
+            <div style="display:flex;justify-content:space-between;font-size:.72rem;opacity:.6;margin-bottom:4px;">
+                <span>Pemasukan {{ $ratioInc }}%</span>
+                <span>Pengeluaran {{ 100 - $ratioInc }}%</span>
+            </div>
+            <div class="ratio-track">
+                <div class="ratio-fill" id="ratioFill" style="width:{{ $ratioInc }}%"></div>
+            </div>
+        </div>
+    </div>
 
     {{-- Main Grid --}}
     <div class="main-grid">
@@ -208,7 +260,7 @@
                                 @foreach($laporan as $row)
                                 <tr>
                                     <td>
-                                        <div class="td-main">{{ $row->user->name }}</div>
+                                        <div class="td-main">{{ $row->user?->name ?? '-' }}</div>
                                         @if($row->created_at)
                                            <div class="td-sub">
                                                 {{ $row->created_at->format('d M Y') }}
@@ -257,7 +309,23 @@
         </div>
 
         {{-- RIGHT: Sidebar --}}
-        <div class="sidebar">
+        <div class="sidebar-right">
+
+            {{-- Bar Chart --}}
+            <div class="panel">
+                <div class="panel-head">
+                    <h2 class="panel-title">Ringkasan Bulanan</h2>
+                </div>
+                <div class="chart-body">
+                    <div class="chart-legend">
+                        <span class="leg"><span class="leg-dot i"></span> Pemasukan</span>
+                        <span class="leg"><span class="leg-dot e"></span> Pengeluaran</span>
+                    </div>
+                    <div class="bar-chart" id="barChart"></div>
+                    <div class="bar-lbls" id="barLabels"></div>
+                </div>
+            </div>
+
             {{-- Aktivitas Terkini --}}
             <div class="panel">
                 <div class="panel-head">
@@ -265,7 +333,7 @@
                     <a href="{{ route('bendahara.keuangan.index') }}" class="panel-link">Semua →</a>
                 </div>
                 <div class="act-list">
-                    @forelse(isset($recentLaporan) ? $recentLaporan : [] as $item)
+                    @forelse($recentLaporan ?? [] as $item)
                         <div class="act-item">
                             <div class="act-ic {{ $item->kategori === 'pemasukan' ? 'i' : 'o' }}">
                                 {{ $item->kategori === 'pemasukan' ? '↑' : '↓' }}
@@ -284,35 +352,51 @@
                 </div>
             </div>
 
+            {{-- Tips --}}
+            <div class="panel tips">
+                <div class="panel-head">
+                    <h2 class="panel-title">💡 Panduan Bendahara</h2>
+                </div>
+                <ul>
+                    <li>📁 Upload laporan keuangan dalam format PDF untuk arsip yang rapi.</li>
+                    <li>🏷️ Pastikan kategori <strong>Pemasukan</strong> dan <strong>Pengeluaran</strong> diisi dengan benar.</li>
+                    <li>📅 Isi tanggal laporan sesuai dengan tanggal dokumen resmi.</li>
+                    <li>📊 Pantau perbandingan laporan secara berkala melalui grafik bulanan.</li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </div>
 
+@php
+    $defaultChart = [
+        ['label'=>'Jan','pemasukan'=>40,'pengeluaran'=>25],
+        ['label'=>'Feb','pemasukan'=>55,'pengeluaran'=>30],
+        ['label'=>'Mar','pemasukan'=>35,'pengeluaran'=>45],
+        ['label'=>'Apr','pemasukan'=>70,'pengeluaran'=>20],
+        ['label'=>'Mei','pemasukan'=>50,'pengeluaran'=>38],
+        ['label'=>'Jun','pemasukan'=>60,'pengeluaran'=>42],
+    ];
+@endphp
+
 <script>
-    @php
-        $defaultChart = [
-            ['label'=>'Jan','pemasukan'=>40,'pengeluaran'=>25],
-            ['label'=>'Feb','pemasukan'=>55,'pengeluaran'=>30],
-            ['label'=>'Mar','pemasukan'=>35,'pengeluaran'=>45],
-            ['label'=>'Apr','pemasukan'=>70,'pengeluaran'=>20],
-            ['label'=>'Mei','pemasukan'=>50,'pengeluaran'=>38],
-            ['label'=>'Jun','pemasukan'=>60,'pengeluaran'=>42],
-        ];
-    @endphp
     const chartData = @json($chartData ?? $defaultChart);
 
     const maxVal = Math.max(...chartData.flatMap(d => [d.pemasukan, d.pengeluaran]), 1);
     const bc = document.getElementById('barChart');
     const bl = document.getElementById('barLabels');
 
-    chartData.forEach(d => {
-        const h1 = Math.round((d.pemasukan   / maxVal) * 90);
-        const h2 = Math.round((d.pengeluaran  / maxVal) * 90);
-        bc.innerHTML += `<div class="bar-group">
-            <div class="bar i" style="height:${h1}px" title="Pemasukan: ${d.pemasukan}"></div>
-            <div class="bar e" style="height:${h2}px" title="Pengeluaran: ${d.pengeluaran}"></div>
-        </div>`;
-        bl.innerHTML += `<div class="bar-lbl">${d.label}</div>`;
-    });
+    if (bc && bl) {
+        chartData.forEach(d => {
+            const h1 = Math.round((d.pemasukan   / maxVal) * 90);
+            const h2 = Math.round((d.pengeluaran  / maxVal) * 90);
+            bc.innerHTML += `<div class="bar-group">
+                <div class="bar i" style="height:${h1}px" title="Pemasukan: ${d.pemasukan}"></div>
+                <div class="bar e" style="height:${h2}px" title="Pengeluaran: ${d.pengeluaran}"></div>
+            </div>`;
+            bl.innerHTML += `<div class="bar-lbl">${d.label}</div>`;
+        });
+    }
 </script>
 </x-app-layout>

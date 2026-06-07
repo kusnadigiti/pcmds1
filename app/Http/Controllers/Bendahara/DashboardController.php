@@ -10,14 +10,27 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $laporan        = Finance::where('user_id', auth()->id())
-            ->latest()->take(10)->get();
-        $recentLaporan  = $laporan->take(5);
+        $laporan = Finance::with('user')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->take(10)
+            ->get();
+
+        $recentLaporan = Finance::with('user')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->take(5)
+            ->get();
+
         $totalPemasukan = Finance::where('user_id', auth()->id())
-            ->where('kategori', 'pemasukan')->count();
+            ->where('kategori', 'pemasukan')
+            ->count();
+
         $totalPengeluaran = Finance::where('user_id', auth()->id())
-            ->where('kategori', 'pengeluaran')->count();
-        $totalLaporan   = Finance::where('user_id', auth()->id())->count();
+            ->where('kategori', 'pengeluaran')
+            ->count();
+
+        $totalLaporan = Finance::where('user_id', auth()->id())->count();
 
         return view('pages.bendahara.dashboard', compact(
             'laporan',

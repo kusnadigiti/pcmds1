@@ -1,259 +1,155 @@
-<header class="relative overflow-hidden " id="hero-header">
+<header id="hero-header" class="relative overflow-hidden">
 
     @if(isset($heroSections) && $heroSections->count() > 0)
 
-    <div class="relative" id="hero-slider-wrap">
-
-        <div id="hero-track" style="position:relative;">
+    <div id="hero-slider-wrap" class="relative">
+        <div id="hero-track" class="relative">
             @foreach($heroSections as $index => $hero)
-            <div class="hero-slide"
-                 data-index="{{ $index }}"
-                 style="
-                    display:{{ $index === 0 ? 'block' : 'none' }};
-                    background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
-                    color: white;
-                    position: relative;
-                    overflow: hidden;
-                 ">
+            <div class="hero-slide" data-index="{{ $index }}" style="display:{{ $index === 0 ? 'block' : 'none' }};">
+                <div class="bg-gradient-to-br from-accent via-accent-green to-primary text-white relative overflow-hidden min-h-[580px] flex items-center">
+                    {{-- Background image --}}
+                    @if($hero->image)
+                    <div class="absolute inset-0 bg-cover bg-center opacity-[0.18]" style="background-image:url('{{ asset('storage/' . $hero->image) }}');"></div>
+                    @endif
 
-                @if($hero->image)
-                <div style="
-                    position:absolute; inset:0;
-                    background-image: url('{{ asset('storage/' . $hero->image) }}');
-                    background-size: cover;
-                    background-position: center;
-                    opacity: 0.35;
-                    transition: opacity 0.5s ease;
-                "></div>
-                @endif
+                    {{-- Islamic geometric pattern --}}
+                    <div class="islamic-pattern absolute inset-0 opacity-50 pointer-events-none"></div>
 
-                {{-- Decorative blobs --}}
-                <div style="
-                    position:absolute; top:-80px; right:-80px;
-                    width:320px; height:320px;
-                    background: rgba(255,255,255,0.05);
-                    border-radius: 50%;
-                    pointer-events:none;
-                "></div>
-                <div style="
-                    position:absolute; bottom:-60px; left:-60px;
-                    width:240px; height:240px;
-                    background: rgba(255,255,255,0.04);
-                    border-radius: 50%;
-                    pointer-events:none;
-                "></div>
+                    {{-- Gold arc decoration --}}
+                    <div class="absolute -top-[120px] -right-[120px] w-[500px] h-[500px] rounded-full border-2 border-secondary/12 pointer-events-none"></div>
+                    <div class="absolute -top-[60px] -right-[60px] w-[320px] h-[320px] rounded-full border border-secondary/8 pointer-events-none"></div>
+                    <div class="absolute -bottom-[100px] -left-[80px] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,_rgba(13,92,58,0.3)_0%,_transparent_70%)] pointer-events-none"></div>
 
-                <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20" style="position:relative; z-index:2;">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-24 relative z-10 w-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-                        {{-- LEFT --}}
-                        <div class="text-center lg:text-left">
+                            {{-- LEFT --}}
+                            <div class="text-center lg:text-left animate-fadeUp">
 
-                            @if($hero->tagline)
-                            <span style="
-                                display: inline-block;
-                                background: #facc15;
-                                color: #1a1a1a;
-                                font-size: 0.8rem;
-                                font-weight: 700;
-                                padding: 4px 16px;
-                                border-radius: 999px;
-                                margin-bottom: 1.25rem;
-                                letter-spacing: 0.03em;
-                            ">{{ $hero->tagline }}</span>
-                            @endif
+                                @if($hero->tagline)
+                                <span class="inline-flex items-center gap-1.5 bg-secondary/12 border border-secondary/40 text-secondary text-[11px] font-bold tracking-widest uppercase py-1 px-4 rounded-full mb-6">
+                                    {{ $hero->tagline }}
+                                </span>
+                                @endif
 
-                            <h1 style="
-                                font-size: clamp(1.9rem, 4vw, 3rem);
-                                font-weight: 800;
-                                line-height: 1.15;
-                                margin-bottom: 1.25rem;
-                                letter-spacing: -0.02em;
-                            ">{{ $hero->title }}</h1>
+                                <h1 class="text-3xl sm:text-4xl lg:text-6xl font-extrabold leading-tight mb-6 tracking-tight">
+                                    {{ $hero->title }}
+                                </h1>
 
-                            @if($hero->description)
-                            <p style="
-                                color: rgba(255,255,255,0.8);
-                                font-size: 1.05rem;
-                                line-height: 1.7;
-                                margin-bottom: 2rem;
-                                max-width: 36rem;
-                            " class="mx-auto lg:mx-0">{{ $hero->description }}</p>
-                            @endif
+                                @if($hero->description)
+                                <p class="text-white/70 text-base leading-relaxed mb-10 max-w-lg mx-auto lg:mx-0">
+                                    {{ $hero->description }}
+                                </p>
+                                @endif
 
-                            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                <a href="#layanan"
-                                    style="background:#f97316; color:white; font-weight:700; padding:12px 28px; border-radius:999px; font-size:0.9rem; text-decoration:none; transition:background .2s;"
-                                    onmouseover="this.style.background='#ea580c'"
-                                    onmouseout="this.style.background='#f97316'">
-                                    Kenali Program Kami
-                                </a>
-                                <a href="#kontak"
-                                    style="border:2px solid rgba(255,255,255,0.7); color:white; font-weight:700; padding:12px 28px; border-radius:999px; font-size:0.9rem; text-decoration:none; transition:all .2s;"
-                                    onmouseover="this.style.background='white';this.style.color='#065f46'"
-                                    onmouseout="this.style.background='transparent';this.style.color='white'">
-                                    Hubungi Pengurus
-                                </a>
+                                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                                    <a href="#layanan"
+                                        class="bg-gradient-to-r from-secondary to-secondary-light text-accent font-extrabold py-3.5 px-8 rounded-full text-sm no-underline shadow-lg shadow-secondary/40 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-secondary/50">
+                                        Kenali Program Kami
+                                    </a>
+                                    <a href="#kontak"
+                                        class="border-2 border-secondary/50 text-white font-bold py-3.5 px-8 rounded-full text-sm no-underline transition duration-200 hover:bg-secondary/15 hover:border-secondary/80">
+                                        Hubungi Pengurus
+                                    </a>
+                                </div>
                             </div>
+
+                            {{-- RIGHT --}}
+                            <div class="flex justify-center lg:justify-end pt-10">
+                                @if($hero->image)
+                                <div class="relative">
+                                    <div class="absolute -inset-2 rounded-[2rem] bg-gradient-to-br from-secondary to-primary opacity-50 z-0"></div>
+                                    <div class="rounded-3xl overflow-hidden shadow-2xl shadow-black/50 max-w-[480px] w-full relative z-10">
+                                        <img src="{{ asset('storage/' . $hero->image) }}"
+                                             alt="{{ $hero->title }}"
+                                             class="w-full h-[420px] object-cover block">
+                                    </div>
+                                </div>
+                                @else
+                                <div class="rounded-3xl overflow-hidden bg-secondary/6 border-2 border-dashed border-secondary/25 max-w-[480px] w-full h-[420px] flex flex-col items-center justify-center gap-4 text-secondary">
+                                    <svg class="w-14 h-14 opacity-30" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+                                        <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="text-secondary/40 text-sm">Belum ada gambar</span>
+                                </div>
+                                @endif
+                            </div>
+
                         </div>
+                    </div>
 
-                        {{-- RIGHT --}}
-                        <div class="flex justify-center lg:justify-end pt-10">
-                            @if($hero->image)
-                            <div style="border-radius:1.5rem; overflow:hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.35); max-width:480px; width:100%;">
-                                <img src="{{ asset('storage/' . $hero->image) }}"
-                                     alt="{{ $hero->title }}"
-                                     style="width:100%; height:420px; object-fit:cover; display:block;">
-                            </div>
-                            @else
-                            <div style="
-                                border-radius:1.5rem;
-                                overflow:hidden;
-                                background: rgba(255,255,255,0.1);
-                                border: 2px dashed rgba(255,255,255,0.2);
-                                max-width:480px; width:100%; height:420px;
-                                display:flex; align-items:center; justify-content:center;
-                                flex-direction:column; gap:1rem;
-                            ">
-                                <svg style="width:56px;height:56px;opacity:.3" fill="none" stroke="white" stroke-width="1.2" viewBox="0 0 24 24">
-                                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                <span style="color:rgba(255,255,255,.4);font-size:.85rem;">Belum ada gambar</span>
-                            </div>
-                            @endif
-                        </div>
-
+                    {{-- Slide counter --}}
+                    <div class="absolute top-5 right-5 z-10 bg-secondary/12 border border-secondary/30 text-white/80 text-xs font-semibold py-1 px-3 rounded-full backdrop-blur-md">
+                        {{ $index + 1 }} / {{ $heroSections->count() }}
                     </div>
                 </div>
-
-                {{-- Slide number badge --}}
-                <div style="
-                    position:absolute; top:1.25rem; right:1.25rem; z-index:10;
-                    background:rgba(0,0,0,0.25);
-                    color:rgba(255,255,255,0.7);
-                    font-size:0.75rem; font-weight:600;
-                    padding:4px 12px; border-radius:999px;
-                    backdrop-filter: blur(6px);
-                ">{{ $index + 1 }} / {{ $heroSections->count() }}</div>
-
             </div>
             @endforeach
         </div>
 
-        {{-- ===== CONTROLS (hanya kalau > 1) ===== --}}
         @if($heroSections->count() > 1)
-
-        {{-- Prev button --}}
-        <button id="hero-prev" onclick="heroPrev()" aria-label="Slide sebelumnya" style="
-            position:absolute; left:1rem; top:50%; transform:translateY(-50%);
-            z-index:20;
-            width:44px; height:44px;
-            background:rgba(0,0,0,0.3);
-            border:none; border-radius:50%;
-            color:white; cursor:pointer;
-            display:flex; align-items:center; justify-content:center;
-            backdrop-filter:blur(6px);
-            transition:background .2s, transform .2s;
-        "
-        onmouseover="this.style.background='rgba(0,0,0,0.55)';this.style.transform='translateY(-50%) scale(1.08)'"
-        onmouseout="this.style.background='rgba(0,0,0,0.3)';this.style.transform='translateY(-50%) scale(1)'">
-            <svg width="20" height="20" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24">
-                <path d="M15 19l-7-7 7-7"/>
-            </svg>
+        {{-- Prev --}}
+        <button id="hero-prev" onclick="heroPrev()" aria-label="Slide sebelumnya" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-secondary/15 border border-secondary/30 rounded-full text-white cursor-pointer flex items-center justify-center backdrop-blur-sm transition duration-200 hover:bg-secondary/35">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
         </button>
-
-        {{-- Next button --}}
-        <button id="hero-next" onclick="heroNext()" aria-label="Slide berikutnya" style="
-            position:absolute; right:1rem; top:50%; transform:translateY(-50%);
-            z-index:20;
-            width:44px; height:44px;
-            background:rgba(0,0,0,0.3);
-            border:none; border-radius:50%;
-            color:white; cursor:pointer;
-            display:flex; align-items:center; justify-content:center;
-            backdrop-filter:blur(6px);
-            transition:background .2s, transform .2s;
-        "
-        onmouseover="this.style.background='rgba(0,0,0,0.55)';this.style.transform='translateY(-50%) scale(1.08)'"
-        onmouseout="this.style.background='rgba(0,0,0,0.3)';this.style.transform='translateY(-50%) scale(1)'">
-            <svg width="20" height="20" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24">
-                <path d="M9 5l7 7-7 7"/>
-            </svg>
+        {{-- Next --}}
+        <button id="hero-next" onclick="heroNext()" aria-label="Slide berikutnya" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-secondary/15 border border-secondary/30 rounded-full text-white cursor-pointer flex items-center justify-center backdrop-blur-sm transition duration-200 hover:bg-secondary/35">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
         </button>
 
         {{-- Dots --}}
-        <div id="hero-dots" style="
-            position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%);
-            z-index:20; display:flex; gap:8px; align-items:center;
-        ">
+        <div id="hero-dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2 items-center">
             @foreach($heroSections as $i => $s)
-            <button
-                class="hero-dot"
-                data-dot="{{ $i }}"
-                onclick="heroGoTo({{ $i }})"
-                aria-label="Slide {{ $i + 1 }}"
-                style="
-                    border:none; cursor:pointer; padding:0;
-                    height:8px; border-radius:999px;
-                    background:{{ $i === 0 ? 'white' : 'rgba(255,255,255,0.35)' }};
-                    width:{{ $i === 0 ? '28px' : '8px' }};
-                    transition:all .35s cubic-bezier(.4,0,.2,1);
-                "></button>
+            <button class="hero-dot border-none cursor-pointer p-0 h-2 rounded-full transition-all duration-350 ease-out" data-dot="{{ $i }}" onclick="heroGoTo({{ $i }})" aria-label="Slide {{ $i + 1 }}"
+                style="background:{{ $i === 0 ? '#D4A017' : 'rgba(212,160,23,0.3)' }};width:{{ $i === 0 ? '28px' : '8px' }};"></button>
             @endforeach
         </div>
 
         {{-- Progress bar --}}
-        <div style="position:absolute;bottom:0;left:0;width:100%;height:3px;background:rgba(255,255,255,0.15);z-index:20;">
-            <div id="hero-progress" style="
-                height:100%;
-                background:rgba(255,255,255,0.7);
-                width:0%;
-                transition:width linear;
-            "></div>
+        <div class="absolute bottom-0 left-0 w-full h-[3px] bg-white/8 z-20">
+            <div id="hero-progress" class="h-full bg-gradient-to-r from-primary to-secondary w-0 transition-all duration-[linear]"></div>
         </div>
-
         @endif
 
     </div>
 
-    {{-- ===================== FALLBACK (kalau $heroSections kosong) ===================== --}}
     @else
-    <div style="
-        background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
-        color: white;
-        position: relative;
-        overflow: hidden;
-    ">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+    {{-- FALLBACK --}}
+    <div class="bg-gradient-to-br from-accent via-accent-green to-primary text-white relative overflow-hidden min-h-[580px] flex items-center">
+        <div class="islamic-pattern absolute inset-0 opacity-50 pointer-events-none"></div>
+        <div class="absolute -top-[120px] -right-[120px] w-[500px] h-[500px] rounded-full border-2 border-secondary/12 pointer-events-none"></div>
+        <div class="absolute -bottom-[100px] -left-[80px] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,_rgba(13,92,58,0.3)_0%,_transparent_70%)] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-24 relative z-10 w-full">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="text-center lg:text-left">
-                    <span style="display:inline-block;background:#facc15;color:#1a1a1a;font-size:.8rem;font-weight:700;padding:4px 16px;border-radius:999px;margin-bottom:1.25rem;">
-                        Muhammadiyah Berkemajuan
+                <div class="text-center lg:text-left animate-fadeUp">
+                    <span class="inline-flex items-center gap-1.5 bg-secondary/12 border border-secondary/40 text-secondary text-[11px] font-bold tracking-widest uppercase py-1 px-4 rounded-full mb-6">
+                        ☽ Muhammadiyah Berkemajuan
                     </span>
-                    <h1 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:800;line-height:1.15;margin-bottom:1.25rem;letter-spacing:-.02em;">
+                    <h1 class="text-3xl sm:text-4xl lg:text-6xl font-extrabold leading-tight mb-6 tracking-tight">
                         Mencerahkan Semesta,<br>Memajukan Duren Sawit.
                     </h1>
-                    <p style="color:rgba(255,255,255,.8);font-size:1.05rem;line-height:1.7;margin-bottom:2rem;max-width:36rem;" class="mx-auto lg:mx-0">
+                    <p class="text-white/70 text-base leading-relaxed mb-10 max-w-lg mx-auto lg:mx-0">
                         Menjadi pilar dakwah yang inovatif, modern, dan membawa manfaat nyata bagi umat dan bangsa di lingkungan Duren Sawit 1.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <a href="#layanan"
-                            style="background:#f97316;color:white;font-weight:700;padding:12px 28px;border-radius:999px;font-size:.9rem;text-decoration:none;transition:background .2s;"
-                            onmouseover="this.style.background='#ea580c'" onmouseout="this.style.background='#f97316'">
+                            class="bg-gradient-to-r from-secondary to-secondary-light text-accent font-extrabold py-3.5 px-8 rounded-full text-sm no-underline shadow-lg shadow-secondary/40 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-secondary/50">
                             Kenali Program Kami
                         </a>
                         <a href="#kontak"
-                            style="border:2px solid rgba(255,255,255,.7);color:white;font-weight:700;padding:12px 28px;border-radius:999px;font-size:.9rem;text-decoration:none;transition:all .2s;"
-                            onmouseover="this.style.background='white';this.style.color='#065f46'"
-                            onmouseout="this.style.background='transparent';this.style.color='white'">
+                            class="border-2 border-secondary/50 text-white font-bold py-3.5 px-8 rounded-full text-sm no-underline transition duration-200 hover:bg-secondary/15 hover:border-secondary/80">
                             Hubungi Pengurus
                         </a>
                     </div>
                 </div>
                 <div class="flex justify-center lg:justify-end">
-                    <div style="border-radius:1.5rem;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,.35);max-width:480px;width:100%;">
-                        <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=900&q=80"
-                             alt="Masjid" style="width:100%;height:420px;object-fit:cover;display:block;">
+                    <div class="relative">
+                        <div class="absolute -inset-2 rounded-[2rem] bg-gradient-to-br from-secondary to-primary opacity-40 z-0"></div>
+                        <div class="rounded-3xl overflow-hidden shadow-2xl shadow-black/50 max-w-[480px] w-full relative z-10">
+                            <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=900&q=80"
+                                 alt="Masjid" class="w-full h-[420px] object-cover block">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -263,7 +159,6 @@
 
 </header>
 
-{{-- ===================== SLIDER SCRIPT ===================== --}}
 @if(isset($heroSections) && $heroSections->count() > 1)
 <script>
 (function() {
@@ -271,41 +166,27 @@
     const slides = document.querySelectorAll('.hero-slide');
     const dots   = document.querySelectorAll('.hero-dot');
     const progress = document.getElementById('hero-progress');
-    let current = 0;
-    let timer = null;
-    let startTime = null;
-    let rafId = null;
-    let paused = false;
+    let current = 0, timer = null, startTime = null, rafId = null, paused = false;
 
     function showSlide(index) {
         slides.forEach((s, i) => s.style.display = i === index ? 'block' : 'none');
         dots.forEach((d, i) => {
-            if (i === index) {
-                d.style.background = 'white';
-                d.style.width = '28px';
-            } else {
-                d.style.background = 'rgba(255,255,255,0.35)';
-                d.style.width = '8px';
-            }
+            d.style.background = i === index ? '#D4A017' : 'rgba(212,160,23,0.3)';
+            d.style.width = i === index ? '28px' : '8px';
         });
         current = index;
     }
 
     function startProgress() {
-        if (progress) progress.style.transition = 'none';
-        if (progress) progress.style.width = '0%';
-
+        if (progress) { progress.style.transition = 'none'; progress.style.width = '0%'; }
         cancelAnimationFrame(rafId);
         startTime = performance.now();
-
         function tick(now) {
             if (paused) return;
             const elapsed = now - startTime;
             const pct = Math.min((elapsed / AUTOPLAY_DURATION) * 100, 100);
             if (progress) progress.style.width = pct + '%';
-            if (elapsed < AUTOPLAY_DURATION) {
-                rafId = requestAnimationFrame(tick);
-            }
+            if (elapsed < AUTOPLAY_DURATION) rafId = requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
     }
@@ -313,50 +194,28 @@
     function startAutoplay() {
         clearTimeout(timer);
         startProgress();
-        timer = setTimeout(() => {
-            heroNext();
-        }, AUTOPLAY_DURATION);
+        timer = setTimeout(() => heroNext(), AUTOPLAY_DURATION);
     }
 
-    window.heroNext = function() {
-        showSlide((current + 1) % slides.length);
-        startAutoplay();
-    };
+    window.heroNext = function() { showSlide((current + 1) % slides.length); startAutoplay(); };
+    window.heroPrev = function() { showSlide((current - 1 + slides.length) % slides.length); startAutoplay(); };
+    window.heroGoTo = function(i) { showSlide(i); startAutoplay(); };
 
-    window.heroPrev = function() {
-        showSlide((current - 1 + slides.length) % slides.length);
-        startAutoplay();
-    };
-
-    window.heroGoTo = function(i) {
-        showSlide(i);
-        startAutoplay();
-    };
-
-    // Pause on hover
     const wrap = document.getElementById('hero-slider-wrap');
     if (wrap) {
         wrap.addEventListener('mouseenter', () => { paused = true; cancelAnimationFrame(rafId); clearTimeout(timer); });
         wrap.addEventListener('mouseleave', () => { paused = false; startAutoplay(); });
-    }
-
-    // Swipe support (touch)
-    let touchStartX = 0;
-    if (wrap) {
+        let touchStartX = 0;
         wrap.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
         wrap.addEventListener('touchend', e => {
             const diff = touchStartX - e.changedTouches[0].clientX;
             if (Math.abs(diff) > 50) diff > 0 ? heroNext() : heroPrev();
         }, { passive: true });
     }
-
-    // Keyboard nav
     document.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') heroNext();
         if (e.key === 'ArrowLeft')  heroPrev();
     });
-
-    // Start!
     startAutoplay();
 })();
 </script>

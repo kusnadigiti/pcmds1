@@ -1,32 +1,35 @@
-<section id="amal-usaha" class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-6">
+{{-- ═══════════════════════════════════════════════════════════════
+     AMAL USAHA — Cream theme, fully styled with Tailwind CSS
+     ═══════════════════════════════════════════════════════════════ --}}
+
+<section id="amal-usaha" class="bg-cream py-20 relative overflow-hidden">
+    {{-- Subtle pattern --}}
+    <div class="islamic-pattern absolute inset-0 opacity-30 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
 
         {{-- HEADER --}}
         <div class="flex justify-between items-end mb-10">
             <div>
-                <h6 class="text-emerald-600 font-bold uppercase tracking-widest flex items-center gap-2 mb-1">
-                    <span>⚙️</span> Amal Usaha
-                </h6>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
-                    Lembaga & Unit Kami
+                <span class="section-label section-label-green">⚙️ Amal Usaha Muhammadiyah</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight m-0">
+                    Lembaga <span class="text-primary">&amp;</span> Unit Kami
                 </h2>
             </div>
-            <div class="hidden md:block w-24 h-1 bg-yellow-400 rounded-full"></div>
+            <div class="hidden md:block w-16 h-1 bg-gradient-to-r from-secondary to-primary rounded-full"></div>
         </div>
 
         @if($amalUsahaPerOrg->isNotEmpty())
 
-        <div class="relative overflow-hidden rounded-3xl shadow-xl bg-white">
+        <div class="relative overflow-hidden rounded-2xl border border-primary/10 bg-white shadow-xl shadow-primary/5">
 
             <div id="auSliderTrack" class="flex transition-transform duration-700 ease-in-out">
 
                 @php
-                    $palette = [
-                        ['badge_bg'=>'bg-emerald-50','badge_text'=>'text-emerald-600','btn'=>'bg-emerald-600 hover:bg-emerald-700','grad'=>'from-emerald-700 to-green-600','dot'=>'bg-emerald-500'],
-                        ['badge_bg'=>'bg-sky-50',    'badge_text'=>'text-sky-600',    'btn'=>'bg-sky-600 hover:bg-sky-700',        'grad'=>'from-sky-700 to-blue-900',    'dot'=>'bg-sky-500'],
-                        ['badge_bg'=>'bg-amber-50',  'badge_text'=>'text-amber-600',  'btn'=>'bg-amber-600 hover:bg-amber-700',    'grad'=>'from-amber-700 to-orange-900','dot'=>'bg-amber-500'],
-                        ['badge_bg'=>'bg-indigo-50', 'badge_text'=>'text-indigo-600', 'btn'=>'bg-indigo-600 hover:bg-indigo-700',  'grad'=>'from-indigo-700 to-purple-900','dot'=>'bg-indigo-500'],
-                        ['badge_bg'=>'bg-rose-50',   'badge_text'=>'text-rose-600',   'btn'=>'bg-rose-600 hover:bg-rose-700',      'grad'=>'from-rose-700 to-pink-900',   'dot'=>'bg-rose-500'],
+                    $colorSets = [
+                        ['pill' => 'bg-primary/10 text-primary', 'grad' => 'from-primary to-primary-light', 'dot' => 'bg-primary'],
+                        ['pill' => 'bg-secondary/10 text-secondary', 'grad' => 'from-secondary to-secondary-light', 'dot' => 'bg-secondary'],
+                        ['pill' => 'bg-accent/15 text-primary-light', 'grad' => 'from-accent to-accent-green', 'dot' => 'bg-primary-light'],
                     ];
                     $tipeLabel = [
                         'bidang_sosial'     => ['label'=>'Bidang Sosial',     'icon'=>'🤝'],
@@ -36,34 +39,34 @@
                 @endphp
 
                 @foreach($amalUsahaPerOrg as $idx => $group)
-                @php $c = $palette[$idx % count($palette)]; @endphp
+                @php $c = $colorSets[$idx % count($colorSets)]; @endphp
 
                 <div class="min-w-full grid md:grid-cols-2">
 
-                    <div class="p-10 flex flex-col justify-between">
+                    <div class="p-10 flex flex-col justify-center">
                         <div>
-                            <span class="{{ $c['badge_bg'] }} {{ $c['badge_text'] }} px-4 py-1 rounded-full text-sm font-semibold w-fit mb-4 inline-block">
-                                {{ $group['organisasi']->tipe ?? 'Organisasi Ortonom' }}
+                            <span class="{{ $c['pill'] }} inline-block py-1 px-3.5 rounded-full text-xs font-semibold mb-4">
+                                {{ $group['organisasi']->tipe ?? 'Organisasi Otonom' }}
                             </span>
 
-                            <h2 class="text-3xl font-bold text-gray-900 mb-1 leading-tight">
+                            <h2 class="text-2xl font-extrabold text-gray-900 mb-1 leading-tight">
                                 {{ $group['organisasi']->nama }}
                             </h2>
-                            <p class="text-gray-400 text-sm mb-6">
+                            <p class="text-gray-400 text-xs mb-6">
                                 {{ $group['amalUsaha']->count() }} unit amal usaha
                             </p>
 
-                            <ul class="au-list space-y-2 mb-8">
+                            <ul class="list-none p-0 m-0 mb-6 flex flex-col gap-2.5">
                                 @forelse($group['amalUsaha'] as $au)
-                                <li class="flex items-start gap-3 group/item">
+                                <li class="flex items-start gap-2.5">
                                     <span class="mt-1.5 w-2 h-2 rounded-full {{ $c['dot'] }} shrink-0"></span>
                                     <div class="min-w-0">
-                                        <p class="text-gray-800 font-medium text-sm leading-snug">{{ $au->nama }}</p>
+                                        <p class="text-sm font-semibold text-gray-900 leading-snug">{{ $au->nama }}</p>
                                         @if($au->deskripsi)
-                                        <p class="text-gray-400 text-xs mt-0.5 line-clamp-1">{{ $au->deskripsi }}</p>
+                                        <p class="text-xs text-gray-400 mt-0.5 line-clamp-1">{{ $au->deskripsi }}</p>
                                         @endif
                                         @if(isset($tipeLabel[$au->tipe]))
-                                        <span class="{{ $c['badge_bg'] }} {{ $c['badge_text'] }} text-xs font-semibold px-2 py-0.5 rounded-full mt-1 inline-block">
+                                        <span class="{{ $c['pill'] }} inline-block mt-1 text-[10px] font-semibold py-0.5 px-2.5 rounded-full">
                                             {{ $tipeLabel[$au->tipe]['icon'] }} {{ $tipeLabel[$au->tipe]['label'] }}
                                         </span>
                                         @endif
@@ -81,12 +84,12 @@
                         @if($group['amalUsaha']->first()?->foto)
                             <img src="{{ asset('storage/' . $group['amalUsaha']->first()->foto) }}"
                                  alt="{{ $group['organisasi']->nama }}"
-                                 class="w-full h-full object-cover absolute inset-0 opacity-40 mix-blend-luminosity"/>
+                                 class="absolute inset-0 w-full h-full object-cover opacity-30"/>
                         @endif
                         <div class="relative z-10 text-center text-white">
-                            <div class="text-7xl mb-4 opacity-80">🏛️</div>
-                            <p class="font-bold text-xl opacity-90">{{ $group['organisasi']->nama }}</p>
-                            <p class="text-white/60 text-sm mt-1">{{ $group['amalUsaha']->count() }} Unit</p>
+                            <div class="text-7xl mb-4 opacity-75">🏛️</div>
+                            <p class="font-bold text-lg opacity-90">{{ $group['organisasi']->nama }}</p>
+                            <p class="text-white/50 text-xs mt-1">{{ $group['amalUsaha']->count() }} Unit</p>
                         </div>
                     </div>
 
@@ -97,11 +100,11 @@
 
             {{-- NAV ARROWS --}}
             <button onclick="auPrev()"
-                class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow p-3 rounded-full transition z-10">
+                class="absolute left-3 top-1/2 -translate-y-1/2 bg-white border border-primary/10 shadow-lg p-2.5 rounded-full cursor-pointer z-10 transition duration-200 hover:bg-primary hover:text-white hover:border-primary">
                 ◀
             </button>
             <button onclick="auNext()"
-                class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow p-3 rounded-full transition z-10">
+                class="absolute right-3 top-1/2 -translate-y-1/2 bg-white border border-primary/10 shadow-lg p-2.5 rounded-full cursor-pointer z-10 transition duration-200 hover:bg-primary hover:text-white hover:border-primary">
                 ▶
             </button>
 
@@ -110,7 +113,7 @@
                 @foreach($amalUsahaPerOrg as $i => $_)
                 <button onclick="auGoTo({{ $i }})"
                     id="au-dot-{{ $i }}"
-                    class="w-2 h-2 rounded-full transition-all duration-300 {{ $i === 0 ? 'bg-gray-800 w-5' : 'bg-gray-300' }}">
+                    class="h-2 rounded-full border-none cursor-pointer transition-all duration-300 {{ $i === 0 ? 'w-5 bg-secondary' : 'w-2 bg-white/40' }}">
                 </button>
                 @endforeach
             </div>
@@ -119,7 +122,7 @@
 
         @else
         <div class="text-center py-16 text-gray-400">
-            <p class="text-lg">Belum ada data amal usaha.</p>
+            <p class="text-base">Belum ada data amal usaha.</p>
         </div>
         @endif
 
@@ -136,10 +139,11 @@
         for (let i = 0; i < total; i++) {
             const dot = document.getElementById('au-dot-' + i);
             if (!dot) continue;
-            dot.classList.toggle('bg-gray-800', i === current);
-            dot.classList.toggle('w-5', i === current);
-            dot.classList.toggle('bg-gray-300', i !== current);
-            dot.classList.toggle('w-2', i !== current);
+            if (i === current) {
+                dot.className = 'w-5 h-2 rounded-full border-none cursor-pointer transition-all duration-300 bg-secondary';
+            } else {
+                dot.className = 'w-2 h-2 rounded-full border-none cursor-pointer transition-all duration-300 bg-white/40';
+            }
         }
     }
 

@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>PCM Duren Sawit 01 </title>
+    <title>PCM Duren Sawit 1 | Muhammadiyah Berkemajuan</title>
+    <meta name="description" content="Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,58 +17,24 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
     <style>
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --primary: #0d5c3a;
+            --primary-light: #167a4e;
+            --primary-rgb: 13,92,58;
+
+            --secondary: #D4A017;
+            --secondary-light: #e8b820;
+            --secondary-rgb: 212,160,23;
+
+            --accent: #0f1923;
+            --accent-green: #0d2818;
+            --accent-rgb: 15,25,35;
+
+            --bg-cream: #f8f5ee;
+            --text-dark: #1a1a1a;
         }
 
-        /* smooth carousel transition */
-        #sliderSistemV2 .carousel-item {
-            transition: transform 0.9s ease-in-out, opacity 0.9s ease-in-out;
-        }
-
-        /* kasih efek fade + scale biar modern */
-        #sliderSistemV2 .carousel-item {
-            opacity: 0.4;
-            transform: scale(0.98);
-        }
-
-        #sliderSistemV2 .carousel-item.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* hover effect tombol */
-        #sliderSistemV2 .carousel-control-prev-icon,
-        #sliderSistemV2 .carousel-control-next-icon {
-            transition: all 0.3s ease;
-            background-color: rgba(0, 0, 0, 0.6) !important;
-        }
-
-        #sliderSistemV2 .carousel-control-prev-icon:hover,
-        #sliderSistemV2 .carousel-control-next-icon:hover {
-            transform: scale(1.1);
-            background-color: rgba(0, 0, 0, 0.8) !important;
-        }
-
-        /* smooth text masuk */
-        #sliderSistemV2 h2,
-        #sliderSistemV2 h5,
-        #sliderSistemV2 p,
-        #sliderSistemV2 .badge {
-            animation: fadeUp 0.8s ease;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        html { scroll-behavior: smooth; }
     </style>
 
     <!-- Styles / Scripts -->
@@ -77,7 +44,7 @@
     @endif
 </head>
 
-<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-cream text-gray-900">
 
     @include('layouts.navigation')
 
@@ -85,7 +52,7 @@
 
         @include('partials.header-section')
 
-        <main class="pt-20 bg-gray-50">
+        <div class="pt-20 bg-cream">
             <section id="profil">
                 @include('partials.profile-section')
             </section>
@@ -125,7 +92,7 @@
             <section id="kontak">
                 @include('partials.contact-section')
             </section>
-        </main>
+        </div>
 
     </main>
 

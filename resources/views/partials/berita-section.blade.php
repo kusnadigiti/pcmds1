@@ -1,17 +1,19 @@
-<section id="berita" class="py-20 bg-white">
+{{-- ═══════════════════════════════════════════════════════════════
+     BERITA SECTION — Cream theme, fully styled with Tailwind CSS
+     ═══════════════════════════════════════════════════════════════ --}}
+
+<section id="berita" class="bg-cream py-20 relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-6">
         <!-- HEADER -->
         <div class="flex justify-between items-end mb-10">
             <div>
-                <h6 class="text-emerald-600 font-bold uppercase tracking-widest flex items-center gap-2">
-                    Kabar Persyarikatan
-                </h6>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
-                    Berita & Kegiatan Terbaru
+                <span class="section-label section-label-green">☽ Persyarikatan</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight m-0">
+                    Berita &amp; Kegiatan <span class="text-primary">Terbaru</span>
                 </h2>
             </div>
             <a href="{{ route('berita.all') }}"
-                class="hidden md:inline-block border border-emerald-600 text-emerald-600 px-5 py-2 rounded-full hover:bg-emerald-600 hover:text-white transition">
+                class="hidden md:inline-block border-2 border-primary text-primary py-2 px-5 rounded-full font-bold text-xs no-underline transition duration-200 hover:bg-primary hover:text-white">
                 Lihat Semua
             </a>
         </div>
@@ -29,27 +31,18 @@
                 <p class="text-gray-500">Berita terbaru akan muncul di sini</p>
             </div>
         @else
-            <!-- GRID -->
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-6">
                 @foreach ($latestBerita as $berita)
-                    <article
-                        class="group bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col">
-                        <!-- IMAGE -->
+                    <article class="group bg-white rounded-2xl shadow-lg shadow-primary/5 border border-primary/10 overflow-hidden flex flex-col transition duration-300 hover:bg-primary/5 hover:border-primary/25 hover:-translate-y-1">
                         <div class="overflow-hidden flex-shrink-0">
                             @if ($berita->gambar)
                                 <img src="{{ asset('storage/' . $berita->gambar) }}"
                                     alt="{{ Str::limit($berita->judul, 60) }}"
-                                    class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
-                                    loading="lazy"
-                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/400x208/f3f4f6/6b7280?text=Berita'">
+                                    class="w-full h-[200px] object-cover transition-transform duration-500 group-hover:scale-105"
+                                    loading="lazy">
                             @else
-                                <div
-                                    class="w-full h-52 bg-gradient-to-br from-gray-100 via-blue-50 to-emerald-50 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                    </svg>
+                                <div class="w-full h-[200px] bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
+                                    <span class="text-4xl opacity-40">🕌</span>
                                 </div>
                             @endif
                         </div>
@@ -78,15 +71,14 @@
                             </span>
 
                             <!-- JUDUL -->
-                            <h3
-                                class="font-bold text-xl md:text-lg leading-tight mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2 flex-grow">
-                                <a href="{{ route('berita.show', $berita->slug) }}" class="block hover:no-underline">
+                            <h3 class="font-bold text-xl md:text-lg leading-tight mb-3 group-hover:text-primary transition-colors duration-200 line-clamp-2 flex-grow">
+                                <a href="{{ route('berita.show', $berita->slug) }}" class="block hover:no-underline text-gray-900 group-hover:text-primary">
                                     {{ $berita->judul }}
                                 </a>
                             </h3>
 
                             <!-- TANGGAL -->
-                            <p class="text-sm text-gray-500 mb-4 flex items-center gap-1    ">
+                            <p class="text-sm text-gray-500 mb-4 flex items-center gap-1">
                                 <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor"
                                     stroke-width="2" viewBox="0 0 24 24">
                                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2">
@@ -105,7 +97,7 @@
 
                             <!-- READ MORE -->
                             <a href="{{ route('berita.show', $berita->slug) }}"
-                                class="inline-flex items-center gap-1 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors group/link">
+                                class="inline-flex items-center gap-1 text-primary font-semibold hover:text-primary-light transition-colors group/link no-underline">
                                 Baca Selengkapnya
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -119,9 +111,9 @@
         @endif
 
         <!-- LOAD MORE BUTTON -->
-        <div class="mt-12 text-center">
+        <div class="mt-10 text-center">
             <a href="/berita/show-all"
-                class="inline-block bg-emerald-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 md:hidden">
+                class="md:hidden inline-block bg-gradient-to-r from-primary to-primary-light text-white py-3 px-8 rounded-full font-bold text-sm no-underline shadow-lg shadow-primary/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30">
                 Lihat Semua Berita
             </a>
         </div>
