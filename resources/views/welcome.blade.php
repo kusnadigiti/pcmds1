@@ -34,15 +34,15 @@
                 @include('partials.program-unggulan-section')
             </section>
 
-            <section id="profil">
+            <section>
                 @include('partials.jadwal-modal')
             </section>
 
-            <section id="profil">
+            <section>
                 @include('partials.modal-sekolah')
             </section>
 
-            <section id="profil">
+            <section>
                 @include('partials.modal-jsm')
             </section>
 
@@ -64,14 +64,90 @@
 
 @section('scripts')
     <script>
+        // Handle smooth scrolling
         function handleNav(e, sectionId) {
             if (window.location.pathname === '/') {
                 e.preventDefault();
-                document.getElementById(sectionId)?.scrollIntoView({
+                let targetId = sectionId;
+                if (sectionId === 'beranda') {
+                    targetId = 'hero-header';
+                }
+                document.getElementById(targetId)?.scrollIntoView({
                     behavior: 'smooth'
                 });
             }
         }
+
+        // Scrollspy logic to highlight active navbar item
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.pathname !== '/') return;
+
+            const sections = [
+                { id: 'hero-header', nav: 'beranda' },
+                { id: 'profil', nav: 'profil' },
+                { id: 'artikel', nav: 'artikel' },
+                { id: 'berita', nav: 'berita' },
+                { id: 'program', nav: 'program' },
+                { id: 'organisasi', nav: 'organisasi' },
+                { id: 'amal-usaha', nav: 'amal-usaha' },
+                { id: 'kontak', nav: 'kontak' }
+            ];
+
+            const navLinks = document.querySelectorAll('[data-nav]');
+
+            function makeActive(navName) {
+                navLinks.forEach(link => {
+                    const isMobile = link.classList.contains('block');
+                    
+                    if (link.getAttribute('data-nav') === navName) {
+                        if (isMobile) {
+                            link.classList.remove('text-white/80');
+                            link.classList.add('text-secondary', 'bg-secondary/8', 'font-semibold');
+                        } else {
+                            link.classList.remove('text-white/80', 'font-medium');
+                            link.classList.add('text-secondary', 'font-semibold');
+                        }
+                    } else {
+                        if (isMobile) {
+                            link.classList.remove('text-secondary', 'bg-secondary/8', 'font-semibold');
+                            link.classList.add('text-white/80');
+                        } else {
+                            link.classList.remove('text-secondary', 'font-semibold');
+                            link.classList.add('text-white/80', 'font-medium');
+                        }
+                    }
+                });
+            }
+
+            function updateScrollspy() {
+                let scrollPosition = window.scrollY || document.documentElement.scrollTop;
+                const offset = 120; // accounting for navigation bar height
+                let activeNav = 'beranda';
+                
+                for (let i = 0; i < sections.length; i++) {
+                    const el = document.getElementById(sections[i].id);
+                    if (el) {
+                        const top = el.offsetTop - offset;
+                        const bottom = top + el.offsetHeight;
+                        
+                        if (scrollPosition >= top && scrollPosition < bottom) {
+                            activeNav = sections[i].nav;
+                            break;
+                        }
+                    }
+                }
+                
+                // Bottom of the page check
+                if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+                    activeNav = 'kontak';
+                }
+                
+                makeActive(activeNav);
+            }
+
+            window.addEventListener('scroll', updateScrollspy);
+            updateScrollspy(); // Run on load
+        });
 
         function toggleAcc(id) {
             const content = document.getElementById(id);

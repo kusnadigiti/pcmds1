@@ -20,21 +20,21 @@
         </a>
 
         <div class="hidden md:flex items-center gap-1">
-            <a href="/" onclick="handleNav(event,'beranda')"
+            <a href="/" onclick="handleNav(event,'beranda')" data-nav="beranda"
                 class="text-secondary text-[13px] font-semibold py-1.5 px-3.5 rounded-lg no-underline transition duration-200 tracking-wide">Beranda</a>
-            <a href="/#profil" onclick="handleNav(event,'profil')"
+            <a href="/#profil" onclick="handleNav(event,'profil')" data-nav="profil"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Profil</a>
-            <a href="/#artikel" onclick="handleNav(event,'artikel')"
+            <a href="/#artikel" onclick="handleNav(event,'artikel')" data-nav="artikel"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Artikel</a>
-            <a href="/#berita" onclick="handleNav(event,'berita')"
+            <a href="/#berita" onclick="handleNav(event,'berita')" data-nav="berita"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Berita</a>
-            <a href="/#program" onclick="handleNav(event,'program')"
+            <a href="/#program" onclick="handleNav(event,'program')" data-nav="program"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Program</a>
-            <a href="/#organisasi" onclick="handleNav(event,'organisasi')"
+            <a href="/#organisasi" onclick="handleNav(event,'organisasi')" data-nav="organisasi"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Organisasi</a>
-            <a href="/#amal-usaha" onclick="handleNav(event,'amal-usaha')"
+            <a href="/#amal-usaha" onclick="handleNav(event,'amal-usaha')" data-nav="amal-usaha"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Amal Usaha</a>
-            <a href="/#kontak" onclick="handleNav(event,'kontak')"
+            <a href="/#kontak" onclick="handleNav(event,'kontak')" data-nav="kontak"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Kontak</a>
             @auth
                 @php
@@ -75,21 +75,21 @@
         class="md:hidden absolute top-16 left-0 w-full shadow-lg bg-accent-green/98 backdrop-blur-md border-b border-secondary/20"
         @click.outside="open = false">
         <ul class="p-3 flex flex-col gap-0.5">
-            <li><a href="/#beranda" @click="open = false"
+            <li><a href="/#beranda" @click="open = false" data-nav="beranda"
                     class="block py-2.5 px-3.5 text-sm font-semibold text-secondary rounded-lg no-underline bg-secondary/8"><i data-lucide="home" class="w-4 h-4 mr-1 inline-block align-middle"></i> Beranda</a></li>
-            <li><a href="/#profil" @click="open = false"
+            <li><a href="/#profil" @click="open = false" data-nav="profil"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Profil</a></li>
-            <li><a href="/#artikel" @click="open = false"
+            <li><a href="/#artikel" @click="open = false" data-nav="artikel"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Artikel</a></li>
-            <li><a href="/#berita" @click="open = false"
+            <li><a href="/#berita" @click="open = false" data-nav="berita"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Berita</a></li>
-            <li><a href="/#program" @click="open = false"
+            <li><a href="/#program" @click="open = false" data-nav="program"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Program</a></li>
-            <li><a href="/#organisasi" @click="open = false"
+            <li><a href="/#organisasi" @click="open = false" data-nav="organisasi"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Organisasi Otonom</a></li>
-            <li><a href="/#amal-usaha" @click="open = false"
+            <li><a href="/#amal-usaha" @click="open = false" data-nav="amal-usaha"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Amal Usaha</a></li>
-            <li><a href="/#kontak" @click="open = false"
+            <li><a href="/#kontak" @click="open = false" data-nav="kontak"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Kontak</a></li>
         </ul>
     </div>

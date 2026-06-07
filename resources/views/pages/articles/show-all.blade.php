@@ -86,6 +86,10 @@
                 </div>
             </div>
 
+            <a href="/" class="inline-flex items-center justify-center px-6 py-2.5 mt-8 text-sm font-medium text-white bg-primary hover:bg-primary-light transition-all rounded-full shadow-sm">
+                Kembali
+            </a>
+
             <div class="mt-10 h-px bg-primary/10"></div>
         </div>
     </div>
@@ -156,9 +160,6 @@
             <div class="flex items-center gap-5">
                 <span class="text-xs font-semibold tracking-[.14em] uppercase text-gray-500">Artikel Lainnya</span>
                 <div class="flex-1 h-px bg-primary/10"></div>
-                <span id="grid-count-label" class="text-xs text-gray-400">
-                    {{ min(6, $articles->count() - 1) }} dari {{ $articles->count() - 1 }}
-                </span>
             </div>
         </div>
 
@@ -166,10 +167,13 @@
         <div class="max-w-screen-xl mx-auto px-6 mb-6">
             <div id="articles-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                @foreach($articles->skip(1) as $i => $article)
+                @php
+                    $gridArticles = $articles->currentPage() == 1 ? $articles->skip(1) : $articles;
+                @endphp
+                @foreach($gridArticles as $i => $article)
                 <a href="{{ route('articles.show', $article->slug) }}"
                    data-index="{{ $i }}"
-                   class="art-card au group block bg-white rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-primary/10 hover:border-secondary/40 {{ $i >= 6 ? 'hidden-card' : '' }}">
+                   class="art-card au group block bg-white rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-primary/10 hover:border-secondary/40">
 
                     {{-- Image --}}
                     <div class="relative overflow-hidden" style="aspect-ratio:16/8">
@@ -219,39 +223,10 @@
             </div>
         </div>
 
-        {{-- SHOW MORE / LESS — only if grid articles > 6 --}}
-        @if($articles->count() - 1 > 6)
-        <div class="max-w-screen-xl mx-auto px-6 pb-20">
-            <div class="flex flex-col items-center gap-4">
-
-                {{-- Progress bar --}}
-                <div class="w-40 h-[2px] bg-primary/10 rounded-full overflow-hidden">
-                    <div id="progress-fill" class="h-full bg-secondary rounded-full transition-all duration-500"
-                        style="width:{{ min(6 / ($articles->count() - 1) * 100, 100) }}%"></div>
-                </div>
-
-                <p id="shown-label" class="text-xs text-gray-400">
-                    Menampilkan <span id="shown-num">6</span> dari <span>{{ $articles->count() - 1 }}</span> artikel
-                </p>
-
-                <div class="flex items-center gap-3">
-                    <button id="show-more-btn"
-                        class="inline-flex items-center gap-2 text-sm font-semibold text-primary border border-primary px-5 py-2.5 rounded-full hover:bg-primary hover:text-white transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
-                        Tampilkan Lebih Banyak
-                    </button>
-                    <button id="show-less-btn" style="display:none"
-                        class="inline-flex items-center gap-2 text-sm font-medium text-gray-400 border border-primary/10 px-5 py-2.5 rounded-full hover:border-gray-500 hover:text-accent-green transition-all duration-200">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg>
-                        Tampilkan Lebih Sedikit
-                    </button>
-                </div>
-
-            </div>
+        {{-- Pagination Links --}}
+        <div class="max-w-screen-xl mx-auto px-6 pb-20 flex justify-center">
+            {{ $articles->links('partials.pagination') }}
         </div>
-        @else
-        <div class="pb-20"></div>
-        @endif
 
         @endif
 
@@ -261,63 +236,4 @@
         <p class="text-sm text-gray-400">Belum ada artikel yang dipublikasikan.</p>
     </div>
     @endif
-@endsection
-
-@section('scripts')
-    <script>
-        // Show more / less
-        var STEP       = 6;
-        var total      = {{ max(0, $articles->count() - 1) }};
-        var shown      = Math.min(STEP, total);
-        var moreBtn    = document.getElementById('show-more-btn');
-        var lessBtn    = document.getElementById('show-less-btn');
-        var shownNum   = document.getElementById('shown-num');
-        var fillEl     = document.getElementById('progress-fill');
-        var countLabel = document.getElementById('grid-count-label');
-
-        function syncUI() {
-            if (shownNum)   shownNum.textContent = shown;
-            if (fillEl)     fillEl.style.width = Math.min(shown / total * 100, 100) + '%';
-            if (countLabel) countLabel.textContent = shown + ' dari ' + total;
-            if (moreBtn)    moreBtn.style.display = shown >= total ? 'none' : '';
-            if (lessBtn)    lessBtn.style.display  = shown <= STEP  ? 'none' : '';
-        }
-
-        if (moreBtn) {
-            moreBtn.addEventListener('click', function () {
-                var hidden = document.querySelectorAll('#articles-grid .art-card.hidden-card');
-                var count  = 0;
-                hidden.forEach(function (card) {
-                    if (count < STEP) {
-                        card.classList.remove('hidden-card');
-                        card.classList.add('card-revealed');
-                        shown++;
-                        count++;
-                    }
-                });
-                syncUI();
-                window.scrollBy({ top: 200, behavior: 'smooth' });
-            });
-        }
-
-        if (lessBtn) {
-            lessBtn.addEventListener('click', function () {
-                var allCards = document.querySelectorAll('#articles-grid .art-card');
-                var idx = 0;
-                allCards.forEach(function (card) {
-                    if (idx >= STEP) {
-                        card.classList.add('hidden-card');
-                        card.classList.remove('card-revealed');
-                    }
-                    idx++;
-                });
-                shown = STEP;
-                syncUI();
-                var grid = document.getElementById('articles-grid');
-                if (grid) window.scrollTo({ top: grid.offsetTop - 140, behavior: 'smooth' });
-            });
-        }
-
-        syncUI();
-    </script>
 @endsection
