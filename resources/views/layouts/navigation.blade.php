@@ -6,7 +6,7 @@
 
     <div class="max-w-screen-xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
 
-        <a href="#beranda" class="flex items-center space-x-3 no-underline">
+        <a href="/" class="flex items-center space-x-3 no-underline">
             <div class="relative">
                 <div class="absolute -inset-[3px] rounded-full bg-gradient-to-br from-secondary to-primary opacity-60 z-0"></div>
                 <img src="https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg"
@@ -20,7 +20,7 @@
         </a>
 
         <div class="hidden md:flex items-center gap-1">
-            <a href="/#beranda" onclick="handleNav(event,'beranda')"
+            <a href="/" onclick="handleNav(event,'beranda')"
                 class="text-secondary text-[13px] font-semibold py-1.5 px-3.5 rounded-lg no-underline transition duration-200 tracking-wide">Beranda</a>
             <a href="/#profil" onclick="handleNav(event,'profil')"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Profil</a>
@@ -76,7 +76,7 @@
         @click.outside="open = false">
         <ul class="p-3 flex flex-col gap-0.5">
             <li><a href="/#beranda" @click="open = false"
-                    class="block py-2.5 px-3.5 text-sm font-semibold text-secondary rounded-lg no-underline bg-secondary/8">☽ Beranda</a></li>
+                    class="block py-2.5 px-3.5 text-sm font-semibold text-secondary rounded-lg no-underline bg-secondary/8"><i data-lucide="home" class="w-4 h-4 mr-1 inline-block align-middle"></i> Beranda</a></li>
             <li><a href="/#profil" @click="open = false"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Profil</a></li>
             <li><a href="/#artikel" @click="open = false"

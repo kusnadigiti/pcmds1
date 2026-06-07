@@ -1,26 +1,9 @@
-{{-- resources/views/pages/otonom/show-organisasi-otonom-detail.blade.php --}}
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.frontend')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $org->nama }} — Muhammadiyah</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap"
-        rel="stylesheet">
+@section('title', $org->nama . ' — Muhammadiyah')
+
+@section('styles')
     <style>
-        * {
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-        }
-
         .font-serif {
             font-family: 'Playfair Display', Georgia, serif;
         }
@@ -38,29 +21,12 @@
             }
         }
 
-        .delay-1 {
-            animation-delay: 0.05s;
-        }
-
-        .delay-2 {
-            animation-delay: 0.12s;
-        }
-
-        .delay-3 {
-            animation-delay: 0.20s;
-        }
-
-        .delay-4 {
-            animation-delay: 0.28s;
-        }
-
-        .delay-5 {
-            animation-delay: 0.36s;
-        }
-
-        .delay-6 {
-            animation-delay: 0.44s;
-        }
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.12s; }
+        .delay-3 { animation-delay: 0.20s; }
+        .delay-4 { animation-delay: 0.28s; }
+        .delay-5 { animation-delay: 0.36s; }
+        .delay-6 { animation-delay: 0.44s; }
 
         .pengurus-card:hover .pengurus-arrow {
             transform: translateX(4px);
@@ -69,29 +35,11 @@
         .pengurus-arrow {
             transition: transform 0.2s ease;
         }
-
-        .nav-link::after {
-            content: '';
-            display: block;
-            height: 1px;
-            width: 0;
-            background: #111;
-            transition: width 0.2s ease;
-            margin-top: 1px;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
     </style>
-</head>
+@endsection
 
-<body class="bg-white text-gray-900 min-h-screen">
-
-    @include('layouts.navigation')
-
-    <main class="pt-14">
-
+@section('content')
+    <div class="pt-14">
         <header class="max-w-6xl mx-auto px-6 pt-16 pb-12 border-b border-gray-100">
             <div class="fade-up">
                 <p class="flex items-center gap-2 text-[10px] uppercase tracking-[.14em] text-gray-400 mb-6">
@@ -264,20 +212,13 @@
             <div class="fade-up delay-6 mt-10 flex items-center justify-between pt-8 border-t border-gray-100">
                 <a href="{{ route('home') }}"
                     class="text-[11px] uppercase tracking-[.08em] text-gray-400 hover:text-gray-900 transition-colors nav-link">
-                    ← Kembali ke daftar
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5 mr-1 align-middle inline-block"></i> Kembali ke daftar
                 </a>
                 <a href="{{ route('anggota-organisasi.show', $org->slug) }}"
                     class="text-[11px] uppercase tracking-[.08em] px-5 py-2.5 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-50 transition-colors">
-                    Lihat semua anggota →
+                    Lihat semua anggota <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1 align-middle inline-block"></i>
                 </a>
             </div>
         </section>
-
-    </main>
-
-    @include('layouts.footer')
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-</body>
-
-</html>
+    </div>
+@endsection

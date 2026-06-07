@@ -3,11 +3,13 @@
      ═══════════════════════════════════════════════════════════════ --}}
 
 <section id="berita" class="bg-cream py-20 relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6">
+    {{-- Background pattern --}}
+    <div class="islamic-pattern absolute inset-0 opacity-[0.35] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
         <!-- HEADER -->
         <div class="flex justify-between items-end mb-10">
             <div>
-                <span class="section-label section-label-green">☽ Persyarikatan</span>
                 <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight m-0">
                     Berita &amp; Kegiatan <span class="text-primary">Terbaru</span>
                 </h2>
@@ -21,11 +23,8 @@
         <!-- EMPTY STATE -->
         @if ($latestBerita->isEmpty())
             <div class="col-span-full text-center py-16 md:py-24">
-                <div class="w-20 h-20 mx-auto mb-6">
-                    <svg class="w-full h-full text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
+                <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                    <i data-lucide="newspaper" class="w-16 h-16 text-gray-300"></i>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Belum ada berita</h3>
                 <p class="text-gray-500">Berita terbaru akan muncul di sini</p>
@@ -42,7 +41,7 @@
                                     loading="lazy">
                             @else
                                 <div class="w-full h-[200px] bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                                    <span class="text-4xl opacity-40">🕌</span>
+                                    <i data-lucide="landmark" class="w-12 h-12 text-primary opacity-40"></i>
                                 </div>
                             @endif
                         </div>
@@ -79,14 +78,7 @@
 
                             <!-- TANGGAL -->
                             <p class="text-sm text-gray-500 mb-4 flex items-center gap-1">
-                                <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor"
-                                    stroke-width="2" viewBox="0 0 24 24">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2">
-                                    </rect>
-                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                </svg>
+                                <i data-lucide="calendar" class="w-4 h-4 text-gray-400 flex-shrink-0"></i>
                                 {{ $berita->created_at->translatedFormat('d F Y') }}
                             </p>
 
@@ -99,10 +91,7 @@
                             <a href="{{ route('berita.show', $berita->slug) }}"
                                 class="inline-flex items-center gap-1 text-primary font-semibold hover:text-primary-light transition-colors group/link no-underline">
                                 Baca Selengkapnya
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
+                                <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1"></i>
                             </a>
                         </div>
                     </article>

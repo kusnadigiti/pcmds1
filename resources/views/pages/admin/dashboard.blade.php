@@ -165,7 +165,10 @@
                 {{-- ===== HEADER ===== --}}
                 <div class="dash-header">
                     <div class="dash-greeting">
-                        <h1>Ahlan wa sahlan, {{ Auth::user()->name ?? 'Admin' }} 👋</h1>
+                        <h1 class="flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4A017" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                            Ahlan wa sahlan, {{ Auth::user()->name ?? 'Admin' }}
+                        </h1>
                         <p id="hijri-date">Memuat tanggal hijriyah...</p>
                     </div>
                     <div class="dash-clock-wrap">
@@ -175,42 +178,56 @@
                 </div>
 
                 {{-- ===== STAT CARDS ===== --}}
-                <p class="section-label">Ringkasan</p>
                 <div class="stat-grid">
                     <div class="stat-card">
-                        <div class="sc-icon" style="background:#d1fae5">📰</div>
+                        <div class="sc-icon" style="background:#d1fae5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+                        </div>
                         <div class="sc-label">Total Berita</div>
                         <div class="sc-value">{{ $totalBerita ?? 0 }}</div>
                         <span class="sc-badge badge-teal">{{ $beritaPublish ?? 0 }} terpublikasi</span>
-                        <div class="sc-accent">📰</div>
+                        <div class="sc-accent text-emerald-600">
+                            <svg class="w-20 h-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+                        </div>
                     </div>
                     <div class="stat-card">
-                        <div class="sc-icon" style="background:#dbeafe">📄</div>
+                        <div class="sc-icon" style="background:#dbeafe">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                        </div>
                         <div class="sc-label">Total Artikel</div>
                         <div class="sc-value">{{ $totalArtikel ?? 0 }}</div>
                         <span class="sc-badge badge-blue">{{ $artikelPublish ?? 0 }} terpublikasi</span>
-                        <div class="sc-accent">📄</div>
+                        <div class="sc-accent text-blue-600">
+                            <svg class="w-20 h-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                        </div>
                     </div>
                     <div class="stat-card">
-                        <div class="sc-icon" style="background:#ede9fe">👥</div>
+                        <div class="sc-icon" style="background:#ede9fe">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-600"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
                         <div class="sc-label">Pengurus Aktif</div>
                         <div class="sc-value">{{ $totalPengurus ?? 0 }}</div>
                         <span class="sc-badge badge-purple">{{ $totalOrganisasi ?? 0 }} organisasi</span>
-                        <div class="sc-accent">👥</div>
+                        <div class="sc-accent text-purple-600">
+                            <svg class="w-20 h-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
                     </div>
                     <div class="stat-card">
-                        <div class="sc-icon" style="background:#fef3c7">🕌</div>
+                        <div class="sc-icon" style="background:#fef3c7">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-600"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        </div>
                         <div class="sc-label">Kajian Bulan Ini</div>
                         <div class="sc-value">{{ $totalKajianBulanIni ?? 0 }}</div>
                         <span class="sc-badge badge-amber">{{ $kajianMendatang ?? 0 }} mendatang</span>
-                        <div class="sc-accent">🕌</div>
+                        <div class="sc-accent text-amber-600">
+                            <svg class="w-20 h-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        </div>
                     </div>
                 </div>
 
                 {{-- ===== MAIN GRID: ACTIVITY + SHOLAT ===== --}}
                 <div class="main-grid">
                     <div>
-                        <p class="section-label">Aktivitas terbaru</p>
                         <div class="card">
                             <div class="card-header">
                                 <span class="card-title">Log Aktivitas</span>
@@ -260,11 +277,13 @@
                     </div>
 
                     <div>
-                        <p class="section-label">Jadwal sholat hari ini</p>
                         <div class="card">
                             <div class="card-header">
                                 <span class="card-title">Waktu Sholat</span>
-                                <span style="font-size:0.72rem; color:#9ca3af">📍 Jakarta</span>
+                                <span class="flex items-center gap-1 text-[11px] text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    Jakarta
+                                </span>
                             </div>
                             <div id="sholat-container"></div>
                         </div>
@@ -274,8 +293,10 @@
                 {{-- ===== BOTTOM GRID: PROGRESS + PENGUMUMAN ===== --}}
                 <div class="bottom-grid">
                     <div>
-                        <p class="section-label">Progres konten</p>
                         <div class="card">
+                             <div class="card-header">
+                                <span class="card-title">Progres Konten</span>
+                            </div>
                             @php
                                 $progItems = [
                                     ['label' => 'Berita terpublikasi',  'val' => $beritaPublish ?? 18,  'total' => $totalBerita ?? 24,          'color' => '#10b981'],
@@ -300,8 +321,10 @@
                     </div>
 
                     <div>
-                        <p class="section-label">Kegiatan mendatang</p>
                         <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Kegiatan mendatang</span>
+                            </div>
                             @php
                                 $jadwalMendatang = $mendatang ?? collect([
                                     (object)['nama_kegiatan' => 'Kajian Ahad Pagi: Tafsir Al-Mulk', 'tanggal' => '2025-05-12', 'waktu' => '07:00', 'lokasi' => 'Masjid Utama'],
@@ -310,7 +333,7 @@
                                     (object)['nama_kegiatan' => 'Bakti Sosial & Donor Darah',        'tanggal' => '2025-05-22', 'waktu' => '08:00', 'lokasi' => 'Halaman Masjid'],
                                 ]);
                             @endphp
-                            @foreach ($jadwalMendatang as $jadwal)
+                            @forelse ($jadwalMendatang as $jadwal)
                                 <div class="announce-item">
                                     <div class="announce-date-box">
                                         <strong>{{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d') }}</strong>
@@ -321,15 +344,22 @@
                                         <small>{{ $jadwal->lokasi }} · {{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }} WIB</small>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="flex flex-col items-center justify-center py-8 text-center px-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300 mb-2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+                                    <p class="text-xs font-semibold text-gray-500">Tidak ada kegiatan mendatang</p>
+                                    <p class="text-[10px] text-gray-400 mt-1 max-w-[200px] leading-relaxed">Jadwal kegiatan atau kajian terbaru akan muncul di sini.</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
 
                 @if (Auth::user()->role !== 'penulis')
-
-                <p class="section-label">Aksi cepat</p>
-                <div class="card">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Aksi cepat</span>
+                        </div>
                     <div class="qa-grid">
                         <a href="{{ route('admin.articles.create') }}" class="qa-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6m-6 4h6M7 4h10l2 2v14H5V6l2-2z"/></svg>
@@ -462,14 +492,14 @@
         function renderSholat() {
             const container = document.getElementById('sholat-container');
             if (sholatTimes.length === 0) {
-                container.innerHTML = '<p style="font-size:0.8rem;color:#9ca3af;text-align:center;padding:1.25rem 0">⏳ Memuat jadwal sholat...</p>';
+                container.innerHTML = '<p class="flex items-center justify-center gap-1.5 font-sans text-xs text-gray-400 py-5"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin text-gray-400"><line x1="12" x2="12" y1="2" y2="6"/><line x1="12" x2="12" y1="18" y2="22"/><line x1="4.93" x2="7.76" y1="4.93" y2="7.76"/><line x1="16.24" x2="19.07" y1="16.24" y2="19.07"/><line x1="2" x2="6" y1="12" y2="12"/><line x1="18" x2="22" y1="12" y2="12"/><line x1="4.93" x2="7.76" y1="19.07" y2="16.24"/><line x1="16.24" x2="19.07" y1="7.76" y2="4.93"/></svg> Memuat jadwal sholat...</p>';
                 return;
             }
             const active = getActiveSholat();
             container.innerHTML = sholatTimes.map((s, i) => `
                 <div class="sholat-row ${i === active ? 'active' : ''}">
-                    <div class="sholat-name">
-                        ${i === active ? '<span class="pulse-dot"></span>' : `<span style="font-size:0.85rem">${s.icon}</span>`}
+                    <div class="sholat-name flex items-center gap-2">
+                        ${i === active ? '<span class="pulse-dot"></span>' : s.icon}
                         ${s.label}
                     </div>
                     <div class="sholat-time">${s.time}</div>
@@ -498,7 +528,7 @@
             } catch (err) {
                 console.error('Gagal fetch jadwal sholat:', err);
                 document.getElementById('sholat-container').innerHTML =
-                    '<p style="font-size:0.8rem;color:#ef4444;text-align:center;padding:1rem 0">⚠️ Gagal memuat jadwal.<br>Periksa koneksi internet.</p>';
+                    '<p class="flex flex-col items-center justify-center gap-1 text-xs text-red-500 py-4 text-center leading-relaxed"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg> Gagal memuat jadwal.<br>Periksa koneksi internet.</p>';
             }
         }
 

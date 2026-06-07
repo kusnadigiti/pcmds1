@@ -29,7 +29,7 @@
         {{-- ── TOP BAR ── --}}
         <div class="flex items-start justify-between px-6 pt-6 pb-4">
             <div>
-                <p class="text-xs font-bold uppercase tracking-[.15em] text-sky-500 mb-1">Program Pendidikan</p>
+                <p class="text-xs font-bold uppercase tracking-[.15em] text-primary mb-1">Program Pendidikan</p>
                 <h2 id="modalSekolahTitle" class="text-xl font-bold text-gray-900 leading-tight">
                     Pendidikan Muhammadiyah
                 </h2>
@@ -53,10 +53,10 @@
         <div class="px-6 pt-5 pb-4 grid grid-cols-3 gap-3">
 
             {{-- SD --}}
-            <div class="group flex flex-col items-center text-center p-4 rounded-2xl border border-gray-100 bg-gray-50/60 hover:border-sky-200 hover:bg-sky-50/50 transition-all duration-200 cursor-default">
-                <div class="w-11 h-11 rounded-xl bg-sky-100 flex items-center justify-center mb-3 group-hover:bg-sky-200 transition-colors">
+            <div class="group flex flex-col items-center text-center p-4 rounded-2xl border border-gray-100 bg-gray-50/60 hover:border-primary/10 hover:bg-primary/5 transition-all duration-200 cursor-default">
+                <div class="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center mb-3 group-hover:bg-primary/40 transition-colors">
                     {{-- Book icon --}}
-                    <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                         <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
                     </svg>
@@ -66,10 +66,10 @@
             </div>
 
             {{-- SMP --}}
-            <div class="group flex flex-col items-center text-center p-4 rounded-2xl border border-gray-100 bg-gray-50/60 hover:border-sky-200 hover:bg-sky-50/50 transition-all duration-200 cursor-default">
-                <div class="w-11 h-11 rounded-xl bg-sky-100 flex items-center justify-center mb-3 group-hover:bg-sky-200 transition-colors">
+            <div class="group flex flex-col items-center text-center p-4 rounded-2xl border border-gray-100 bg-gray-50/60 hover:border-primary/10 hover:bg-primary/5 transition-all duration-200 cursor-default">
+                <div class="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center mb-3 group-hover:bg-primary/40 transition-colors">
                     {{-- Mortarboard icon --}}
-                    <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/>
                         <path d="M6 12v5c3 2 9 2 12 0v-5"/>
                     </svg>
@@ -79,10 +79,10 @@
             </div>
 
             {{-- SMA/SMK --}}
-            <div class="group flex flex-col items-center text-center p-4 rounded-2xl border border-gray-100 bg-gray-50/60 hover:border-sky-200 hover:bg-sky-50/50 transition-all duration-200 cursor-default">
-                <div class="w-11 h-11 rounded-xl bg-sky-100 flex items-center justify-center mb-3 group-hover:bg-sky-200 transition-colors">
+            <div class="group flex flex-col items-center text-center p-4 rounded-2xl border border-gray-100 bg-gray-50/60 hover:border-primary/10 hover:bg-primary/5 transition-all duration-200 cursor-default">
+                <div class="w-11 h-11 rounded-xl bg-primary/20 flex items-center justify-center mb-3 group-hover:bg-primary/40 transition-colors">
                     {{-- Chip / CPU icon --}}
-                    <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                         <rect x="7" y="7" width="10" height="10" rx="1"/>
                         <path d="M7 9H5M7 12H5M7 15H5M17 9h2M17 12h2M17 15h2M9 7V5M12 7V5M15 7V5M9 19v-2M12 19v-2M15 19v-2"/>
                     </svg>
@@ -103,8 +103,8 @@
                     'Beasiswa Prestasi & Kader',
                 ] as $item)
                 <div class="flex items-center gap-2.5">
-                    <span class="flex-shrink-0 w-4 h-4 rounded-full bg-sky-100 flex items-center justify-center">
-                        <svg class="w-2.5 h-2.5 text-sky-600" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <span class="flex-shrink-0 w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center">
+                        <svg class="w-2.5 h-2.5 text-primary" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
                             <path d="M5 13l4 4L19 7"/>
                         </svg>
                     </span>
@@ -126,7 +126,7 @@
                 href="https://ppdb.muhammadiyah.or.id"
                 target="_blank"
                 rel="noopener"
-                class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold transition-colors shadow-sm shadow-sky-200"
+                class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-light text-white text-sm font-semibold transition-colors shadow-sm shadow-primary/20"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>

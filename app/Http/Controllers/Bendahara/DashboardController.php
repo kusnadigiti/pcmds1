@@ -10,27 +10,28 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Fetch 10 latest laporan
         $laporan = Finance::with('user')
             ->where('user_id', auth()->id())
             ->latest()
             ->take(10)
             ->get();
 
-        $recentLaporan = Finance::with('user')
-            ->where('user_id', auth()->id())
-            ->latest()
-            ->take(5)
-            ->get();
+        // Reuse the already fetched collection in memory to get the 5 latest
+        $recentLaporan = $laporan->take(5);
 
-        $totalPemasukan = Finance::where('user_id', auth()->id())
-            ->where('kategori', 'pemasukan')
-            ->count();
+        // Fetch counts using a single raw select aggregate query instead of 3 separate queries
+        $financeStats = Finance::where('user_id', auth()->id())
+            ->selectRaw("
+                count(*) as total,
+                sum(case when kategori = 'pemasukan' then 1 else 0 end) as pemasukan,
+                sum(case when kategori = 'pengeluaran' then 1 else 0 end) as pengeluaran
+            ")
+            ->first();
 
-        $totalPengeluaran = Finance::where('user_id', auth()->id())
-            ->where('kategori', 'pengeluaran')
-            ->count();
-
-        $totalLaporan = Finance::where('user_id', auth()->id())->count();
+        $totalLaporan = $financeStats->total ?? 0;
+        $totalPemasukan = $financeStats->pemasukan ?? 0;
+        $totalPengeluaran = $financeStats->pengeluaran ?? 0;
 
         return view('pages.bendahara.dashboard', compact(
             'laporan',

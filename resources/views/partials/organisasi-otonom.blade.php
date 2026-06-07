@@ -1,15 +1,12 @@
 {{-- ═══════════════════════════════════════════════════════════════
-     ORGANISASI OTONOM — Cream theme, fully styled with Tailwind CSS
-     ═══════════════════════════════════════════════════════════════ --}}
+ORGANISASI OTONOM — Cream theme, fully styled with Tailwind CSS
+═══════════════════════════════════════════════════════════════ --}}
 
 <section class="bg-cream py-20 px-4 relative overflow-hidden">
     {{-- Subtle pattern --}}
-    <div class="islamic-pattern absolute inset-0 opacity-[0.35] pointer-events-none"></div>
+    <div class="islamic-pattern-light absolute inset-0 opacity-60 pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto relative z-10">
-
-        {{-- Section Label --}}
-        <span class="section-label section-label-green">☪ Struktur Kepengurusan {{ $periode ?? '2022–2027' }}</span>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end mt-2">
             <div>
@@ -51,11 +48,9 @@
     {{-- Filter Tabs --}}
     <div class="flex border-b border-primary/10 px-4 max-w-7xl mx-auto overflow-x-auto">
         @foreach ([['all', 'Semua'], ['ortonom', 'Ortonom'], ['lembaga', 'Lembaga'], ['majelis', 'Majelis']] as [$val, $label])
-            <button
-                @click="active = '{{ $val }}'; activeFilter = '{{ $val }}'; selected = null"
-                :class="active === '{{ $val }}'
-                    ? 'border-b-2 border-primary text-primary font-bold'
-                    : 'border-b-2 border-transparent text-gray-400'"
+            <button @click="active = '{{ $val }}'; activeFilter = '{{ $val }}'; selected = null" :class="active === '{{ $val }}'
+                        ? 'border-b-2 border-primary text-primary font-bold'
+                        : 'border-b-2 border-transparent text-gray-400'"
                 class="text-[11px] uppercase tracking-wider py-3.5 px-5 bg-transparent border-x-0 border-t-0 cursor-pointer transition duration-150 whitespace-nowrap">
                 {{ $label }}
             </button>
@@ -64,17 +59,17 @@
 
     {{-- Org Grid --}}
     <div class="py-6 px-4 max-w-7xl mx-auto">
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border border-primary/10 rounded-2xl overflow-hidden bg-white">
+        <div
+            class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border border-primary/10 rounded-2xl overflow-hidden bg-white">
 
             @foreach ($organisasis as $org)
-                <div
-                    x-show="activeFilter === 'all' || activeFilter === '{{ $org->tipe }}'"
-                    x-transition:enter="transition-opacity duration-200"
-                    x-transition:enter-start="opacity-0"
+                <div x-show="activeFilter === 'all' || activeFilter === '{{ $org->tipe }}'"
+                    x-transition:enter="transition-opacity duration-200" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
                     @click="selected = selected === {{ $org->id }} ? null : {{ $org->id }}"
                     class="p-5 bg-white border-r border-b border-primary/5 cursor-pointer transition duration-200 hover:bg-primary/5">
-                    <div class="w-10 h-10 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center mb-3 overflow-hidden">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center mb-3 overflow-hidden">
                         @if ($org->logo)
                             <img src="{{ asset('storage/' . $org->logo) }}" alt="{{ $org->nama }}"
                                 class="w-full h-full object-contain">
@@ -92,11 +87,8 @@
 
         {{-- Detail Panel --}}
         @foreach ($organisasis as $org)
-            <div
-                x-show="selected === {{ $org->id }}"
-                x-transition:enter="transition-all duration-200"
-                x-transition:enter-start="opacity-0 translate-y-2"
-                x-transition:enter-end="opacity-100 translate-y-0"
+            <div x-show="selected === {{ $org->id }}" x-transition:enter="transition-all duration-200"
+                x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
                 class="mt-4 border border-primary/10 rounded-2xl overflow-hidden bg-white shadow-sm">
 
                 {{-- Panel Header --}}
@@ -120,7 +112,8 @@
                         <div class="p-5 border-r border-primary/5 last:border-r-0">
                             <div class="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">{{ $jabatan }}</div>
                             <div class="text-sm font-semibold text-gray-900">{{ $nama ?? '—' }}</div>
-                            <div class="text-[11px] text-gray-400 mt-1">Periode {{ $org->periode_mulai }}–{{ $org->periode_selesai }}</div>
+                            <div class="text-[11px] text-gray-400 mt-1">Periode
+                                {{ $org->periode_mulai }}–{{ $org->periode_selesai }}</div>
                         </div>
                     @endforeach
                 </div>
@@ -131,7 +124,8 @@
                         <div class="text-[10px] uppercase tracking-wider text-gray-400 mb-2.5">Unit di Bawah</div>
                         <div class="flex flex-wrap gap-2">
                             @foreach ($org->sub_units as $sub)
-                                <span class="text-[11px] py-1 px-3 border border-primary/10 rounded-full text-gray-600 bg-gray-50">{{ $sub->nama }}</span>
+                                <span
+                                    class="text-[11px] py-1 px-3 border border-primary/10 rounded-full text-gray-600 bg-gray-50">{{ $sub->nama }}</span>
                             @endforeach
                         </div>
                     </div>

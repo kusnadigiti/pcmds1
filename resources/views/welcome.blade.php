@@ -1,53 +1,18 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.frontend')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')
 
-    <title>PCM Duren Sawit 1 | Muhammadiyah Berkemajuan</title>
+@section('meta')
     <meta name="description" content="Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit">
+@endsection
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
+@section('styles')
     <style>
-        :root {
-            --primary: #0d5c3a;
-            --primary-light: #167a4e;
-            --primary-rgb: 13,92,58;
-
-            --secondary: #D4A017;
-            --secondary-light: #e8b820;
-            --secondary-rgb: 212,160,23;
-
-            --accent: #0f1923;
-            --accent-green: #0d2818;
-            --accent-rgb: 15,25,35;
-
-            --bg-cream: #f8f5ee;
-            --text-dark: #1a1a1a;
-        }
-
         html { scroll-behavior: smooth; }
     </style>
+@endsection
 
-    <!-- Styles / Scripts -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-    @endif
-</head>
-
-<body class="min-h-screen flex flex-col bg-cream text-gray-900">
-
-    @include('layouts.navigation')
-
+@section('content')
     <main class="flex-1">
 
         @include('partials.header-section')
@@ -95,10 +60,9 @@
         </div>
 
     </main>
+@endsection
 
-    @include('layouts.footer')
-
-    {{-- Ganti blok <script> yang lama di welcome.blade.php dengan ini --}}
+@section('scripts')
     <script>
         function handleNav(e, sectionId) {
             if (window.location.pathname === '/') {
@@ -202,8 +166,4 @@
             });
         });
     </script>
-    </section>
-
-</body>
-
-</html>
+@endsection

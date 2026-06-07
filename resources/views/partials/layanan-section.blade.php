@@ -10,19 +10,19 @@
     $tipeConfig = [
         'bidang_kesehatan' => [
             'label' => 'Bidang Kesehatan',
-            'icon' => '🏥',
+            'icon_lucide' => 'hospital',
             'badge' => 'bg-sky-100 text-sky-800',
             'gradient' => 'from-sky-900 to-sky-600',
         ],
         'bidang_pendidikan' => [
             'label' => 'Bidang Pendidikan',
-            'icon' => '🎓',
+            'icon_lucide' => 'graduation-cap',
             'badge' => 'bg-amber-100 text-amber-800',
             'gradient' => 'from-amber-700 to-amber-500',
         ],
         'bidang_sosial' => [
             'label' => 'Bidang Sosial',
-            'icon' => '🤝',
+            'icon_lucide' => 'hand-helping',
             'badge' => 'bg-indigo-100 text-indigo-800',
             'gradient' => 'from-indigo-900 to-indigo-600',
         ],
@@ -33,12 +33,14 @@
 
 @if ($totalSlides > 0)
     <section id="amal-usaha-section" class="bg-cream py-20 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
+        {{-- Background pattern --}}
+        <div class="islamic-pattern absolute inset-0 opacity-[0.35] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
 
             <!-- HEADER -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                 <div>
-                    <div class="section-label section-label-green">Amal Usaha Muhammadiyah</div>
                     <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight m-0">
                         Gerak <span class="text-primary font-normal italic">Nyata</span><br>PCM Duren Sawit
                     </h2>
@@ -74,9 +76,7 @@
             <!-- SLIDER -->
             <div class="relative">
                 <button class="absolute top-1/2 -translate-y-1/2 w-11 h-11 bg-white border border-primary/10 rounded-full flex items-center justify-center cursor-pointer z-20 shadow-lg transition duration-200 hover:bg-gray-900 hover:border-gray-900 group active:scale-95 -left-3 md:-left-5" onclick="auSlide(-1)" aria-label="Sebelumnya">
-                    <svg class="stroke-gray-700 transition-colors duration-200 group-hover:stroke-white" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8">
-                        <path d="M10 12L6 8l4-4" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
+                    <i data-lucide="chevron-left" class="w-5 h-5 text-gray-700 transition-colors duration-200 group-hover:text-white"></i>
                 </button>
 
                 <div class="overflow-hidden rounded-2xl">
@@ -120,10 +120,7 @@
                                         @foreach ($group['items'] as $item)
                                             @if ($item->organisasiOtonom)
                                                 <li class="inline-flex items-center gap-1.5 text-xs text-gray-400 font-medium bg-gray-50 border border-gray-100 py-1 px-3 rounded-full">
-                                                    <svg class="text-gray-400" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                                        <path d="M6 1L7.5 4.5H11L8.5 6.5L9.5 10L6 8L2.5 10L3.5 6.5L1 4.5H4.5L6 1Z"
-                                                            stroke="currentColor" stroke-width="1" fill="none" stroke-linejoin="round" />
-                                                    </svg>
+                                                    <i data-lucide="award" class="w-3.5 h-3.5 text-gray-400"></i>
                                                     {{ $item->organisasiOtonom->nama }}
                                                 </li>
                                             @endif
@@ -142,7 +139,7 @@
                                             class="absolute inset-0 w-full h-full object-cover opacity-40 z-0 transition-opacity duration-500 group-[.au-slide-active]/slide:opacity-55"
                                             loading="lazy">
                                     @endif
-                                    <span class="text-8xl opacity-20 z-10 filter drop-shadow-lg transition-transform duration-500 group-[.au-slide-active]/slide:scale-105">{{ $cfg['icon'] }}</span>
+                                    <i data-lucide="{{ $cfg['icon_lucide'] }}" class="w-24 h-24 stroke-[1.2] opacity-25 z-10 filter drop-shadow-lg transition-transform duration-500 group-[.au-slide-active]/slide:scale-105 text-white"></i>
                                     <span class="absolute bottom-6 left-6 text-[10px] font-semibold tracking-wider text-white/50 uppercase z-10">{{ $cfg['label'] }}</span>
                                 </div>
 
@@ -153,9 +150,7 @@
                 </div>
 
                 <button class="absolute top-1/2 -translate-y-1/2 w-11 h-11 bg-white border border-primary/10 rounded-full flex items-center justify-center cursor-pointer z-20 shadow-lg transition duration-200 hover:bg-gray-900 hover:border-gray-900 group active:scale-95 -right-3 md:-right-5" onclick="auSlide(1)" aria-label="Berikutnya">
-                    <svg class="stroke-gray-700 transition-colors duration-200 group-hover:stroke-white" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke-width="1.8">
-                        <path d="M6 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-700 transition-colors duration-200 group-hover:text-white"></i>
                 </button>
             </div>
 
