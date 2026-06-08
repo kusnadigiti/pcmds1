@@ -28,7 +28,7 @@
         ],
     ];
 
-    $totalSlides = $amalUsahaGrouped->count();
+    $totalSlides = isset($amalUsahaList) ? $amalUsahaList->count() : 0;
 @endphp
 
 @if ($totalSlides > 0)
@@ -82,18 +82,17 @@
                 <div class="overflow-hidden rounded-2xl">
                     <div class="flex transition-transform duration-700 ease-in-out" id="auSliderTrack">
 
-                        @foreach ($amalUsahaGrouped as $index => $group)
+                        @foreach ($amalUsahaList as $index => $item)
                             @php
-                                $cfg = $tipeConfig[$group['tipe']] ?? [
-                                    'label' => ucwords(str_replace('_', ' ', $group['tipe'])),
-                                    'icon' => '📋',
+                                $cfg = $tipeConfig[$item->tipe] ?? [
+                                    'label' => ucwords(str_replace('_', ' ', $item->tipe)),
+                                    'icon_lucide' => 'clipboard',
                                     'badge' => 'bg-emerald-100 text-emerald-800',
                                     'gradient' => 'from-primary to-primary-light',
                                 ];
-                                $firstItem = $group['items']->first();
                             @endphp
 
-                            <div class="au-slide group/slide min-w-full grid grid-cols-1 md:grid-cols-2 min-h-[420px]" data-tipe="{{ $group['tipe'] }}">
+                            <div class="au-slide group/slide min-w-full grid grid-cols-1 md:grid-cols-2 min-h-[420px]" data-tipe="{{ $item->tipe }}">
 
                                 <!-- LEFT CONTENT -->
                                 <div class="p-8 md:p-12 flex flex-col justify-center bg-white border border-primary/10 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none md:border-r-0">
@@ -103,29 +102,24 @@
                                             <circle cx="5" cy="5" r="3" fill="currentColor" />
                                         </svg>
                                         {{ $cfg['label'] }}
-                                        <span class="font-normal opacity-80 ml-1">({{ $group['count'] }})</span>
                                     </span>
 
-                                    @if ($firstItem)
-                                        <h3 class="font-bold text-3xl md:text-4xl text-gray-900 tracking-tight leading-none mb-2">{{ $firstItem->nama }}</h3>
-                                    @endif
+                                    <h3 class="font-bold text-3xl md:text-4xl text-gray-900 tracking-tight leading-none mb-2">{{ $item->nama }}</h3>
 
-                                    @if ($group['latestDesc'])
+                                    @if ($item->deskripsi)
                                         <div class="mb-4">
-                                            <p class="text-sm text-gray-500 leading-relaxed m-0 line-clamp-4">{{ Str::limit($group['latestDesc'], 120) }}</p>
+                                            <p class="text-sm text-gray-500 leading-relaxed m-0 line-clamp-4">{{ Str::limit($item->deskripsi, 250) }}</p>
                                         </div>
                                     @endif
 
-                                    <ul class="margin-0 padding-0 list-none flex flex-wrap gap-2 mb-6">
-                                        @foreach ($group['items'] as $item)
-                                            @if ($item->organisasiOtonom)
-                                                <li class="inline-flex items-center gap-1.5 text-xs text-gray-400 font-medium bg-gray-50 border border-gray-100 py-1 px-3 rounded-full">
-                                                    <i data-lucide="award" class="w-3.5 h-3.5 text-gray-400"></i>
-                                                    {{ $item->organisasiOtonom->nama }}
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
+                                    @if ($item->organisasiOtonom)
+                                        <div class="mb-6">
+                                            <span class="inline-flex items-center gap-1.5 text-xs text-gray-600 font-semibold bg-gray-50 border border-gray-100 py-1.5 px-3.5 rounded-full">
+                                                <i data-lucide="award" class="w-3.5 h-3.5 text-gray-500"></i>
+                                                {{ $item->organisasiOtonom->nama }}
+                                            </span>
+                                        </div>
+                                    @endif
 
                                     <div class="w-9 h-[1.5px] bg-primary/10 mb-4"></div>
 
@@ -134,8 +128,8 @@
                                 <!-- RIGHT VISUAL -->
                                 <div class="relative overflow-hidden rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none min-h-[200px] md:min-h-full flex items-center justify-center bg-gradient-to-br {{ $cfg['gradient'] }}">
                                     <div class="absolute inset-0 opacity-[0.08] pointer-events-none bg-[radial-gradient(circle_at_30%_70%,_white_1px,_transparent_1px),_radial-gradient(circle_at_70%_30%,_white_1px,_transparent_1px)] bg-[size:32px_32px] z-10"></div>
-                                    @if ($firstItem && $firstItem->foto)
-                                        <img src="{{ Storage::url($firstItem->foto) }}" alt="{{ $firstItem->nama }}"
+                                    @if ($item->foto)
+                                        <img src="{{ Storage::url($item->foto) }}" alt="{{ $item->nama }}"
                                             class="absolute inset-0 w-full h-full object-cover opacity-40 z-0 transition-opacity duration-500 group-[.au-slide-active]/slide:opacity-55"
                                             loading="lazy">
                                     @endif
@@ -230,11 +224,9 @@
                 if (visible.length === 0) return;
                 current = ((idx % visible.length) + visible.length) % visible.length;
 
-                /* Hitung offset: jumlah slides sebelum slide visible[current] dalam allSlides */
                 const targetSlide = visible[current];
-                const allIdx = allSlides.indexOf(targetSlide);
 
-                track.style.transform = `translateX(-${allIdx * 100}%)`;
+                track.style.transform = `translateX(-${current * 100}%)`;
 
                 dotsWrap.querySelectorAll('button').forEach((d, i) => {
                     if (i === current) {
@@ -246,8 +238,8 @@
 
                 currentEl.textContent = String(current + 1).padStart(2, '0');
 
-                allSlides.forEach((s, i) => {
-                    s.classList.toggle('au-slide-active', i === allIdx);
+                allSlides.forEach((s) => {
+                    s.classList.toggle('au-slide-active', s === targetSlide);
                 });
 
                 resetProgress();

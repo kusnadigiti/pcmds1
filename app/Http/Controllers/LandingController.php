@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AmalUsaha;
 use App\Models\Article;
 use App\Models\Berita;
 use App\Models\Jadwal;
@@ -56,29 +57,19 @@ class LandingController extends Controller
             ->orderBy('nama')
             ->get();
 
-        $amalUsahaGrouped = \App\Models\AmalUsaha::with('organisasiOtonom')
+        $amalUsahaList = AmalUsaha::with('organisasiOtonom')
             ->whereHas('organisasiOtonom')
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->groupBy('tipe')
+            ->get();
+
+        $amalUsahaGrouped = $amalUsahaList->groupBy('tipe')
             ->map(function ($items, $tipe) {
-
-                $allOrgs = $items
-                    ->filter(fn($item) => $item->organisasiOtonom)
-                    ->unique('organisasi_otonom_id')
-                    ->values();
-
-                $latestItem = $items->first();
-
                 return [
                     'tipe' => $tipe,
-                    'items' => $allOrgs,
-                    'count' => $allOrgs->count(),
-                    'latestDesc' => $latestItem?->deskripsi,
-                    'latestDescTitle' => $latestItem?->nama,
+                    'items' => $items,
+                    'count' => $items->count(),
                 ];
             })
-            ->filter(fn($group) => $group['count'] > 0)
             ->values();
 
 
@@ -128,6 +119,7 @@ class LandingController extends Controller
             'totalAnggota'    => $totalAnggota,
             'periode'         => $periode,
             'amalUsahaGrouped' => $amalUsahaGrouped,
+            'amalUsahaList'   => $amalUsahaList,
             'heroSections' => $heroSections,
         ]);
     }
