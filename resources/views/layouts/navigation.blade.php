@@ -22,18 +22,80 @@
         <div class="hidden md:flex items-center gap-1">
             <a href="/" onclick="handleNav(event,'beranda')" data-nav="beranda"
                 class="text-secondary text-[13px] font-semibold py-1.5 px-3.5 rounded-lg no-underline transition duration-200 tracking-wide">Beranda</a>
-            <a href="/#profil" onclick="handleNav(event,'profil')" data-nav="profil"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Profil</a>
+            
+            <div class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <button class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200 flex items-center gap-1 cursor-pointer">
+                    Profil
+                    <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-transition.opacity.duration.200ms style="display: none;" class="absolute left-0 mt-0 w-48 pt-2 z-50">
+                    <div class="bg-accent-green/95 backdrop-blur-md border border-secondary/25 rounded-lg shadow-lg py-2 flex flex-col gap-1">
+                        <a href="/#profil" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Sejarah</a>
+                        <a href="/#profil" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Visi & Misi</a>
+                        <a href="{{ route('struktur-organisasi') }}" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Struktur Organisasi</a>
+                    </div>
+                </div>
+            </div>
+
             <a href="/#artikel" onclick="handleNav(event,'artikel')" data-nav="artikel"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Artikel</a>
             <a href="/#berita" onclick="handleNav(event,'berita')" data-nav="berita"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Berita</a>
-            <a href="/#program" onclick="handleNav(event,'program')" data-nav="program"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Program</a>
-            <a href="/#organisasi" onclick="handleNav(event,'organisasi')" data-nav="organisasi"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Organisasi</a>
-            <a href="/#amal-usaha" onclick="handleNav(event,'amal-usaha')" data-nav="amal-usaha"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Amal Usaha</a>
+            
+            <div class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <button class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200 flex items-center gap-1 cursor-pointer">
+                    Kegiatan
+                    <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-transition.opacity.duration.200ms style="display: none;" class="absolute left-0 mt-0 w-48 pt-2 z-50">
+                    <div class="bg-accent-green/95 backdrop-blur-md border border-secondary/25 rounded-lg shadow-lg py-2 flex flex-col gap-1">
+                        <a href="/#kegiatan" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Agenda</a>
+                        <a href="/#kegiatan" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Galeri</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <button class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200 flex items-center gap-1 cursor-pointer">
+                    Ortom
+                    <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-transition.opacity.duration.200ms style="display: none;" class="absolute left-0 mt-0 w-48 pt-2 z-50">
+                    <div class="bg-accent-green/95 backdrop-blur-md border border-secondary/25 rounded-lg shadow-lg py-2 flex flex-col gap-1">
+                        <a href="/#ortom" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Aisyiyah</a>
+                        <a href="/#ortom" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Pemuda Muhammadiyah</a>
+                        <a href="/#ortom" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Nasyiatul Aisyiyah</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <button class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200 flex items-center gap-1 cursor-pointer">
+                    Amal Usaha
+                    <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-transition.opacity.duration.200ms style="display: none;" class="absolute left-0 mt-0 w-48 pt-2 z-50">
+                    <div class="bg-accent-green/95 backdrop-blur-md border border-secondary/25 rounded-lg shadow-lg py-2 flex flex-col gap-1">
+                        <a href="/#amal-usaha" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Pendidikan</a>
+                        <a href="/#amal-usaha" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Kesehatan</a>
+                        <a href="/#amal-usaha" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Ekonomi</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <button class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200 flex items-center gap-1 cursor-pointer">
+                    PRM
+                    <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="open" x-transition.opacity.duration.200ms style="display: none;" class="absolute left-0 mt-0 w-48 pt-2 z-50">
+                    <div class="bg-accent-green/95 backdrop-blur-md border border-secondary/25 rounded-lg shadow-lg py-2 flex flex-col gap-1">
+                        <a href="/#prm" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Daftar PRM</a>
+                        <a href="/#prm" class="block px-4 py-2 text-sm text-white/80 hover:text-secondary hover:bg-secondary/10 transition duration-200">Info PRM</a>
+                    </div>
+                </div>
+            </div>
+
             <a href="/#kontak" onclick="handleNav(event,'kontak')" data-nav="kontak"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Kontak</a>
             @auth
@@ -77,18 +139,70 @@
         <ul class="p-3 flex flex-col gap-0.5">
             <li><a href="/#beranda" @click="open = false" data-nav="beranda"
                     class="block py-2.5 px-3.5 text-sm font-semibold text-secondary rounded-lg no-underline bg-secondary/8"><i data-lucide="home" class="w-4 h-4 mr-1 inline-block align-middle"></i> Beranda</a></li>
-            <li><a href="/#profil" @click="open = false" data-nav="profil"
-                    class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Profil</a></li>
+            
+            <li x-data="{ openSub: false }">
+                <button @click="openSub = !openSub" class="w-full text-left py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary flex justify-between items-center">
+                    Profil
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="openSub ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="openSub" style="display: none;" class="pl-4 py-1 space-y-1">
+                    <a href="/#profil" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Sejarah</a>
+                    <a href="/#profil" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Visi & Misi</a>
+                    <a href="{{ route('struktur-organisasi') }}" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Struktur Organisasi</a>
+                </div>
+            </li>
+
             <li><a href="/#artikel" @click="open = false" data-nav="artikel"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Artikel</a></li>
             <li><a href="/#berita" @click="open = false" data-nav="berita"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Berita</a></li>
-            <li><a href="/#program" @click="open = false" data-nav="program"
-                    class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Program</a></li>
-            <li><a href="/#organisasi" @click="open = false" data-nav="organisasi"
-                    class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Organisasi Otonom</a></li>
-            <li><a href="/#amal-usaha" @click="open = false" data-nav="amal-usaha"
-                    class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Amal Usaha</a></li>
+            
+            <li x-data="{ openSub: false }">
+                <button @click="openSub = !openSub" class="w-full text-left py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary flex justify-between items-center">
+                    Kegiatan
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="openSub ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="openSub" style="display: none;" class="pl-4 py-1 space-y-1">
+                    <a href="/#kegiatan" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Agenda</a>
+                    <a href="/#kegiatan" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Galeri</a>
+                </div>
+            </li>
+
+            <li x-data="{ openSub: false }">
+                <button @click="openSub = !openSub" class="w-full text-left py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary flex justify-between items-center">
+                    Ortom
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="openSub ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="openSub" style="display: none;" class="pl-4 py-1 space-y-1">
+                    <a href="/#ortom" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Aisyiyah</a>
+                    <a href="/#ortom" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Pemuda Muhammadiyah</a>
+                    <a href="/#ortom" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Nasyiatul Aisyiyah</a>
+                </div>
+            </li>
+
+            <li x-data="{ openSub: false }">
+                <button @click="openSub = !openSub" class="w-full text-left py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary flex justify-between items-center">
+                    Amal Usaha
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="openSub ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="openSub" style="display: none;" class="pl-4 py-1 space-y-1">
+                    <a href="/#amal-usaha" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Pendidikan</a>
+                    <a href="/#amal-usaha" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Kesehatan</a>
+                    <a href="/#amal-usaha" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Ekonomi</a>
+                </div>
+            </li>
+
+            <li x-data="{ openSub: false }">
+                <button @click="openSub = !openSub" class="w-full text-left py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary flex justify-between items-center">
+                    PRM
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="openSub ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div x-show="openSub" style="display: none;" class="pl-4 py-1 space-y-1">
+                    <a href="/#prm" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Daftar PRM</a>
+                    <a href="/#prm" @click="open = false" class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10">Info PRM</a>
+                </div>
+            </li>
+
             <li><a href="/#kontak" @click="open = false" data-nav="kontak"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Kontak</a></li>
         </ul>

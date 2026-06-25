@@ -350,10 +350,10 @@
                 <div class="v-line"></div>
                 @endif
 
-                {{-- ── LEVEL 3: BIDANG & DIVISI ── --}}
+                {{-- ── LEVEL 3: Majelis & Lembaga ── --}}
                 @if($lv3->count())
                 <div class="org-tier" id="tier-lv3">
-                    <div class="tier-label" style="margin-bottom: 0;">Bidang &amp; Divisi</div>
+                    <div class="tier-label" style="margin-bottom: 0;">Majelis &amp; Lembaga</div>
                     <div class="v-line" style="height: 20px;"></div>
                     <div class="branch-row" id="row-lv3">
                         @foreach($lv3 as $item)
