@@ -30,7 +30,7 @@
                 @include('partials.berita-section')
             </section>
 
-            <section id="program">
+            <section id="kegiatan">
                 @include('partials.program-unggulan-section')
             </section>
 
