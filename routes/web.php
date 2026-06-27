@@ -28,6 +28,7 @@ Route::get('/berita/show-all', [LandingController::class, 'showAllBerita'])->nam
 Route::get('/berita/detail/{berita}', [LandingController::class, 'showBerita'])->name('berita.show');
 Route::get('/organisasi-otonom/{slug}', [LandingController::class, 'showOrganisasiOtonom'])->name('organisasi-otonom.show');
 Route::get('/anggota-organisasi/{slug}', [LandingController::class, 'showAnggotaOrganisasi'])->name('anggota-organisasi.show');
+Route::get('/amal-usaha/{kategori}', [LandingController::class, 'showAmalUsahaByKategori'])->name('amal-usaha.by-kategori');
 
 Route::get('/sitemap.xml', function() {
     $now = now()->toAtomString();

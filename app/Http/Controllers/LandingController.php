@@ -233,4 +233,49 @@ class LandingController extends Controller
 
         return view('pages.otonom.organisasi-anggota', compact('penguruses', 'organisasi'));
     }
+
+    public function showAmalUsahaByKategori(string $kategori)
+    {
+        // Mapping slug URL → enum di DB
+        $tipeMappings = [
+            'bidang-pendidikan'         => 'bidang_pendidikan',
+            'bidang-kesehatan'          => 'bidang_kesehatan',
+            'bidang-kesejahteraan-sosial' => 'bidang_sosial',
+            'bidang-sosial'             => 'bidang_sosial',
+        ];
+
+        if (!array_key_exists($kategori, $tipeMappings)) {
+            abort(404);
+        }
+
+        $tipe = $tipeMappings[$kategori];
+
+        $labelMappings = [
+            'bidang_pendidikan' => 'Bidang Pendidikan',
+            'bidang_kesehatan'  => 'Bidang Kesehatan',
+            'bidang_sosial'     => 'Bidang Kesejahteraan Sosial',
+        ];
+
+        $amalUsahaList = AmalUsaha::with('organisasiOtonom')
+            ->where('tipe', $tipe)
+            ->orderBy('nama')
+            ->get();
+
+        $label = $labelMappings[$tipe];
+
+        // Daftar kategori untuk tab navigasi
+        $allKategori = [
+            ['slug' => 'bidang-pendidikan',           'label' => 'Bidang Pendidikan'],
+            ['slug' => 'bidang-kesehatan',             'label' => 'Bidang Kesehatan'],
+            ['slug' => 'bidang-kesejahteraan-sosial',  'label' => 'Bidang Kesejahteraan Sosial'],
+        ];
+
+        return view('pages.amal-usaha.index', compact(
+            'amalUsahaList',
+            'label',
+            'kategori',
+            'allKategori',
+            'tipe',
+        ));
+    }
 }

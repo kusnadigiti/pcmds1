@@ -63,8 +63,50 @@
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Artikel</a>
             <a href="/#berita" onclick="handleNav(event,'berita')" data-nav="berita"
                 class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Berita</a>
-            <a href="/#kegiatan" onclick="handleNav(event,'kegiatan')" data-nav="kegiatan"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Kegiatan</a>
+            {{-- PRM (Dropdown) --}}
+            <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <button
+                    class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg transition duration-200 flex items-center gap-1 cursor-pointer">
+                    PRM
+                    <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div x-show="open" x-transition.opacity.duration.200ms style="display:none;"
+                    class="absolute left-0 top-full pt-2 w-52 z-[100]">
+                    <div class="bg-[#0d2818] border border-secondary/30 rounded-lg shadow-2xl py-1.5 flex flex-col">
+                        <a href="/#kegiatan" onclick="handleNav(event,'kegiatan')" data-nav="kegiatan"
+                            class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Kegiatan</a>
+                        <a href="/#amal-usaha" onclick="handleNav(event,'amal-usaha')" data-nav="amal-usaha"
+                            class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Amal
+                            Usaha</a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Amal Usaha (Dropdown) --}}
+            <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <button
+                    class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg transition duration-200 flex items-center gap-1 cursor-pointer">
+                    Amal Usaha
+                    <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div x-show="open" x-transition.opacity.duration.200ms style="display:none;"
+                    class="absolute left-0 top-full pt-2 w-60 z-[100]">
+                    <div class="bg-[#0d2818] border border-secondary/30 rounded-lg shadow-2xl py-1.5 flex flex-col">
+                        <a href="{{ route('amal-usaha.by-kategori', 'bidang-pendidikan') }}"
+                            class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Bidang Pendidikan</a>
+                        <a href="{{ route('amal-usaha.by-kategori', 'bidang-kesehatan') }}"
+                            class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Bidang Kesehatan</a>
+                        <a href="{{ route('amal-usaha.by-kategori', 'bidang-kesejahteraan-sosial') }}"
+                            class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Bidang Kesejahteraan Sosial</a>
+                    </div>
+                </div>
+            </div>
 
             {{-- Ortom (Dropdown — Dynamic dari DB) --}}
             @if($navOrtoms->isNotEmpty())
@@ -90,11 +132,6 @@
                     </div>
                 </div>
             @endif
-
-            {{-- Amal Usaha --}}
-            <a href="/#amal-usaha" onclick="handleNav(event,'amal-usaha')" data-nav="amal-usaha"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Amal
-                Usaha</a>
 
             {{-- Kontak --}}
             <a href="/#kontak" onclick="handleNav(event,'kontak')" data-nav="kontak"
@@ -180,6 +217,25 @@
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Berita</a>
             </li>
 
+            {{-- PRM (Accordion) --}}
+            <li x-data="{ sub: false }">
+                <button @click="sub = !sub"
+                    class="w-full text-left py-2.5 px-3.5 text-sm text-white/80 rounded-lg transition duration-200 hover:bg-secondary/10 hover:text-secondary flex justify-between items-center">
+                    PRM
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="sub ? 'rotate-180' : ''" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div x-show="sub" x-transition style="display:none;" class="pl-4 pb-1 space-y-0.5 mt-0.5">
+                    <a href="/#kegiatan" @click="open = false" data-nav="kegiatan"
+                        class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10 no-underline">Kegiatan</a>
+                    <a href="/#amal-usaha" @click="open = false" data-nav="amal-usaha"
+                        class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10 no-underline">Amal
+                        Usaha</a>
+                </div>
+            </li>
+
             {{-- Ortom (Mobile Accordion — Dynamic) --}}
             @if($navOrtoms->isNotEmpty())
                 <li x-data="{ sub: false }">
@@ -202,11 +258,24 @@
                 </li>
             @endif
 
-            {{-- Amal Usaha --}}
-            <li>
-                <a href="/#amal-usaha" @click="open = false" data-nav="amal-usaha"
-                    class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Amal
-                    Usaha</a>
+            {{-- Amal Usaha (Mobile Accordion) --}}
+            <li x-data="{ sub: false }">
+                <button @click="sub = !sub"
+                    class="w-full text-left py-2.5 px-3.5 text-sm text-white/80 rounded-lg transition duration-200 hover:bg-secondary/10 hover:text-secondary flex justify-between items-center">
+                    Amal Usaha
+                    <svg class="w-4 h-4 transition-transform duration-200" :class="sub ? 'rotate-180' : ''" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div x-show="sub" x-transition style="display:none;" class="pl-4 pb-1 space-y-0.5 mt-0.5">
+                    <a href="{{ route('amal-usaha.by-kategori', 'bidang-pendidikan') }}" @click="open = false"
+                        class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10 no-underline">Bidang Pendidikan</a>
+                    <a href="{{ route('amal-usaha.by-kategori', 'bidang-kesehatan') }}" @click="open = false"
+                        class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10 no-underline">Bidang Kesehatan</a>
+                    <a href="{{ route('amal-usaha.by-kategori', 'bidang-kesejahteraan-sosial') }}" @click="open = false"
+                        class="block py-2 px-3 text-sm text-white/70 rounded-lg hover:text-secondary hover:bg-secondary/10 no-underline">Bidang Kesejahteraan Sosial</a>
+                </div>
             </li>
 
             {{-- Kontak --}}
@@ -214,6 +283,7 @@
                 <a href="/#kontak" @click="open = false" data-nav="kontak"
                     class="block py-2.5 px-3.5 text-sm text-white/80 rounded-lg no-underline transition duration-200 hover:bg-secondary/10 hover:text-secondary">Kontak</a>
             </li>
+
 
         </ul>
     </div>

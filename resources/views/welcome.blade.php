@@ -87,7 +87,7 @@
                 { id: 'profil', nav: 'profil' },
                 { id: 'artikel', nav: 'artikel' },
                 { id: 'berita', nav: 'berita' },
-                { id: 'program', nav: 'program' },
+                { id: 'kegiatan', nav: 'kegiatan' },
                 { id: 'organisasi', nav: 'organisasi' },
                 { id: 'amal-usaha', nav: 'amal-usaha' },
                 { id: 'kontak', nav: 'kontak' }
