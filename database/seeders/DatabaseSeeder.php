@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Contact;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,7 +22,7 @@ class DatabaseSeeder extends Seeder
         //     'role' => 'superadmin',
         // ]);
 
-        // for ($i=0; $i < 5; $i++) { 
+        // for ($i=0; $i < 5; $i++) {
         //     User::factory()->create([
         //         'name' => 'Penulis '.$i,
         //         'email' => 'penulis'.$i.'@example.com',
@@ -31,8 +30,6 @@ class DatabaseSeeder extends Seeder
         //         'role' => 'penulis',
         //     ]);
         // }
-
-
 
         // $this->call([
         //     ArticleSeeder::class,

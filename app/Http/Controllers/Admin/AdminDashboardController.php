@@ -11,6 +11,7 @@ use App\Models\Pengurus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class AdminDashboardController extends Controller
 {
@@ -28,38 +29,38 @@ class AdminDashboardController extends Controller
                 count(*) as total,
                 sum(case when status = 'published' then 1 else 0 end) as published
             ")->first();
-            $totalBerita   = $beritaStats->total ?? 0;
+            $totalBerita = $beritaStats->total ?? 0;
             $beritaPublish = $beritaStats->published ?? 0;
 
             $articleStats = Article::selectRaw("
                 count(*) as total,
                 sum(case when status = 'published' then 1 else 0 end) as published
             ")->first();
-            $totalArtikel   = $articleStats->total ?? 0;
+            $totalArtikel = $articleStats->total ?? 0;
             $artikelPublish = $articleStats->published ?? 0;
 
-            $pengurusStats = Pengurus::selectRaw("
+            $pengurusStats = Pengurus::selectRaw('
                 count(*) as total,
                 sum(case when is_active = 1 then 1 else 0 end) as active
-            ")->first();
+            ')->first();
             $totalPengurusAll = $pengurusStats->total ?? 0;
-            $totalPengurus    = $pengurusStats->active ?? 0;
+            $totalPengurus = $pengurusStats->active ?? 0;
 
-            $totalOrganisasi  = Organisasi::where('is_active', true)->count();
+            $totalOrganisasi = Organisasi::where('is_active', true)->count();
 
-            $kajianStats = Jadwal::selectRaw("
+            $kajianStats = Jadwal::selectRaw('
                 sum(case when month(tanggal) = ? and year(tanggal) = ? then 1 else 0 end) as bulan_ini,
                 sum(case when month(tanggal) = ? and year(tanggal) = ? and tanggal < ? then 1 else 0 end) as terlaksana,
                 sum(case when tanggal >= ? then 1 else 0 end) as mendatang
-            ", [
+            ', [
                 $now->month, $now->year,
                 $now->month, $now->year, $now,
-                $now
+                $now,
             ])->first();
 
             $totalKajianBulanIni = $kajianStats->bulan_ini ?? 0;
-            $kajianTerlaksana    = $kajianStats->terlaksana ?? 0;
-            $kajianMendatang     = $kajianStats->mendatang ?? 0;
+            $kajianTerlaksana = $kajianStats->terlaksana ?? 0;
+            $kajianMendatang = $kajianStats->mendatang ?? 0;
 
             // =========================================================
             // JADWAL MENDATANG (4 terdekat)
@@ -82,12 +83,12 @@ class AdminDashboardController extends Controller
                 ->get()
                 ->each(function ($b) use (&$aktivitas) {
                     $aktivitas->push([
-                        'icon'   => '📰',
-                        'bg'     => '#ffe4e6',
-                        'text'   => 'Berita <strong>"' . \Illuminate\Support\Str::limit($b->judul, 40) . '"</strong> ' . ($b->status === 'published' ? 'dipublikasikan' : 'disimpan sebagai draft'),
+                        'icon' => '📰',
+                        'bg' => '#ffe4e6',
+                        'text' => 'Berita <strong>"'.Str::limit($b->judul, 40).'"</strong> '.($b->status === 'published' ? 'dipublikasikan' : 'disimpan sebagai draft'),
                         'module' => 'Berita',
-                        'time'   => $b->created_at, // Store Carbon instance to calculate diffForHumans outside cache
-                        'sort'   => $b->created_at,
+                        'time' => $b->created_at, // Store Carbon instance to calculate diffForHumans outside cache
+                        'sort' => $b->created_at,
                     ]);
                 });
 
@@ -98,12 +99,12 @@ class AdminDashboardController extends Controller
                 ->get()
                 ->each(function ($a) use (&$aktivitas) {
                     $aktivitas->push([
-                        'icon'   => '📄',
-                        'bg'     => '#dbeafe',
-                        'text'   => 'Artikel <strong>"' . \Illuminate\Support\Str::limit($a->title, 40) . '"</strong> ' . ($a->status === 'published' ? 'diterbitkan' : 'disimpan sebagai draft'),
+                        'icon' => '📄',
+                        'bg' => '#dbeafe',
+                        'text' => 'Artikel <strong>"'.Str::limit($a->title, 40).'"</strong> '.($a->status === 'published' ? 'diterbitkan' : 'disimpan sebagai draft'),
                         'module' => 'Artikel',
-                        'time'   => $a->created_at, // Store Carbon instance
-                        'sort'   => $a->created_at,
+                        'time' => $a->created_at, // Store Carbon instance
+                        'sort' => $a->created_at,
                     ]);
                 });
 
@@ -114,12 +115,12 @@ class AdminDashboardController extends Controller
                 ->get()
                 ->each(function ($p) use (&$aktivitas) {
                     $aktivitas->push([
-                        'icon'   => '👤',
-                        'bg'     => '#d1fae5',
-                        'text'   => 'Pengurus baru ditambahkan: <strong>' . $p->nama . '</strong> sebagai ' . $p->jabatan,
+                        'icon' => '👤',
+                        'bg' => '#d1fae5',
+                        'text' => 'Pengurus baru ditambahkan: <strong>'.$p->nama.'</strong> sebagai '.$p->jabatan,
                         'module' => 'Pengurus',
-                        'time'   => $p->created_at, // Store Carbon instance
-                        'sort'   => $p->created_at,
+                        'time' => $p->created_at, // Store Carbon instance
+                        'sort' => $p->created_at,
                     ]);
                 });
 
@@ -130,12 +131,12 @@ class AdminDashboardController extends Controller
                 ->get()
                 ->each(function ($j) use (&$aktivitas) {
                     $aktivitas->push([
-                        'icon'   => '🗓️',
-                        'bg'     => '#fef3c7',
-                        'text'   => 'Jadwal kajian <strong>"' . \Illuminate\Support\Str::limit($j->nama_kegiatan, 40) . '"</strong> ditambahkan',
+                        'icon' => '🗓️',
+                        'bg' => '#fef3c7',
+                        'text' => 'Jadwal kajian <strong>"'.Str::limit($j->nama_kegiatan, 40).'"</strong> ditambahkan',
                         'module' => 'Kajian',
-                        'time'   => $j->created_at, // Store Carbon instance
-                        'sort'   => $j->created_at,
+                        'time' => $j->created_at, // Store Carbon instance
+                        'sort' => $j->created_at,
                     ]);
                 });
 
@@ -163,11 +164,12 @@ class AdminDashboardController extends Controller
             $data['aktivitas'] = $data['aktivitas']->map(function ($act) {
                 if (isset($act['time'])) {
                     // Re-instantiate Carbon if it was serialized as array or string from Cache
-                    $carbonTime = $act['time'] instanceof Carbon 
-                        ? $act['time'] 
+                    $carbonTime = $act['time'] instanceof Carbon
+                        ? $act['time']
                         : Carbon::parse($act['time']);
                     $act['time'] = $carbonTime->diffForHumans();
                 }
+
                 return $act;
             });
         }

@@ -25,16 +25,16 @@ class OrganisasiController extends Controller
             ['key' => 'periode_selesai', 'label' => 'Periode Selesai',       'sortable' => true],
         ];
 
-        $rows = $organisasis->map(fn($o) => [
-            'id'        => (string) $o->id,
-            'email'     => (string) $o->id,
-            'nama'      => $o->nama,
+        $rows = $organisasis->map(fn ($o) => [
+            'id' => (string) $o->id,
+            'email' => (string) $o->id,
+            'nama' => $o->nama,
             'singkatan' => $o->singkatan,
-            'tipe'      => $o->tipe,
+            'tipe' => $o->tipe,
             'deskripsi' => $o->deskripsi, // TAMBAHKAN INI
             'is_active' => $o->is_active,
-            'logo'      => $o->logo ? asset('storage/' . $o->logo) : null,
-            'periode_mulai'   => $o->periode_mulai,
+            'logo' => $o->logo ? asset('storage/'.$o->logo) : null,
+            'periode_mulai' => $o->periode_mulai,
             'periode_selesai' => $o->periode_selesai,
         ])->toArray();
 
@@ -49,21 +49,21 @@ class OrganisasiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'            => 'required|string|max:200',
-            'singkatan'       => 'required|string|max:10',
-            'tipe'            => 'required|in:ortonom,lembaga,majelis',
-            'deskripsi'       => 'nullable|string',
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
-            'periode_mulai'   => 'required|digits:4|integer|min:1900|max:2100',
+            'nama' => 'required|string|max:200',
+            'singkatan' => 'required|string|max:10',
+            'tipe' => 'required|in:ortonom,lembaga,majelis',
+            'deskripsi' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
+            'periode_mulai' => 'required|digits:4|integer|min:1900|max:2100',
             'periode_selesai' => 'required|digits:4|integer|min:1900|max:2100|gte:periode_mulai',
-            'is_active'       => 'boolean',
+            'is_active' => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
             $validated['logo'] = $request->file('logo')->store('logo-organisasi', 'public');
         }
 
-        $validated['slug']      = Str::slug($validated['nama']);
+        $validated['slug'] = Str::slug($validated['nama']);
         $validated['is_active'] = $request->boolean('is_active', true);
 
         Organisasi::create($validated);
@@ -76,6 +76,7 @@ class OrganisasiController extends Controller
     public function edit(string $id)
     {
         $organisasi = Organisasi::findOrFail($id);
+
         return view('pages.admin.organisasi.edit', compact('organisasi'));
     }
 
@@ -84,14 +85,14 @@ class OrganisasiController extends Controller
         $organisasi = Organisasi::findOrFail($id);
 
         $validated = $request->validate([
-            'nama'            => 'required|string|max:200',
-            'singkatan'       => 'required|string|max:10',
-            'tipe'            => 'required|in:ortonom,lembaga,majelis',
-            'deskripsi'       => 'nullable|string',
-            'logo'            => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
-            'periode_mulai'   => 'required|digits:4|integer|min:1900|max:2100',
+            'nama' => 'required|string|max:200',
+            'singkatan' => 'required|string|max:10',
+            'tipe' => 'required|in:ortonom,lembaga,majelis',
+            'deskripsi' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
+            'periode_mulai' => 'required|digits:4|integer|min:1900|max:2100',
             'periode_selesai' => 'required|digits:4|integer|min:1900|max:2100|gte:periode_mulai',
-            'is_active'       => 'boolean',
+            'is_active' => 'boolean',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -103,7 +104,7 @@ class OrganisasiController extends Controller
             $validated['logo'] = $organisasi->logo;
         }
 
-        $validated['slug']      = Str::slug($validated['nama']);
+        $validated['slug'] = Str::slug($validated['nama']);
         $validated['is_active'] = $request->boolean('is_active');
 
         $organisasi->update($validated);

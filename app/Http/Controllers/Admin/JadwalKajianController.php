@@ -21,6 +21,7 @@ class JadwalKajianController extends Controller
         $rows = Jadwal::all()
             ->map(function ($item) {
                 $item->email = $item->id; // biar datatable aman
+
                 return $item;
             });
 
@@ -36,10 +37,10 @@ class JadwalKajianController extends Controller
     {
         $validated = $request->validate([
             'nama_kegiatan' => 'required|string|max:255',
-            'tanggal'       => 'required|date',
-            'waktu'         => 'required',
-            'lokasi'        => 'required|string|max:255',
-            'deskripsi'     => 'nullable|string',
+            'tanggal' => 'required|date',
+            'waktu' => 'required',
+            'lokasi' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
         ]);
 
         Jadwal::create($validated);
@@ -60,10 +61,10 @@ class JadwalKajianController extends Controller
     {
         $validated = $request->validate([
             'nama_kegiatan' => 'required|string|max:255',
-            'tanggal'       => 'required|date',
-            'waktu'         => 'required',
-            'lokasi'        => 'required|string|max:255',
-            'deskripsi'     => 'nullable|string',
+            'tanggal' => 'required|date',
+            'waktu' => 'required',
+            'lokasi' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
         ]);
 
         $jadwal = Jadwal::findOrFail($id);
@@ -83,7 +84,7 @@ class JadwalKajianController extends Controller
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Jadwal kajian berhasil dihapus.'
+                'message' => 'Jadwal kajian berhasil dihapus.',
             ]);
         }
 

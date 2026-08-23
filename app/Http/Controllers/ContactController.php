@@ -37,7 +37,7 @@ class ContactController extends Controller
         ]);
 
         // Parsing: jika user paste kode <iframe>, ambil src-nya saja
-        if (!empty($validated['google_maps_url'])) {
+        if (! empty($validated['google_maps_url'])) {
             $input = $validated['google_maps_url'];
 
             if (preg_match('/src=["\']([^"\']+)["\']/', $input, $matches)) {

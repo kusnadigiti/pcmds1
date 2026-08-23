@@ -1,22 +1,21 @@
-<?
+<?php
 
 namespace App\Enum;
 
-
 enum KategoriEnum: string
 {
-    case DAKWAH = "Dakwah";
-    case PENDIDIKAN = "Pendidikan";
+    case DAKWAH = 'Dakwah';
+    case PENDIDIKAN = 'Pendidikan';
     case SOSIAL = 'Sosial';
     case ORGANISASI = 'Organisasi';
 
     public function label(): string
     {
-        return match($this) {
-            self::DAKWAH => "Dakwah",
-            self::PENDIDIKAN => "Pendidikan",
-            self::SOSIAL => "Sosial",
-            self::ORGANISASI => "Organisasi",
+        return match ($this) {
+            self::DAKWAH => 'Dakwah',
+            self::PENDIDIKAN => 'Pendidikan',
+            self::SOSIAL => 'Sosial',
+            self::ORGANISASI => 'Organisasi',
         };
     }
 

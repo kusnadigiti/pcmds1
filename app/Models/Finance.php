@@ -17,7 +17,6 @@ class Finance extends Model
         'kategori',
     ];
 
-
     public function user()
     {
         return $this->belongsTo(User::class);

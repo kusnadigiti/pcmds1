@@ -12,6 +12,6 @@ class ProgramUnggulan extends Model
         'nama_program',
         'deskripsi',
         'gambar',
-        'headline'
+        'headline',
     ];
 }

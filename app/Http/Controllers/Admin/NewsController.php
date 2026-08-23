@@ -41,8 +41,8 @@ class NewsController extends Controller
                     'created_at' => $berita->created_at?->format('d M Y') ?? 'N/A',
                     'gambar' => asset(
                         $berita->gambar
-                            ? 'storage/' . $berita->gambar
-                            : 'https://picsum.photos/100/100?random=' . $berita->id
+                            ? 'storage/'.$berita->gambar
+                            : 'https://picsum.photos/100/100?random='.$berita->id
                     ),
                     'email' => (string) $berita->id,
                 ];
@@ -72,8 +72,8 @@ class NewsController extends Controller
         }
 
         $slug = Str::slug($request->judul);
-        $count = Berita::where('slug', 'like', $slug . '%')->count();
-        $validated['slug'] = $count ? "{$slug}-" . ($count + 1) : $slug;
+        $count = Berita::where('slug', 'like', $slug.'%')->count();
+        $validated['slug'] = $count ? "{$slug}-".($count + 1) : $slug;
         $validated['user_id'] = Auth::id();
 
         Berita::create($validated);
@@ -100,6 +100,7 @@ class NewsController extends Controller
 
         return view('pages.admin.news.edit', compact('berita'));
     }
+
     public function update(Request $request, $id)
     {
         $berita = Berita::findOrFail($id);
@@ -128,10 +129,10 @@ class NewsController extends Controller
 
         if ($request->judul !== $berita->judul) {
             $slug = Str::slug($request->judul);
-            $count = Berita::where('slug', 'like', $slug . '%')
+            $count = Berita::where('slug', 'like', $slug.'%')
                 ->where('id', '!=', $id)
                 ->count();
-            $validated['slug'] = $count ? "{$slug}-" . ($count + 1) : $slug;
+            $validated['slug'] = $count ? "{$slug}-".($count + 1) : $slug;
         }
 
         $berita->update($validated);
@@ -139,7 +140,7 @@ class NewsController extends Controller
         $role = auth()->user()->role;
         $prefix = ($role === 'admin' || $role === 'superadmin') ? 'admin' : 'penulis';
 
-        return redirect()->route($prefix . '.berita.index')
+        return redirect()->route($prefix.'.berita.index')
             ->with('success', '✅ Berita berhasil diupdate!');
     }
 
@@ -161,7 +162,7 @@ class NewsController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => '✅ Berita berhasil dihapus!'
+            'message' => '✅ Berita berhasil dihapus!',
         ]);
     }
 }

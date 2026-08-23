@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Bendahara;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Finance;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FinanceController extends Controller
 {
@@ -27,17 +28,17 @@ class FinanceController extends Controller
             ->get()
             ->map(function ($item) {
                 return [
-                    'id'              => $item->id,
-                    'email'           => $item->id,
-                    'user_id'         => $item->user?->name ?? '-',
-                    'judul'           => $item->judul,
-                    'deskripsi'       => Str::limit($item->deskripsi, 80),
-                    'file'            => $item->file ? asset('storage/' . $item->file) : '-',
-                    'kategori'        => ucfirst($item->kategori ?? '-'),
+                    'id' => $item->id,
+                    'email' => $item->id,
+                    'user_id' => $item->user?->name ?? '-',
+                    'judul' => $item->judul,
+                    'deskripsi' => Str::limit($item->deskripsi, 80),
+                    'file' => $item->file ? asset('storage/'.$item->file) : '-',
+                    'kategori' => ucfirst($item->kategori ?? '-'),
                     'tanggal_laporan' => $item->tanggal_laporan
-                        ? \Carbon\Carbon::parse($item->tanggal_laporan)->format('d M Y')
+                        ? Carbon::parse($item->tanggal_laporan)->format('d M Y')
                         : '-',
-                    'created_at'      => $item->created_at?->format('d M Y') ?? '-',
+                    'created_at' => $item->created_at?->format('d M Y') ?? '-',
                 ];
             })
             ->toArray();
@@ -53,31 +54,31 @@ class FinanceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'judul'           => ['required', 'string', 'max:255'],
-            'deskripsi'       => ['nullable', 'string'],
-            'kategori'        => ['required', 'in:pemasukan,pengeluaran'],
+            'judul' => ['required', 'string', 'max:255'],
+            'deskripsi' => ['nullable', 'string'],
+            'kategori' => ['required', 'in:pemasukan,pengeluaran'],
             'tanggal_laporan' => ['required', 'date'],
-            'file'            => ['required', 'file', 'mimes:pdf', 'max:5120'],
+            'file' => ['required', 'file', 'mimes:pdf', 'max:5120'],
         ], [
-            'judul.required'           => 'Judul laporan wajib diisi.',
-            'kategori.required'        => 'Kategori wajib dipilih.',
-            'kategori.in'              => 'Kategori tidak valid.',
+            'judul.required' => 'Judul laporan wajib diisi.',
+            'kategori.required' => 'Kategori wajib dipilih.',
+            'kategori.in' => 'Kategori tidak valid.',
             'tanggal_laporan.required' => 'Tanggal laporan wajib diisi.',
-            'tanggal_laporan.date'     => 'Format tanggal tidak valid.',
-            'file.required'            => 'File PDF wajib diunggah.',
-            'file.mimes'               => 'File harus berformat PDF.',
-            'file.max'                 => 'Ukuran file maksimal 5MB.',
+            'tanggal_laporan.date' => 'Format tanggal tidak valid.',
+            'file.required' => 'File PDF wajib diunggah.',
+            'file.mimes' => 'File harus berformat PDF.',
+            'file.max' => 'Ukuran file maksimal 5MB.',
         ]);
 
         $filePath = $request->file('file')->store('keuangan', 'public');
 
         Finance::create([
-            'user_id'         => auth()->id(),
-            'judul'           => $validated['judul'],
-            'deskripsi'       => $validated['deskripsi'] ?? null,
-            'kategori'        => $validated['kategori'],
+            'user_id' => auth()->id(),
+            'judul' => $validated['judul'],
+            'deskripsi' => $validated['deskripsi'] ?? null,
+            'kategori' => $validated['kategori'],
             'tanggal_laporan' => $validated['tanggal_laporan'],
-            'file'            => $filePath,
+            'file' => $filePath,
         ]);
 
         return redirect()
@@ -88,6 +89,7 @@ class FinanceController extends Controller
     public function edit($id)
     {
         $finance = Finance::findOrFail($id);
+
         return view('pages.bendahara.keuangan.edit', compact('finance'));
     }
 
@@ -96,25 +98,25 @@ class FinanceController extends Controller
         $finance = Finance::findOrFail($id);
 
         $validated = $request->validate([
-            'judul'           => ['required', 'string', 'max:255'],
-            'deskripsi'       => ['nullable', 'string'],
-            'kategori'        => ['required', 'in:pemasukan,pengeluaran'],
+            'judul' => ['required', 'string', 'max:255'],
+            'deskripsi' => ['nullable', 'string'],
+            'kategori' => ['required', 'in:pemasukan,pengeluaran'],
             'tanggal_laporan' => ['required', 'date'],
-            'file'            => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // nullable saat edit
+            'file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // nullable saat edit
         ], [
-            'judul.required'           => 'Judul laporan wajib diisi.',
-            'kategori.required'        => 'Kategori wajib dipilih.',
-            'kategori.in'              => 'Kategori tidak valid.',
+            'judul.required' => 'Judul laporan wajib diisi.',
+            'kategori.required' => 'Kategori wajib dipilih.',
+            'kategori.in' => 'Kategori tidak valid.',
             'tanggal_laporan.required' => 'Tanggal laporan wajib diisi.',
-            'tanggal_laporan.date'     => 'Format tanggal tidak valid.',
-            'file.mimes'               => 'File harus berformat PDF.',
-            'file.max'                 => 'Ukuran file maksimal 5MB.',
+            'tanggal_laporan.date' => 'Format tanggal tidak valid.',
+            'file.mimes' => 'File harus berformat PDF.',
+            'file.max' => 'Ukuran file maksimal 5MB.',
         ]);
 
         $data = [
-            'judul'           => $validated['judul'],
-            'deskripsi'       => $validated['deskripsi'] ?? null,
-            'kategori'        => $validated['kategori'],
+            'judul' => $validated['judul'],
+            'deskripsi' => $validated['deskripsi'] ?? null,
+            'kategori' => $validated['kategori'],
             'tanggal_laporan' => $validated['tanggal_laporan'],
         ];
 
@@ -146,7 +148,7 @@ class FinanceController extends Controller
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Laporan keuangan berhasil dihapus.'
+                'message' => 'Laporan keuangan berhasil dihapus.',
             ]);
         }
 

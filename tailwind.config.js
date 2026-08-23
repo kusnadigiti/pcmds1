@@ -12,7 +12,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                sans: ['"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],
+                display: ['"DM Serif Display"', 'Georgia', 'serif'],
             },
             colors: {
                 primary: {
@@ -28,6 +29,7 @@ export default {
                     green: '#0d2818',
                 },
                 cream: '#f8f5ee',
+                bone: '#f0ece4',
             },
         },
     },

@@ -36,8 +36,8 @@ class ArtikelController extends Controller
                 'content' => Str::limit(strip_tags($article->content), 50),
                 'thumbnail' => asset(
                     $article->thumbnail
-                    ? 'storage/' . $article->thumbnail
-                    : 'https://picsum.photos/100/100?random=' . $article->id
+                    ? 'storage/'.$article->thumbnail
+                    : 'https://picsum.photos/100/100?random='.$article->id
                 ),
                 'status' => ucfirst($article->status ?? 'draft'),
                 'created_at' => $article->created_at?->format('d M Y') ?? 'N/A',
@@ -69,8 +69,8 @@ class ArtikelController extends Controller
 
         // Generate slug unique
         $slug = Str::slug($request->title);
-        $count = Article::where('slug', 'like', $slug . '%')->count();
-        $validated['slug'] = $count ? "{$slug}-" . ($count + 1) : $slug;
+        $count = Article::where('slug', 'like', $slug.'%')->count();
+        $validated['slug'] = $count ? "{$slug}-".($count + 1) : $slug;
 
         // Tambahkan user_id
         $validated['user_id'] = Auth::id();
@@ -134,12 +134,12 @@ class ArtikelController extends Controller
         if ($request->title !== $article->title) {
             $slug = Str::slug($request->title);
 
-            $count = Article::where('slug', 'like', $slug . '%')
+            $count = Article::where('slug', 'like', $slug.'%')
                 ->where('id', '!=', $id)
                 ->count();
 
             $validated['slug'] = $count
-                ? "{$slug}-" . ($count + 1)
+                ? "{$slug}-".($count + 1)
                 : $slug;
         }
 
@@ -148,7 +148,7 @@ class ArtikelController extends Controller
         $role = auth()->user()->role;
         $prefix = ($role === 'admin' || $role === 'superadmin') ? 'admin' : 'penulis';
 
-        return redirect()->route($prefix . '.articles')
+        return redirect()->route($prefix.'.articles')
             ->with('success', '✅ Artikel berhasil diperbarui!');
     }
 
@@ -171,7 +171,7 @@ class ArtikelController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => '✅ Artikel berhasil dihapus!'
+            'message' => '✅ Artikel berhasil dihapus!',
         ]);
     }
 }

@@ -17,15 +17,15 @@ class EnsureBendahara2FA
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
-        if (!$user->google2fa_enabled) {
+        if (! $user->google2fa_enabled) {
             return redirect()->route('bendahara.2fa.setup');
         }
 
-        if (!session('2fa_passed')) {
+        if (! session('2fa_passed')) {
             return redirect()->route('bendahara.2fa.verify');
         }
 

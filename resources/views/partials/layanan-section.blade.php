@@ -1,30 +1,19 @@
-{{-- ═══════════════════════════════════════════════════════════════
-     AMAL USAHA SECTION — Cream theme, fully styled with Tailwind CSS
-     ═══════════════════════════════════════════════════════════════ --}}
-
 @php
-    /*
-     * Config per tipe — untuk icon, warna gradient, dan label badge.
-     * Nama & deskripsi slide sepenuhnya diambil dari database.
-     */
     $tipeConfig = [
         'bidang_kesehatan' => [
             'label' => 'Bidang Kesehatan',
             'icon_lucide' => 'hospital',
-            'badge' => 'bg-sky-100 text-sky-800',
-            'gradient' => 'from-sky-900 to-sky-600',
+            'badge' => 'bg-sky-50 text-sky-700',
         ],
         'bidang_pendidikan' => [
             'label' => 'Bidang Pendidikan',
             'icon_lucide' => 'graduation-cap',
-            'badge' => 'bg-amber-100 text-amber-800',
-            'gradient' => 'from-amber-700 to-amber-500',
+            'badge' => 'bg-amber-50 text-amber-700',
         ],
         'bidang_sosial' => [
             'label' => 'Bidang Sosial',
             'icon_lucide' => 'hand-helping',
-            'badge' => 'bg-indigo-100 text-indigo-800',
-            'gradient' => 'from-indigo-900 to-indigo-600',
+            'badge' => 'bg-indigo-50 text-indigo-700',
         ],
     ];
 
@@ -32,54 +21,47 @@
 @endphp
 
 @if ($totalSlides > 0)
-    <section id="amal-usaha-section" class="bg-cream py-20 relative overflow-hidden">
-        {{-- Background pattern --}}
-        <div class="islamic-pattern absolute inset-0 opacity-[0.35] pointer-events-none"></div>
+    <section id="amal-usaha-section" class="bg-bone py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-
-            <!-- HEADER -->
+            {{-- HEADER --}}
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                 <div>
-                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight m-0">
-                        Gerak <span class="text-primary font-normal italic">Nyata</span><br>PCM Duren Sawit
+                    <span class="section-label section-label-dark">Layanan &amp; Unit</span>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl leading-[1.15] text-gray-900">
+                        Gerak Nyata<br>PCM Duren Sawit
                     </h2>
                 </div>
-                <div class="flex flex-col items-start md:items-end gap-3.5">
-                    <p class="text-sm text-gray-500 leading-relaxed text-left md:text-right max-w-xs m-0">
-                        Amal usaha yang menggerakkan kehidupan bermasyarakat PCM Duren Sawit.
-                    </p>
-                    <div class="w-40 sm:w-60 h-0.5 bg-primary/10 rounded-full overflow-hidden">
-                        <div class="h-full bg-gray-900 rounded-full w-0 transition-all duration-[linear]" id="auProgressFill"></div>
-                    </div>
-                </div>
+                <p class="text-sm text-gray-500 leading-relaxed text-left md:text-right max-w-xs m-0">
+                    Amal usaha yang menggerakkan kehidupan bermasyarakat PCM Duren Sawit.
+                </p>
             </div>
 
-            <!-- FILTER TABS -->
+            {{-- FILTER TABS --}}
             <div class="flex gap-2 flex-wrap mb-8" id="auTipeTabs">
-                <button class="px-4 py-1.5 rounded-full text-xs font-semibold border border-transparent bg-gray-900 text-white cursor-pointer transition duration-200 au-tipe-tab" data-tipe="all">
+                <button class="px-4 py-1.5 rounded-lg text-xs font-semibold border border-gray-900 bg-gray-900 text-white cursor-pointer transition duration-200 au-tipe-tab" data-tipe="all">
                     Semua
                 </button>
                 @foreach ($amalUsahaGrouped as $group)
-                    @php 
+                    @php
                         $cfg = $tipeConfig[$group['tipe']] ?? [
-                            'label' => ucwords(str_replace('_', ' ', $group['tipe'])), 
-                            'badge' => 'bg-emerald-100 text-emerald-800'
-                        ]; 
+                            'label' => ucwords(str_replace('_', ' ', $group['tipe'])),
+                            'badge' => 'bg-emerald-50 text-emerald-700'
+                        ];
                     @endphp
-                    <button class="px-4 py-1.5 rounded-full text-xs font-semibold border border-primary/15 bg-transparent text-gray-500 cursor-pointer transition duration-200 hover:border-gray-900 hover:text-gray-900 au-tipe-tab" data-tipe="{{ $group['tipe'] }}">
+                    <button class="px-4 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 bg-transparent text-gray-500 cursor-pointer transition duration-200 hover:border-gray-900 hover:text-gray-900 au-tipe-tab" data-tipe="{{ $group['tipe'] }}">
                         {{ $cfg['label'] }} ({{ $group['count'] }})
                     </button>
                 @endforeach
             </div>
 
-            <!-- SLIDER -->
+            {{-- SLIDER --}}
             <div class="relative">
-                <button class="absolute top-1/2 -translate-y-1/2 w-11 h-11 bg-white border border-primary/10 rounded-full flex items-center justify-center cursor-pointer z-20 shadow-lg transition duration-200 hover:bg-gray-900 hover:border-gray-900 group active:scale-95 -left-3 md:-left-5" onclick="auSlide(-1)" aria-label="Sebelumnya">
-                    <i data-lucide="chevron-left" class="w-5 h-5 text-gray-700 transition-colors duration-200 group-hover:text-white"></i>
+                <button class="absolute top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center cursor-pointer z-20 shadow-md transition duration-200 hover:bg-gray-900 hover:border-gray-900 group active:scale-95 -left-3 md:-left-5" onclick="auSlide(-1)" aria-label="Sebelumnya">
+                    <i data-lucide="chevron-left" class="w-4 h-4 text-gray-600 transition-colors duration-200 group-hover:text-white"></i>
                 </button>
 
-                <div class="overflow-hidden rounded-2xl">
+                <div class="overflow-hidden rounded-xl">
                     <div class="flex transition-transform duration-700 ease-in-out" id="auSliderTrack">
 
                         @foreach ($amalUsahaList as $index => $item)
@@ -87,54 +69,42 @@
                                 $cfg = $tipeConfig[$item->tipe] ?? [
                                     'label' => ucwords(str_replace('_', ' ', $item->tipe)),
                                     'icon_lucide' => 'clipboard',
-                                    'badge' => 'bg-emerald-100 text-emerald-800',
-                                    'gradient' => 'from-primary to-primary-light',
+                                    'badge' => 'bg-emerald-50 text-emerald-700',
                                 ];
                             @endphp
 
-                            <div class="au-slide group/slide min-w-full grid grid-cols-1 md:grid-cols-2 min-h-[420px]" data-tipe="{{ $item->tipe }}">
+                            <div class="au-slide group/slide min-w-full grid grid-cols-1 md:grid-cols-2 min-h-[380px]" data-tipe="{{ $item->tipe }}">
 
-                                <!-- LEFT CONTENT -->
-                                <div class="p-8 md:p-12 flex flex-col justify-center bg-white border border-primary/10 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none md:border-r-0">
+                                {{-- LEFT CONTENT --}}
+                                <div class="p-8 md:p-10 flex flex-col justify-center bg-white border border-gray-200 rounded-t-xl md:rounded-l-xl md:rounded-tr-none md:border-r-0">
 
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold max-w-max mb-4 {{ $cfg['badge'] }}">
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                                            <circle cx="5" cy="5" r="3" fill="currentColor" />
-                                        </svg>
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold max-w-max mb-4 {{ $cfg['badge'] }}">
                                         {{ $cfg['label'] }}
                                     </span>
 
-                                    <h3 class="font-bold text-3xl md:text-4xl text-gray-900 tracking-tight leading-none mb-2">{{ $item->nama }}</h3>
+                                    <h3 class="font-display text-2xl md:text-3xl text-gray-900 leading-snug mb-3">{{ $item->nama }}</h3>
 
                                     @if ($item->deskripsi)
-                                        <div class="mb-4">
-                                            <p class="text-sm text-gray-500 leading-relaxed m-0 line-clamp-4">{{ Str::limit($item->deskripsi, 250) }}</p>
-                                        </div>
+                                        <p class="text-sm text-gray-500 leading-relaxed m-0 line-clamp-4 mb-4">{{ Str::limit($item->deskripsi, 250) }}</p>
                                     @endif
 
                                     @if ($item->organisasiOtonom)
-                                        <div class="mb-6">
-                                            <span class="inline-flex items-center gap-1.5 text-xs text-gray-600 font-semibold bg-gray-50 border border-gray-100 py-1.5 px-3.5 rounded-full">
-                                                <i data-lucide="award" class="w-3.5 h-3.5 text-gray-500"></i>
-                                                {{ $item->organisasiOtonom->nama }}
-                                            </span>
-                                        </div>
+                                        <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 font-medium bg-gray-50 border border-gray-100 py-1 px-3 rounded-lg max-w-max">
+                                            <i data-lucide="award" class="w-3.5 h-3.5 text-gray-400"></i>
+                                            {{ $item->organisasiOtonom->nama }}
+                                        </span>
                                     @endif
-
-                                    <div class="w-9 h-[1.5px] bg-primary/10 mb-4"></div>
-
                                 </div>
 
-                                <!-- RIGHT VISUAL -->
-                                <div class="relative overflow-hidden rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none min-h-[200px] md:min-h-full flex items-center justify-center bg-gradient-to-br {{ $cfg['gradient'] }}">
-                                    <div class="absolute inset-0 opacity-[0.08] pointer-events-none bg-[radial-gradient(circle_at_30%_70%,_white_1px,_transparent_1px),_radial-gradient(circle_at_70%_30%,_white_1px,_transparent_1px)] bg-[size:32px_32px] z-10"></div>
+                                {{-- RIGHT VISUAL --}}
+                                <div class="relative overflow-hidden rounded-b-xl md:rounded-r-xl md:rounded-bl-none min-h-[200px] md:min-h-full flex items-center justify-center bg-gray-100">
                                     @if ($item->foto)
                                         <img src="{{ Storage::url($item->foto) }}" alt="{{ $item->nama }}"
-                                            class="absolute inset-0 w-full h-full object-cover opacity-40 z-0 transition-opacity duration-500 group-[.au-slide-active]/slide:opacity-55"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-50 transition-opacity duration-500 group-[.au-slide-active]/slide:opacity-65"
                                             loading="lazy">
                                     @endif
-                                    <i data-lucide="{{ $cfg['icon_lucide'] }}" class="w-24 h-24 stroke-[1.2] opacity-25 z-10 filter drop-shadow-lg transition-transform duration-500 group-[.au-slide-active]/slide:scale-105 text-white"></i>
-                                    <span class="absolute bottom-6 left-6 text-[10px] font-semibold tracking-wider text-white/50 uppercase z-10">{{ $cfg['label'] }}</span>
+                                    <i data-lucide="{{ $cfg['icon_lucide'] }}" class="w-16 h-16 stroke-[1.5] text-gray-400 z-10 transition-transform duration-500 group-[.au-slide-active]/slide:scale-105"></i>
+                                    <span class="absolute bottom-5 left-5 text-[10px] font-semibold tracking-wider text-gray-400 uppercase z-10">{{ $cfg['label'] }}</span>
                                 </div>
 
                             </div>
@@ -143,12 +113,12 @@
                     </div>
                 </div>
 
-                <button class="absolute top-1/2 -translate-y-1/2 w-11 h-11 bg-white border border-primary/10 rounded-full flex items-center justify-center cursor-pointer z-20 shadow-lg transition duration-200 hover:bg-gray-900 hover:border-gray-900 group active:scale-95 -right-3 md:-right-5" onclick="auSlide(1)" aria-label="Berikutnya">
-                    <i data-lucide="chevron-right" class="w-5 h-5 text-gray-700 transition-colors duration-200 group-hover:text-white"></i>
+                <button class="absolute top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center cursor-pointer z-20 shadow-md transition duration-200 hover:bg-gray-900 hover:border-gray-900 group active:scale-95 -right-3 md:-right-5" onclick="auSlide(1)" aria-label="Berikutnya">
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-gray-600 transition-colors duration-200 group-hover:text-white"></i>
                 </button>
             </div>
 
-            <!-- DOTS & COUNTER -->
+            {{-- DOTS & COUNTER --}}
             <div class="flex items-center justify-between mt-5">
                 <div class="flex items-center justify-center gap-2 mt-7" id="auDots"></div>
                 <span class="text-xs text-gray-400 tracking-wider">
@@ -168,20 +138,17 @@
             const dotsWrap = document.getElementById('auDots');
             const currentEl = document.getElementById('auCurrent');
             const totalEl = document.getElementById('auTotal');
-            const progressEl = document.getElementById('auProgressFill');
 
-            /* ── Semua slides (NodeList) ── */
             let allSlides = Array.from(track.querySelectorAll('.au-slide'));
-            let visible = [...allSlides]; // slides yang sedang ditampilkan
+            let visible = [...allSlides];
             let current = 0;
             let timer = null;
 
-            /* ── Build dots ── */
             function buildDots(count) {
                 dotsWrap.innerHTML = '';
                 for (let i = 0; i < count; i++) {
                     const d = document.createElement('button');
-                    d.className = 'w-1.5 h-1.5 rounded-full bg-primary/15 border-none p-0 cursor-pointer transition-all duration-300' + (i === 0 ? ' w-5 bg-gray-900' : '');
+                    d.className = 'w-1.5 h-1.5 rounded-full bg-gray-300 border-none p-0 cursor-pointer transition-all duration-300' + (i === 0 ? ' w-5 bg-gray-900' : '');
                     d.setAttribute('aria-label', 'Slide ' + (i + 1));
                     d.addEventListener('click', () => {
                         clearInterval(timer);
@@ -192,17 +159,16 @@
                 }
             }
 
-            /* ── Filter by tipe ── */
             document.getElementById('auTipeTabs').addEventListener('click', (e) => {
                 const btn = e.target.closest('.au-tipe-tab');
                 if (!btn) return;
 
                 document.querySelectorAll('.au-tipe-tab').forEach(t => {
                     t.classList.remove('bg-gray-900', 'text-white', 'border-gray-900');
-                    t.classList.add('bg-transparent', 'text-gray-500', 'border-primary/15');
+                    t.classList.add('bg-transparent', 'text-gray-500', 'border-gray-200');
                 });
                 btn.classList.add('bg-gray-900', 'text-white', 'border-gray-900');
-                btn.classList.remove('bg-transparent', 'text-gray-500', 'border-primary/15');
+                btn.classList.remove('bg-transparent', 'text-gray-500', 'border-gray-200');
 
                 const tipe = btn.dataset.tipe;
 
@@ -219,7 +185,6 @@
                 buildDots(visible.length);
             });
 
-            /* ── goTo ── */
             function goTo(idx) {
                 if (visible.length === 0) return;
                 current = ((idx % visible.length) + visible.length) % visible.length;
@@ -232,7 +197,7 @@
                     if (i === current) {
                         d.className = 'w-5 h-1.5 rounded-full bg-gray-900 border-none p-0 cursor-pointer transition-all duration-300';
                     } else {
-                        d.className = 'w-1.5 h-1.5 rounded-full bg-primary/15 border-none p-0 cursor-pointer transition-all duration-300';
+                        d.className = 'w-1.5 h-1.5 rounded-full bg-gray-300 border-none p-0 cursor-pointer transition-all duration-300';
                     }
                 });
 
@@ -241,8 +206,6 @@
                 allSlides.forEach((s) => {
                     s.classList.toggle('au-slide-active', s === targetSlide);
                 });
-
-                resetProgress();
             }
 
             window.auSlide = function(dir) {
@@ -251,46 +214,26 @@
                 startAuto();
             };
 
-            /* ── Progress bar ── */
-            function resetProgress() {
-                if (!progressEl) return;
-                progressEl.style.transition = 'none';
-                progressEl.style.width = '0%';
-                requestAnimationFrame(() => {
-                    progressEl.style.transition = `width ${INTERVAL}ms linear`;
-                    progressEl.style.width = '100%';
-                });
-            }
-
-            /* ── Auto-advance ── */
             function startAuto() {
                 clearInterval(timer);
-                resetProgress();
                 timer = setInterval(() => goTo(current + 1), INTERVAL);
             }
 
-            /* ── Pause on hover ── */
             const section = document.getElementById('amal-usaha-section');
             if (section) {
                 section.addEventListener('mouseenter', () => clearInterval(timer));
                 section.addEventListener('mouseleave', () => startAuto());
             }
 
-            /* ── Touch swipe ── */
             let touchX = 0;
             track.addEventListener('touchstart', e => {
                 touchX = e.touches[0].clientX;
-            }, {
-                passive: true
-            });
+            }, { passive: true });
             track.addEventListener('touchend', e => {
                 const diff = touchX - e.changedTouches[0].clientX;
                 if (Math.abs(diff) > 40) window.auSlide(diff > 0 ? 1 : -1);
-            }, {
-                passive: true
-            });
+            }, { passive: true });
 
-            /* ── Init ── */
             buildDots(visible.length);
             goTo(0);
             startAuto();

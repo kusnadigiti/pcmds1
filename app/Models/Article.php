@@ -13,10 +13,10 @@ class Article extends Model
         'content',
         'thumbnail',
         'status',
-        'user_id'
+        'user_id',
     ];
 
-    public  function getRouteKeyName()
+    public function getRouteKeyName()
     {
         return 'slug';
     }

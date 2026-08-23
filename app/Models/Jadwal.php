@@ -13,7 +13,7 @@ class Jadwal extends Model
         'tanggal',
         'waktu',
         'lokasi',
-        'deskripsi'
+        'deskripsi',
     ];
 
     protected $casts = [

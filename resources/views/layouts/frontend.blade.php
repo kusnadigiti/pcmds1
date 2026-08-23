@@ -41,7 +41,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 
     <style>
         :root {
@@ -73,6 +73,10 @@
             tailwind.config = {
                 theme: {
                     extend: {
+                        fontFamily: {
+                            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                            display: ['"DM Serif Display"', 'Georgia', 'serif'],
+                        },
                         colors: {
                             primary: '#0d5c3a',
                             'primary-light': '#167a4e',
@@ -90,7 +94,7 @@
     @stack('styles')
     @yield('styles')
 </head>
-<body class="min-h-screen flex flex-col bg-cream text-gray-900">
+<body class="min-h-screen flex flex-col bg-cream text-gray-900 antialiased">
 
     @include('layouts.navigation')
 
