@@ -371,7 +371,7 @@
 
     var root = document.getElementById('root-list');
     if (root) {
-        Sortable.create(root, { handle: '.grip', animation: 150, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen', filter: 'ul', onEnd: dirty });
+        Sortable.create(root, { handle: '.grip', animation: 150, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen', onEnd: dirty });
     }
     document.querySelectorAll('[id^="kids-"]').forEach(function(el) {
         Sortable.create(el, { handle: '.grip', animation: 150, ghostClass: 'sortable-ghost', onEnd: dirty });
