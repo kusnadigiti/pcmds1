@@ -7,6 +7,33 @@
 @section('og_type', 'article')
 @section('og_image', $berita->gambar ? asset('storage/' . $berita->gambar) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
+@section('schema')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "NewsArticle",
+  "headline": "{{ addslashes($berita->judul) }}",
+  "image": ["{{ $berita->gambar ? asset('storage/' . $berita->gambar) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}"],
+  "datePublished": "{{ $berita->created_at ? $berita->created_at->toIso8601String() : now()->toIso8601String() }}",
+  "dateModified": "{{ $berita->updated_at ? $berita->updated_at->toIso8601String() : now()->toIso8601String() }}",
+  "author": [{
+      "@@type": "Organization",
+      "name": "PCM Duren Sawit 1",
+      "url": "{{ url('/') }}"
+  }],
+  "publisher": {
+    "@@type": "Organization",
+    "name": "PCM Duren Sawit 1",
+    "logo": {
+      "@@type": "ImageObject",
+      "url": "https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg"
+    }
+  },
+  "description": "{{ addslashes(Str::limit(strip_tags($berita->isi), 150)) }}"
+}
+</script>
+@endsection
+
 @section('styles')
     <style>
         .serif { font-family: 'Playfair Display', serif; }

@@ -1,9 +1,37 @@
 @extends('layouts.frontend')
 
-@section('title', $label . '- Amal Usaha PCM Duren Sawit 1')
+@section('title', $label . ' — Amal Usaha PCM Duren Sawit 1')
+@section('meta_description', 'Daftar unit Amal Usaha Muhammadiyah PCM Duren Sawit 1 dalam kategori ' . $label . '.')
+@section('meta_keywords', 'Amal Usaha, ' . $label . ', PCM Duren Sawit 1, Muhammadiyah Duren Sawit')
+@section('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
-@section('meta')
-    <meta name="description" content="Daftar Amal Usaha Muhammadiyah PCM Duren Sawit 1 — {{ $label }}">
+@section('schema')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@@type": "ListItem",
+      "position": 1,
+      "name": "Beranda",
+      "item": "{{ url('/') }}"
+    },
+    {
+      "@@type": "ListItem",
+      "position": 2,
+      "name": "Amal Usaha",
+      "item": "{{ url('/#amal-usaha') }}"
+    },
+    {
+      "@@type": "ListItem",
+      "position": 3,
+      "name": "{{ $label }}",
+      "item": "{{ url()->current() }}"
+    }
+  ]
+}
+</script>
 @endsection
 
 @section('content')

@@ -1,6 +1,9 @@
 @extends('layouts.frontend')
 
-@section('title', 'Artikel — PCM Duren Sawit 1')
+@section('title', 'Daftar Artikel & Opini — PCM Duren Sawit 1')
+@section('meta_description', 'Kumpulan artikel, tulisan, dan kajian ilmiah populer Pimpinan Cabang Muhammadiyah Duren Sawit 1.')
+@section('meta_keywords', 'Artikel Muhammadiyah, Kajian Islam, Opini Muhammadiyah, PCM Duren Sawit 1, Duren Sawit')
+@section('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
 @section('styles')
     <style>

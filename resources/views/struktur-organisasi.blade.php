@@ -1,6 +1,9 @@
 @extends('layouts.frontend')
 
 @section('title', 'Struktur Organisasi | PCM Duren Sawit 1')
+@section('meta_description', 'Bagan dan susunan Pimpinan Cabang Muhammadiyah Duren Sawit 1 beserta jajaran ketua, sekretaris, bendahara, dan majelis.')
+@section('meta_keywords', 'Struktur Organisasi, Pengurus PCM Duren Sawit 1, Muhammadiyah Duren Sawit, Pimpinan Cabang')
+@section('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
 @section('styles')
     <style>

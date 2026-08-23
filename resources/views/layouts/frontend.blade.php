@@ -4,35 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#0d5c3a">
 
     <!-- Primary SEO Meta Tags -->
     <title>@yield('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')</title>
     <meta name="description" content="@yield('meta_description', 'Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit. Update informasi, berita, kajian, program unggulan, dan layanan sosial.')">
-    <meta name="keywords" content="@yield('meta_keywords', 'PCM Duren Sawit 1, Muhammadiyah Duren Sawit, Kajian Islam, Amal Usaha Muhammadiyah, Berita Muhammadiyah, Duren Sawit')">
-    <meta name="author" content="PCM Duren Sawit 1">
-    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="@yield('meta_keywords', 'PCM Duren Sawit 1, Muhammadiyah Duren Sawit, Kajian Islam, Amal Usaha Muhammadiyah, Berita Muhammadiyah, Duren Sawit, Organisasi Islam')">
+    <meta name="author" content="@yield('meta_author', 'PCM Duren Sawit 1')">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1')">
     <link rel="canonical" href="{{ url()->current() }}" />
 
-    <!-- Open Graph / Facebook / WhatsApp -->
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')">
     <meta property="og:description" content="@yield('meta_description', 'Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit. Update informasi, berita, kajian, program unggulan, dan layanan sosial.')">
     <meta property="og:image" content="@yield('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')">
     <meta property="og:image:secure_url" content="@yield('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="PCM Duren Sawit 1">
+    <meta property="og:locale" content="id_ID">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="@yield('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')">
-    <meta property="twitter:description" content="@yield('meta_description', 'Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit. Update informasi, berita, kajian, program unggulan, dan layanan sosial.')">
-    <meta property="twitter:image" content="@yield('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="@yield('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit. Update informasi, berita, kajian, program unggulan, dan layanan sosial.')">
+    <meta name="twitter:image" content="@yield('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')">
 
     @yield('meta')
+    @stack('meta')
+
+    <!-- JSON-LD Structured Data -->
+    @yield('schema')
+    @stack('schema')
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

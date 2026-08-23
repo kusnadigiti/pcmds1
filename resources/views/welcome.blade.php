@@ -1,14 +1,93 @@
 @extends('layouts.frontend')
 
 @section('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')
+@section('meta_description', 'Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit. Portal resmi berita, kajian, organisasi otonom, dan amal usaha Muhammadiyah Duren Sawit 1.')
+@section('meta_keywords', 'PCM Duren Sawit 1, Muhammadiyah Duren Sawit, Kajian Islam, Amal Usaha Muhammadiyah, Berita Muhammadiyah, Jakarta Timur')
+@section('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
-@section('meta')
-    <meta name="description" content="Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit">
+@section('schema')
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@graph": [
+        {
+          "@@type": "Organization",
+          "@@id": "{{ url('/') }}#organization",
+          "name": "PCM Duren Sawit 1",
+          "alternateName": "Pimpinan Cabang Muhammadiyah Duren Sawit 1",
+          "url": "{{ url('/') }}",
+          "logo": "https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg",
+          "description": "Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit."
+        },
+        {
+          "@@type": "WebSite",
+          "@@id": "{{ url('/') }}#website",
+          "url": "{{ url('/') }}",
+          "name": "PCM Duren Sawit 1",
+          "publisher": {
+            "@@id": "{{ url('/') }}#organization"
+          },
+          "inLanguage": "id-ID"
+        },
+        {
+          "@@type": "ItemList",
+          "@@id": "{{ url('/') }}#sitelinks",
+          "name": "Navigasi Utama",
+          "itemListElement": [
+            {
+              "@@type": "SiteNavigationElement",
+              "position": 1,
+              "name": "Struktur Organisasi",
+              "description": "Bagan dan susunan pimpinan PCM Duren Sawit 1",
+              "url": "{{ route('struktur-organisasi') }}"
+            },
+            {
+              "@@type": "SiteNavigationElement",
+              "position": 2,
+              "name": "Berita & Informasi",
+              "description": "Kabar kegiatan dan berita Muhammadiyah Duren Sawit 1",
+              "url": "{{ route('berita.all') }}"
+            },
+            {
+              "@@type": "SiteNavigationElement",
+              "position": 3,
+              "name": "Artikel & Opini",
+              "description": "Kajian dan artikel keislaman berkemajuan",
+              "url": "{{ route('articles.show-all') }}"
+            },
+            {
+              "@@type": "SiteNavigationElement",
+              "position": 4,
+              "name": "Amal Usaha Pendidikan",
+              "description": "Unit sekolah dan pendidikan Muhammadiyah Duren Sawit 1",
+              "url": "{{ route('amal-usaha.by-kategori', 'bidang-pendidikan') }}"
+            },
+            {
+              "@@type": "SiteNavigationElement",
+              "position": 5,
+              "name": "Amal Usaha Kesehatan",
+              "description": "Layanan dan fasilitas kesehatan Muhammadiyah Duren Sawit 1",
+              "url": "{{ route('amal-usaha.by-kategori', 'bidang-kesehatan') }}"
+            },
+            {
+              "@@type": "SiteNavigationElement",
+              "position": 6,
+              "name": "Amal Usaha Kesejahteraan Sosial",
+              "description": "Layanan sosial dan pemberdayaan masyarakat",
+              "url": "{{ route('amal-usaha.by-kategori', 'bidang-kesejahteraan-sosial') }}"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 @endsection
 
 @section('styles')
     <style>
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 @endsection
 
@@ -79,7 +158,7 @@
         }
 
         // Scrollspy logic to highlight active navbar item
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             if (window.location.pathname !== '/') return;
 
             const sections = [
@@ -98,7 +177,7 @@
             function makeActive(navName) {
                 navLinks.forEach(link => {
                     const isMobile = link.classList.contains('block');
-                    
+
                     if (link.getAttribute('data-nav') === navName) {
                         if (isMobile) {
                             link.classList.remove('text-white/80');
@@ -123,25 +202,25 @@
                 let scrollPosition = window.scrollY || document.documentElement.scrollTop;
                 const offset = 120; // accounting for navigation bar height
                 let activeNav = 'beranda';
-                
+
                 for (let i = 0; i < sections.length; i++) {
                     const el = document.getElementById(sections[i].id);
                     if (el) {
                         const top = el.offsetTop - offset;
                         const bottom = top + el.offsetHeight;
-                        
+
                         if (scrollPosition >= top && scrollPosition < bottom) {
                             activeNav = sections[i].nav;
                             break;
                         }
                     }
                 }
-                
+
                 // Bottom of the page check
                 if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
                     activeNav = 'kontak';
                 }
-                
+
                 makeActive(activeNav);
             }
 
@@ -174,11 +253,11 @@
                 track.style.transform = `translateX(-${currentIndex * 100}%)`;
             }
 
-            window.nextSlide = function() {
+            window.nextSlide = function () {
                 currentIndex = (currentIndex + 1) % totalSlides;
                 updateSlider();
             }
-            window.prevSlide = function() {
+            window.prevSlide = function () {
                 currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
                 updateSlider();
             }
@@ -233,9 +312,9 @@
         }
 
         // Tutup dengan Escape
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key !== 'Escape') return;
-            document.querySelectorAll('[id^="modal"]').forEach(function(el) {
+            document.querySelectorAll('[id^="modal"]').forEach(function (el) {
                 if (!el.classList.contains('hidden') || el.style.display !== 'none') {
                     closeModal(el.id);
                 }

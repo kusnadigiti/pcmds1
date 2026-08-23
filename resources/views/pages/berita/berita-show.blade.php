@@ -1,6 +1,9 @@
 @extends('layouts.frontend')
 
-@section('title', 'Berita — PCM Duren Sawit 1')
+@section('title', ($kategori ? ucfirst($kategori) . ' — ' : '') . 'Berita & Informasi — PCM Duren Sawit 1')
+@section('meta_description', 'Kumpulan berita, artikel, dan kabar kegiatan Pimpinan Cabang Muhammadiyah Duren Sawit 1' . ($kategori ? ' kategori ' . $kategori : '') . '.')
+@section('meta_keywords', 'Berita Muhammadiyah, PCM Duren Sawit 1, Duren Sawit, Kegiatan Muhammadiyah' . ($kategori ? ', ' . $kategori : ''))
+@section('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
 @section('styles')
     <style>

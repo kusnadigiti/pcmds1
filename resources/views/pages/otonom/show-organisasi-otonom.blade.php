@@ -1,6 +1,9 @@
 @extends('layouts.frontend')
 
-@section('title', $org->nama . ' — Muhammadiyah')
+@section('title', $org->nama . ' — PCM Duren Sawit 1')
+@section('meta_description', 'Profil ' . $org->nama . ' (' . ($org->singkatan ?? 'Ortom') . ') Pimpinan Cabang Muhammadiyah Duren Sawit 1. Visi, misi, dan susunan kepengurusan.')
+@section('meta_keywords', $org->nama . ', ' . ($org->singkatan ?? 'Ortom') . ', Organisasi Otonom Muhammadiyah, PCM Duren Sawit 1')
+@section('og_image', $org->logo ? asset('storage/' . $org->logo) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
 @section('styles')
     <style>

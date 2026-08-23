@@ -40,7 +40,7 @@
             <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                 <button
                     class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg transition duration-200 flex items-center gap-1 cursor-pointer">
-                    Profil
+                    Tentang PCM Duren Sawit 1
                     <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -55,14 +55,15 @@
                         <a href="{{ route('struktur-organisasi') }}"
                             class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Struktur
                             Organisasi</a>
+                        <a href="{{ route('articles.show-all') }}"
+                            class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Artikel Terbaru</a>
+                        <a href="{{ route('berita.all') }}"
+                            class="block px-4 py-2.5 text-sm text-white/85 hover:text-secondary hover:bg-secondary/10 transition duration-200 no-underline">Berita & Kegiatan Terbaru</a>
                     </div>
                 </div>
             </div>
 
-            <a href="/#artikel" onclick="handleNav(event,'artikel')" data-nav="artikel"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Artikel</a>
-            <a href="/#berita" onclick="handleNav(event,'berita')" data-nav="berita"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Berita</a>
+
             {{-- PRM (Dropdown) --}}
             <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                 <button
@@ -113,7 +114,7 @@
                 <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                     <button
                         class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg transition duration-200 flex items-center gap-1 cursor-pointer">
-                        Ortom
+                        Organiasi Otonom
                         <svg class="w-3 h-3 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -135,7 +136,7 @@
 
             {{-- Kontak --}}
             <a href="/#kontak" onclick="handleNav(event,'kontak')" data-nav="kontak"
-                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Kontak</a>
+                class="text-white/80 hover:text-secondary hover:bg-secondary/10 text-[13px] font-medium py-1.5 px-3.5 rounded-lg no-underline transition duration-200">Hubungi Kami</a>
 
             @auth
                 @php

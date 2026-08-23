@@ -1,6 +1,9 @@
 @extends('layouts.frontend')
 
-@section('title', ($organisasi->nama ?? 'Daftar Anggota') . ' — Muhammadiyah')
+@section('title', 'Daftar Pengurus ' . ($organisasi->nama ?? 'Organisasi') . ' — PCM Duren Sawit 1')
+@section('meta_description', 'Daftar lengkap jajaran pengurus dan anggota ' . ($organisasi->nama ?? 'organisasi') . ' Pimpinan Cabang Muhammadiyah Duren Sawit 1.')
+@section('meta_keywords', 'Pengurus ' . ($organisasi->nama ?? '') . ', ' . ($organisasi->singkatan ?? '') . ', PCM Duren Sawit 1, Muhammadiyah')
+@section('og_image', isset($organisasi) && $organisasi->logo ? asset('storage/' . $organisasi->logo) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
 
 @section('content')
     {{-- ── HERO ── --}}

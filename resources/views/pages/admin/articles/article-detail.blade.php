@@ -25,11 +25,36 @@
     <meta property="og:site_name" content="PCM Duren Sawit 1">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="{{ $article->title }} — PCM Duren Sawit 1">
-    <meta property="twitter:description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
-    <meta property="twitter:image" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="{{ $article->title }} — PCM Duren Sawit 1">
+    <meta name="twitter:description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
+    <meta name="twitter:image" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "Article",
+      "headline": "{{ addslashes($article->title) }}",
+      "image": ["{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}"],
+      "datePublished": "{{ $article->created_at ? $article->created_at->toIso8601String() : now()->toIso8601String() }}",
+      "dateModified": "{{ $article->updated_at ? $article->updated_at->toIso8601String() : now()->toIso8601String() }}",
+      "author": [{
+          "@@type": "Person",
+          "name": "{{ addslashes($article->author ?? 'PCM Duren Sawit 1') }}"
+      }],
+      "publisher": {
+        "@@type": "Organization",
+        "name": "PCM Duren Sawit 1",
+        "logo": {
+          "@@type": "ImageObject",
+          "url": "https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg"
+        }
+      },
+      "description": "{{ addslashes(Str::limit(strip_tags($article->content), 150)) }}"
+    }
+    </script>
 
     {{-- Tailwind CDN --}}
     <script src="https://cdn.tailwindcss.com"></script>
