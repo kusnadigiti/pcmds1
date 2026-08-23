@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PengurusController;
 use App\Http\Controllers\Admin\AmalUsahaController;
 use App\Http\Controllers\Admin\HeroSectionsController;
 use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\NavMenuController;
 use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Bendahara\FinanceController;
 use App\Http\Controllers\Bendahara\DashboardController;
@@ -192,6 +193,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
             Route::delete('/manage-user/{id}', [ManageUserController::class, 'destroy'])
                 ->name('manage-user.destroy');
+
+            // Navbar Menu Manager
+            Route::get('/navbar-menu', [NavMenuController::class, 'index'])->name('navbar-menu.index');
+            Route::post('/navbar-menu', [NavMenuController::class, 'store'])->name('navbar-menu.store');
+            Route::put('/navbar-menu/{navMenu}', [NavMenuController::class, 'update'])->name('navbar-menu.update');
+            Route::delete('/navbar-menu/{navMenu}', [NavMenuController::class, 'destroy'])->name('navbar-menu.destroy');
+            Route::patch('/navbar-menu/{navMenu}/toggle', [NavMenuController::class, 'toggleVisibility'])->name('navbar-menu.toggle');
+            Route::post('/navbar-menu/reorder', [NavMenuController::class, 'reorder'])->name('navbar-menu.reorder');
         });
     });
 });

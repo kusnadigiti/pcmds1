@@ -216,6 +216,21 @@
                         <span class="nav-label">Manajemen Akun</span>
                     </a>
 
+                    {{-- Navbar Menu Manager --}}
+                    <a href="{{ route('admin.navbar-menu.index') }}"
+                        class="nav-item {{ request()->routeIs('admin.navbar-menu*') ? 'active' : '' }}"
+                        data-label="Menu Navbar">
+                        <div class="nav-icon">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <rect x="2" y="3.5" width="12" height="1.3" rx=".65" fill="currentColor"/>
+                                <rect x="2" y="7.4" width="9" height="1.3" rx=".65" fill="currentColor"/>
+                                <rect x="2" y="11.2" width="11" height="1.3" rx=".65" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <span class="nav-label">Menu Navbar</span>
+                    </a>
+
+
                     {{-- <a href="{{ route('bendahara.keuangan.index') }}"
                         class="nav-item {{ request()->routeIs('bendahara.keuangan.index*') ? 'active' : '' }}"
                         data-label="Keuangan">
