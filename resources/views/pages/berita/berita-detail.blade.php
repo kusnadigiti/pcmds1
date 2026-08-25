@@ -107,83 +107,97 @@
             <span class="mx-1">/</span> {{ Str::limit($berita->judul, 40) }}
         </nav>
 
-        {{-- Kartu artikel single post --}}
-        <article class="bg-white border border-[#eaeaea] cm-card-shadow p-5 md:p-8 mb-[30px]">
-            <div class="mb-1.5">
-                <span class="cm-cat-badge">{{ ucfirst($berita->kategori ?? 'Umum') }}</span>
-            </div>
+        {{-- GRID UTAMA 70 / 30 --}}
+        <div class="grid grid-cols-1 lg:grid-cols-[70.17%_1fr] gap-[30px] items-start">
 
-            <h1 class="text-[26px] md:text-[32px] leading-tight font-semibold text-[#333333] m-0 mb-3">
-                {{ $berita->judul }}
-            </h1>
+            {{-- PRIMARY CONTENT --}}
+            <div class="min-w-0">
 
-            {{-- Meta row --}}
-            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 py-3 border-t border-b border-[#eeeeee] cm-meta">
-                <span><i data-lucide="user"></i>PCM Duren Sawit 1</span>
-                <span><i data-lucide="calendar"></i>{{ $tglId($berita->created_at) }}</span>
-                <span><i data-lucide="clock"></i>{{ $rm }} menit baca</span>
-                <span><i data-lucide="type"></i>{{ number_format($wc) }} kata</span>
-            </div>
+                {{-- Kartu artikel single post --}}
+                <article class="bg-white border border-[#eaeaea] cm-card-shadow p-5 md:p-8 mb-[30px]">
+                    <div class="mb-1.5">
+                        <span class="cm-cat-badge">{{ ucfirst($berita->kategori ?? 'Umum') }}</span>
+                    </div>
 
-            {{-- Gambar utama --}}
-            @if($berita->gambar)
-                <div class="mt-5 overflow-hidden">
-                    <img src="{{ $berita->gambar }}" alt="{{ $berita->judul }}" class="w-full aspect-[800/445] object-cover block"/>
-                </div>
-            @endif
+                    <h1 class="text-[26px] md:text-[32px] leading-tight font-semibold text-[#333333] m-0 mb-3">
+                        {{ $berita->judul }}
+                    </h1>
 
-            {{-- Isi --}}
-            <div class="mt-6">
-                <div class="article-content" id="article-content">
-                    {!! $berita->isi !!}
-                </div>
-            </div>
+                    {{-- Meta row --}}
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 py-3 border-t border-b border-[#eeeeee] cm-meta">
+                        <span class="inline-flex items-center gap-1.5"><i data-lucide="user" class="w-4 h-4 shrink-0"></i>PCM Duren Sawit 1</span>
+                        <span class="inline-flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4 shrink-0"></i>{{ $tglId($berita->created_at) }}</span>
+                        <span class="inline-flex items-center gap-1.5"><i data-lucide="clock" class="w-4 h-4 shrink-0"></i>{{ $rm }} menit baca</span>
+                        <span class="inline-flex items-center gap-1.5"><i data-lucide="type" class="w-4 h-4 shrink-0"></i>{{ number_format($wc) }} kata</span>
+                    </div>
 
-            {{-- Footer share/back --}}
-            <div class="mt-10 pt-5 border-t border-[#eeeeee] flex flex-wrap items-center justify-between gap-4">
-                <button onclick="copyLink()" id="copy-btn"
-                    class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#888888] hover:text-[#2e9e5b] bg-transparent border-0 cursor-pointer cm-transition">
-                    <i data-lucide="link" class="w-3.5 h-3.5"></i> Salin Tautan
-                </button>
-                <a href="{{ route('berita.all') }}"
-                    class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">
-                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke Berita
-                </a>
-            </div>
-        </article>
+                    {{-- Gambar utama --}}
+                    @if($berita->gambar)
+                        <div class="mt-5 overflow-hidden">
+                            <img src="{{ $berita->gambar }}" alt="{{ $berita->judul }}" class="w-full aspect-[800/445] object-cover block"/>
+                        </div>
+                    @endif
 
-        {{-- Related posts bawah --}}
-        @php
-            $related = \App\Models\Berita::where('status', 'published')
-                ->where('id', '!=', $berita->id)
-                ->where('kategori', $berita->kategori)
-                ->latest()
-                ->limit(3)
-                ->get();
-            if ($related->count() < 2) {
-                $related = \App\Models\Berita::where('status', 'published')
-                    ->where('id', '!=', $berita->id)
-                    ->latest()
-                    ->limit(3)
-                    ->get();
-            }
-        @endphp
+                    {{-- Isi --}}
+                    <div class="mt-6">
+                        <div class="article-content" id="article-content">
+                            {!! $berita->isi !!}
+                        </div>
+                    </div>
 
-        @if($related->count() > 0)
-            <section class="mb-[20px]" aria-label="Berita terkait">
-                <h3 class="cm-widget-title"><span>Berita Terkait</span></h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-[25px]">
-                    @foreach($related as $rel)
-                        <x-post-card
-                            :link="route('berita.show', $rel->slug)"
-                            :image="$rel->gambar ? asset('storage/' . $rel->gambar) : 'https://picsum.photos/seed/pcm-rel-' . $rel->id . '/600/360'"
-                            :title="Str::limit($rel->judul, 60)"
-                            :date="$tglId($rel->created_at)"
-                        />
-                    @endforeach
-                </div>
-            </section>
-        @endif
+                    {{-- Footer share/back --}}
+                    <div class="mt-10 pt-5 border-t border-[#eeeeee] flex flex-wrap items-center justify-between gap-4">
+                        <button onclick="copyLink()" id="copy-btn"
+                            class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#888888] hover:text-[#2e9e5b] bg-transparent border-0 cursor-pointer cm-transition">
+                            <i data-lucide="link" class="w-3.5 h-3.5 shrink-0"></i> Salin Tautan
+                        </button>
+                        <a href="{{ route('berita.all') }}"
+                            class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">
+                            <i data-lucide="arrow-left" class="w-3.5 h-3.5 shrink-0"></i> Kembali ke Berita
+                        </a>
+                    </div>
+                </article>
+
+                {{-- Related posts bawah --}}
+                @php
+                    $related = \App\Models\Berita::where('status', 'published')
+                        ->where('id', '!=', $berita->id)
+                        ->where('kategori', $berita->kategori)
+                        ->latest()
+                        ->limit(2)
+                        ->get();
+                    if ($related->count() < 2) {
+                        $related = \App\Models\Berita::where('status', 'published')
+                            ->where('id', '!=', $berita->id)
+                            ->latest()
+                            ->limit(2)
+                            ->get();
+                    }
+                @endphp
+
+                @if($related->count() > 0)
+                    <section class="mb-[20px]" aria-label="Berita terkait">
+                        <h3 class="cm-widget-title"><span>Berita Terkait</span></h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-[25px]">
+                            @foreach($related as $rel)
+                                <x-post-card
+                                    :link="route('berita.show', $rel->slug)"
+                                    :image="$rel->gambar ? asset('storage/' . $rel->gambar) : 'https://picsum.photos/seed/pcm-rel-' . $rel->id . '/600/360'"
+                                    :title="Str::limit($rel->judul, 60)"
+                                    :date="$tglId($rel->created_at)"
+                                />
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+
+            </div>{{-- /min-w-0 --}}
+
+            {{-- SIDEBAR --}}
+            @include('partials.cm-sidebar', ['sidebarExcludeBeritaId' => $berita->id])
+
+        </div>{{-- /grid --}}
+
     </div>
 @endsection
 
@@ -202,7 +216,7 @@
             navigator.clipboard.writeText(window.location.href).then(function () {
                 var btn = document.getElementById('copy-btn');
                 var old = btn.innerHTML;
-                btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> Tersalin';
+                btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 shrink-0"></i> Tersalin';
                 if (window.lucide) lucide.createIcons();
                 setTimeout(function () { btn.innerHTML = old; if (window.lucide) lucide.createIcons(); }, 2000);
             });

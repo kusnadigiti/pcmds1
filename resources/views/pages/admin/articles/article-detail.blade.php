@@ -100,74 +100,88 @@
             <span class="mx-1">/</span> {{ Str::limit($article->title, 40) }}
         </nav>
 
-        {{-- Kartu artikel --}}
-        <article class="bg-white border border-[#eaeaea] cm-card-shadow p-5 md:p-8 mb-[30px]">
-            <div class="mb-1.5">
-                <span class="cm-cat-badge">Artikel</span>
-            </div>
+        {{-- GRID UTAMA 70 / 30 --}}
+        <div class="grid grid-cols-1 lg:grid-cols-[70.17%_1fr] gap-[30px] items-start">
 
-            <h1 class="text-[26px] md:text-[32px] leading-tight font-semibold text-[#333333] m-0 mb-3">
-                {{ $article->title }}
-            </h1>
+            {{-- PRIMARY CONTENT --}}
+            <div class="min-w-0">
 
-            {{-- Meta row --}}
-            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 py-3 border-t border-b border-[#eeeeee] cm-meta">
-                <span><i data-lucide="user"></i>{{ $article->author ?? 'Tim Redaksi' }}</span>
-                <span><i data-lucide="calendar"></i>{{ $tglId($article->created_at) }}</span>
-                <span><i data-lucide="clock"></i>{{ $readMin }} menit baca</span>
-            </div>
+                {{-- Kartu artikel --}}
+                <article class="bg-white border border-[#eaeaea] cm-card-shadow p-5 md:p-8 mb-[30px]">
+                    <div class="mb-1.5">
+                        <span class="cm-cat-badge">Artikel</span>
+                    </div>
 
-            {{-- Thumbnail --}}
-            @if($article->thumbnail)
-                <div class="mt-5 overflow-hidden">
-                    <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}"
-                        class="w-full aspect-[800/445] object-cover block"/>
-                </div>
-            @endif
+                    <h1 class="text-[26px] md:text-[32px] leading-tight font-semibold text-[#333333] m-0 mb-3">
+                        {{ $article->title }}
+                    </h1>
 
-            {{-- Isi --}}
-            <div class="mt-6">
-                <div class="article-content">
-                    {!! nl2br(e($article->content)) !!}
-                </div>
-            </div>
+                    {{-- Meta row --}}
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 py-3 border-t border-b border-[#eeeeee] cm-meta">
+                        <span class="inline-flex items-center gap-1.5"><i data-lucide="user" class="w-4 h-4 shrink-0"></i>{{ $article->author ?? 'Tim Redaksi' }}</span>
+                        <span class="inline-flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4 shrink-0"></i>{{ $tglId($article->created_at) }}</span>
+                        <span class="inline-flex items-center gap-1.5"><i data-lucide="clock" class="w-4 h-4 shrink-0"></i>{{ $readMin }} menit baca</span>
+                    </div>
 
-            {{-- Footer --}}
-            <div class="mt-10 pt-5 border-t border-[#eeeeee] flex flex-wrap items-center justify-between gap-4">
-                <div class="text-[13px] text-[#777777]">
-                    Ditulis oleh <strong class="text-[#333333]">{{ $article->author ?? 'Tim Redaksi' }}</strong>
-                </div>
-                <a href="{{ url()->previous() }}"
-                    class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">
-                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali
-                </a>
-            </div>
-        </article>
+                    {{-- Thumbnail --}}
+                    @if($article->thumbnail)
+                        <div class="mt-5 overflow-hidden">
+                            <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}"
+                                class="w-full aspect-[800/445] object-cover block"/>
+                        </div>
+                    @endif
 
-        {{-- Related articles --}}
-        @php
-            $relatedArticles = \App\Models\Article::where('status', 'published')
-                ->where('id', '!=', $article->id)
-                ->latest('created_at')
-                ->limit(3)
-                ->get();
-        @endphp
+                    {{-- Isi --}}
+                    <div class="mt-6">
+                        <div class="article-content">
+                            {!! nl2br(e($article->content)) !!}
+                        </div>
+                    </div>
 
-        @if($relatedArticles->count() > 0)
-            <section class="mb-[20px]" aria-label="Artikel terkait">
-                <h3 class="cm-widget-title"><span>Artikel Terkait</span></h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-[25px]">
-                    @foreach($relatedArticles as $rel)
-                        <x-post-card
-                            :link="route('articles.show', $rel->slug)"
-                            :image="$rel->thumbnail ? asset('storage/' . $rel->thumbnail) : 'https://picsum.photos/seed/pcm-artikel-rel-' . $rel->id . '/600/360'"
-                            :title="Str::limit($rel->title, 60)"
-                            :date="$tglId($rel->created_at)"
-                        />
-                    @endforeach
-                </div>
-            </section>
-        @endif
+                    {{-- Footer --}}
+                    <div class="mt-10 pt-5 border-t border-[#eeeeee] flex flex-wrap items-center justify-between gap-4">
+                        <div class="text-[13px] text-[#777777]">
+                            Ditulis oleh <strong class="text-[#333333]">{{ $article->author ?? 'Tim Redaksi' }}</strong>
+                        </div>
+                        <a href="{{ url()->previous() }}"
+                            class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">
+                            <i data-lucide="arrow-left" class="w-3.5 h-3.5 shrink-0"></i> Kembali
+                        </a>
+                    </div>
+                </article>
+
+                {{-- Related articles --}}
+                @php
+                    $relatedArticles = \App\Models\Article::where('status', 'published')
+                        ->where('id', '!=', $article->id)
+                        ->latest('created_at')
+                        ->limit(2)
+                        ->get();
+                @endphp
+
+                @if($relatedArticles->count() > 0)
+                    <section class="mb-[20px]" aria-label="Artikel terkait">
+                        <h3 class="cm-widget-title"><span>Artikel Terkait</span></h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-[25px]">
+                            @foreach($relatedArticles as $rel)
+                                <x-post-card
+                                    :link="route('articles.show', $rel->slug)"
+                                    :image="$rel->thumbnail ? asset('storage/' . $rel->thumbnail) : 'https://picsum.photos/seed/pcm-artikel-rel-' . $rel->id . '/600/360'"
+                                    :title="Str::limit($rel->title, 60)"
+                                    :date="$tglId($rel->created_at)"
+                                />
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+
+            </div>{{-- /min-w-0 --}}
+
+            {{-- SIDEBAR --}}
+            @include('partials.cm-sidebar')
+
+        </div>{{-- /grid --}}
+
     </div>
 @endsection
 

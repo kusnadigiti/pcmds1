@@ -1,7 +1,7 @@
-{{-- ═══════════════════════════════════════════════════
+{{-- ═════════════════════════════════════════════════════════════════════
      SIDEBAR ColorMag — dipakai bersama halaman publik
      Variabel yang tersedia (opsional): $sidebarExcludeBeritaId
-     ═══════════════════════════════════════════════════ --}}
+     ═════════════════════════════════════════════════════════════════════ --}}
 @php
     $cmBulanSb = [1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
     $tglIdSb = function ($date) use ($cmBulanSb) {
@@ -10,7 +10,11 @@
     };
 
     try {
-        $sbBerita = \App\Models\Berita::where('status', 'published')->latest('created_at')->limit(4)->get();
+        $queryBerita = \App\Models\Berita::where('status', 'published')->latest('created_at');
+        if (isset($sidebarExcludeBeritaId) && $sidebarExcludeBeritaId) {
+            $queryBerita->where('id', '!=', $sidebarExcludeBeritaId);
+        }
+        $sbBerita = $queryBerita->limit(4)->get();
         $sbOrgs = \App\Models\Organisasi::where('is_active', true)->orderBy('tipe')->orderBy('nama')->get();
     } catch (\Exception $e) {
         $sbBerita = collect();
@@ -44,12 +48,12 @@
                         class="w-full aspect-[300/200] object-cover block hover:scale-[1.05] transition-transform duration-500"
                         loading="lazy"/>
                 </a>
-                <div class="min-w-0">
+                <div class="min-w-0 flex-1">
                     <h5 class="cm-entry-title text-[13.5px] leading-snug font-semibold m-0 mb-1">
                         <a href="{{ route('berita.show', $item->slug) }}">{{ Str::limit($item->judul, 55) }}</a>
                     </h5>
-                    <div class="cm-meta">
-                        <span><i data-lucide="calendar"></i>{{ $tglIdSb($item->created_at) }}</span>
+                    <div class="cm-meta flex items-center gap-1.5 mt-1">
+                        <span class="inline-flex items-center gap-1 text-[12px] text-[#888888]"><i data-lucide="calendar" class="w-4 h-4 shrink-0"></i>{{ $tglIdSb($item->created_at) }}</span>
                     </div>
                 </div>
             </article>

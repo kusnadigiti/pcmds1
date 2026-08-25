@@ -107,7 +107,8 @@
         .cm-entry-title a:hover { color: #2e9e5b; }
 
         .cm-meta { color: #888888; font-size: 12px; }
-        .cm-meta i { width: 5px; height: 5px; vertical-align: -2px; margin-right: 3px; }
+        .cm-meta span, .cm-meta a { display: inline-flex; align-items: center; gap: 0.25rem; }
+        .cm-meta i, .cm-meta svg { width: 1rem !important; height: 1rem !important; display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
         .cm-card-shadow { box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); }
 
@@ -200,7 +201,7 @@
     $hasPrmNav = $navMenus->contains(fn($m) => $m->label === 'PRM');
 @endphp
 
-{{-- ═══ HEADER ═══ --}}
+{{-- ═══════ HEADER ═══════ --}}
 <header class="bg-white">
     <div class="cm-inner flex flex-col md:flex-row md:items-center justify-between gap-3 pt-4 pb-3 px-2.5">
 
@@ -233,7 +234,7 @@
         </div>
     </div>
 
-    {{-- ═══ NAVBAR GELAP ═══ --}}
+    {{-- ═══════ NAVBAR GELAP ═══════ --}}
     <nav id="site-navigation" class="bg-[#232323] border-t-4 border-[#2e9e5b]"
         x-data="{ mobileOpen: false, searchOpen: false }">
 
@@ -398,14 +399,14 @@
     </nav>
 </header>
 
-{{-- ═══ MAIN WRAPPER ═══ --}}
+{{-- ═══════ MAIN WRAPPER ═══════ --}}
 <div class="cm-page shadow-sm my-[10px]">
     <main class="py-[30px]">
         @yield('content')
     </main>
 </div>
 
-{{-- ═══ FOOTER ═══ --}}
+{{-- ═══════ FOOTER ═══════ --}}
 <footer class="bg-[#303440] border-t border-white/5">
     <div class="cm-inner pt-[45px] pb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[39.5%_1fr_1fr_1fr] gap-8">
 
@@ -493,6 +494,12 @@
 </button>
 
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) lucide.createIcons();
+    });
+</script>
 @stack('scripts')
 @yield('scripts')
 </body>
