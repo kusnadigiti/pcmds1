@@ -16,13 +16,16 @@
 
         {{-- Top bar --}}
         <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
-            <h1 class="text-xl font-bold text-gray-900 m-0">Kelola Menu</h1>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900 m-0">Kelola Menu Navbar</h1>
+                <p class="text-xs text-gray-500 mt-1 m-0">Atur susunan, nama, dan visibilitas menu navigasi situs utama.</p>
+            </div>
             <div class="flex gap-2">
                 <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200 text-sm font-semibold py-2 px-3.5 rounded-lg inline-flex items-center gap-1.5 transition-colors" onclick="openPreviewModal()">
                     <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
                     Lihat Preview
                 </button>
-                <button class="bg-[#0d5c3a] hover:bg-[#0a4a2d] text-white text-sm font-semibold py-2 px-3.5 rounded-lg inline-flex items-center gap-1.5 transition-colors" onclick="openAddModal(null, null)">
+                <button class="bg-[#0d5c3a] hover:bg-[#0a4a2d] text-white text-sm font-semibold py-2 px-3.5 rounded-lg inline-flex items-center gap-1.5 transition-colors shadow-sm" onclick="openAddModal(null, null)">
                     <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
                     Tambah Menu
                 </button>
@@ -40,53 +43,74 @@
         {{-- Unsaved order bar --}}
         <div id="unsaved-bar" class="hidden bg-amber-50 border border-amber-300 rounded-lg px-4 py-2.5 mb-4 items-center justify-between gap-2 text-sm text-amber-800 font-medium">
             <span class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span> 
-                Ada perubahan urutan yang belum disimpan
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0 animate-ping"></span> 
+                Ada perubahan urutan menu yang belum disimpan
             </span>
-            <button class="bg-[#0d5c3a] hover:bg-[#0a4a2d] text-white text-[13px] font-semibold py-1 px-2.5 rounded-md transition-colors" id="save-btn" onclick="saveOrder()">Simpan Urutan</button>
+            <button class="bg-[#0d5c3a] hover:bg-[#0a4a2d] text-white text-[13px] font-semibold py-1 px-3 rounded-md transition-colors shadow-sm" id="save-btn" onclick="saveOrder()">Simpan Urutan</button>
         </div>
 
         {{-- Menu tree --}}
         @if($menus->isEmpty())
-            <div class="text-center py-10 px-4 text-gray-400">
+            <div class="text-center py-10 px-4 text-gray-400 bg-white border border-gray-200 rounded-xl">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-10 h-10 mx-auto mb-2.5 opacity-40"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <p class="text-sm m-0">Belum ada menu. Klik <strong class="font-semibold text-gray-600">"Tambah Menu"</strong> untuk mulai.</p>
             </div>
         @else
             <ul class="space-y-1.5" id="root-list">
                 @foreach($menus as $m)
+                    @php
+                        $isOrtomMenu = Str::contains(strtolower($m->label), 'otonom');
+                    @endphp
                     <li class="bg-white border border-gray-200 rounded-xl transition-shadow hover:shadow-sm overflow-hidden {{ !$m->is_visible ? 'opacity-50' : '' }}" data-id="{{ $m->id }}" id="n-{{ $m->id }}">
                         <div class="flex items-center gap-2 px-2.5 py-2 min-h-[44px]">
                             <span class="cursor-grab text-gray-300 flex-shrink-0 flex grip hover:text-gray-400" title="Geser untuk mengatur urutan">
                                 <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><circle cx="9" cy="5" r="1.5"/><circle cx="15" cy="5" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="19" r="1.5"/></svg>
                             </span>
                             <div class="flex-1 min-w-0">
-                                <div class="text-[14px] font-semibold text-gray-900 truncate node-name">{{ $m->label }}</div>
-                                <div class="text-[11px] text-gray-400 truncate mt-px node-url">{{ $m->url ?: 'Dropdown (tanpa link)' }}</div>
+                                <div class="text-[14px] font-semibold text-gray-900 truncate node-name flex items-center gap-1.5">
+                                    {{ $m->label }}
+                                </div>
+                                <div class="text-[11px] text-gray-400 truncate mt-px node-url">
+                                    @if($isOrtomMenu)
+                                        Sub-menu diambil otomatis dari database Data Organisasi
+                                    @else
+                                        {{ $m->url ?: 'Dropdown' }}
+                                    @endif
+                                </div>
                             </div>
-                            @if($m->children->isNotEmpty())
+                            @if($isOrtomMenu)
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide flex-shrink-0 bg-emerald-100 text-emerald-800 border border-emerald-200">Ortom DB</span>
+                            @elseif($m->children->isNotEmpty())
                                 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide flex-shrink-0 bg-violet-100 text-violet-700">Dropdown</span>
                             @else
                                 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide flex-shrink-0 bg-blue-100 text-blue-700">Link</span>
                             @endif
+
                             @if(!$m->is_visible)
                                 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide flex-shrink-0 bg-gray-100 text-gray-400">Hidden</span>
                             @endif
+
                             <div class="flex gap-1 flex-shrink-0 ml-1">
-                                <button class="w-[28px] h-[28px] rounded-md border border-gray-200 flex items-center justify-center cursor-pointer bg-white transition-colors text-gray-500 hover:bg-gray-100 hover:text-gray-900" title="Edit" onclick="openEditModal({{ $m->id }},'{{ addslashes($m->label) }}','{{ addslashes($m->url ?? '') }}',{{ $m->open_new_tab ? 'true' : 'false' }})">
+                                @if($isOrtomMenu)
+                                    <a href="{{ route('admin.organisasi-otonom') }}" title="Kelola Isi Organisasi Otonom" class="w-[28px] h-[28px] rounded-md border border-emerald-200 flex items-center justify-center cursor-pointer bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                                        <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/></svg>
+                                    </a>
+                                @endif
+
+                                <button class="w-[28px] h-[28px] rounded-md border border-gray-200 flex items-center justify-center cursor-pointer bg-white transition-colors text-gray-500 hover:bg-gray-100 hover:text-gray-900" title="Edit Label/Link" onclick="openEditModal({{ $m->id }},'{{ addslashes($m->label) }}','{{ addslashes($m->url ?? '') }}',{{ $m->open_new_tab ? 'true' : 'false' }})">
                                     <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
                                 </button>
-                                <button class="w-[28px] h-[28px] rounded-md border flex items-center justify-center cursor-pointer bg-white transition-colors hover:bg-gray-100 {{ !$m->is_visible ? 'border-gray-100 text-gray-300 hover:text-gray-600' : 'border-gray-200 text-gray-500 hover:text-gray-900' }}" title="{{ $m->is_visible ? 'Sembunyikan' : 'Tampilkan' }}" onclick="toggleVis({{ $m->id }},this)">
+                                <button class="w-[28px] h-[28px] rounded-md border flex items-center justify-center cursor-pointer bg-white transition-colors hover:bg-gray-100 {{ !$m->is_visible ? 'border-gray-100 text-gray-300 hover:text-gray-600' : 'border-gray-200 text-gray-500 hover:text-gray-900' }}" title="{{ $m->is_visible ? 'Sembunyikan dari Navbar' : 'Tampilkan di Navbar' }}" onclick="toggleVis({{ $m->id }},this)">
                                     @if($m->is_visible)
                                         <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
                                     @else
                                         <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"/><path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.064 7 9.542 7 .847 0 1.669-.105 2.454-.303z"/></svg>
                                     @endif
                                 </button>
-                                <button class="w-[28px] h-[28px] rounded-md border border-violet-200 flex items-center justify-center cursor-pointer bg-white transition-colors text-violet-600 hover:bg-violet-50" title="Tambah sub-menu" onclick="openAddModal({{ $m->id }},'{{ addslashes($m->label) }}')">
+                                <button class="w-[28px] h-[28px] rounded-md border border-violet-200 flex items-center justify-center cursor-pointer bg-white transition-colors text-violet-600 hover:bg-violet-50" title="Tambah sub-menu manual" onclick="openAddModal({{ $m->id }},'{{ addslashes($m->label) }}')">
                                     <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
                                 </button>
-                                <button class="w-[28px] h-[28px] rounded-md border border-red-100 flex items-center justify-center cursor-pointer bg-white transition-colors text-red-500 hover:bg-red-50" title="Hapus" onclick="openDelModal({{ $m->id }},'{{ addslashes($m->label) }}',{{ $m->children->count() }})">
+                                <button class="w-[28px] h-[28px] rounded-md border border-red-100 flex items-center justify-center cursor-pointer bg-white transition-colors text-red-500 hover:bg-red-50" title="Hapus menu" onclick="openDelModal({{ $m->id }},'{{ addslashes($m->label) }}',{{ $m->children->count() }})">
                                     <svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
                                 </button>
                             </div>
@@ -136,7 +160,7 @@
         {{-- Help tip --}}
         <div class="mt-4 p-3.5 bg-emerald-50 rounded-xl border border-emerald-200">
             <p class="text-xs text-emerald-800 m-0 leading-relaxed">
-                <strong>Tips:</strong> Geser menu untuk mengubah urutan. Klik <strong>+</strong> untuk menambah sub-menu. Kosongkan URL jika menu hanya sebagai grup dropdown.
+                <strong>Tips:</strong> Geser icon titik-titik untuk mengubah posisi/urutan menu. Klik tombol mata untuk menyembunyikan/menampilkan menu pada navigasi utama situs. Menu <strong>Organisasi Otonom</strong> memuat daftar ortom aktif secara otomatis dari database.
             </p>
         </div>
 
@@ -269,7 +293,7 @@
 
 
     <script>
-    /* ── helpers ───────────────────────────────────── */
+    /* ── helpers ─────────────────────────────────────────────────────────── */
     function closeModal(id) { 
         var el = document.getElementById(id);
         if (el) {
@@ -290,7 +314,7 @@
         if (e.key === 'Escape') ['m-add','m-edit','m-del','m-preview'].forEach(closeModal); 
     });
 
-    /* ── Add ───────────────────────────────────────── */
+    /* ── Add ─────────────────────────────────────────────────────────────── */
     function openAddModal(pid, pname) {
         document.getElementById('add-pid').value = pid || '';
         var info = document.getElementById('add-pinfo');
@@ -305,7 +329,7 @@
         openModal('m-add');
     }
 
-    /* ── Edit ──────────────────────────────────────── */
+    /* ── Edit ────────────────────────────────────────────────────────────── */
     function openEditModal(id, label, url, tab) {
         document.getElementById('edit-form').action = '/admin/navbar-menu/' + id;
         document.getElementById('e-label').value = label;
@@ -314,7 +338,7 @@
         openModal('m-edit');
     }
 
-    /* ── Delete ────────────────────────────────────── */
+    /* ── Delete ──────────────────────────────────────────────────────────── */
     function openDelModal(id, label, cnt) {
         document.getElementById('del-form').action = '/admin/navbar-menu/' + id;
         document.getElementById('del-name').textContent = label;
@@ -328,7 +352,7 @@
         openModal('m-del');
     }
 
-    /* ── Toggle visibility ─────────────────────────── */
+    /* ── Toggle visibility ───────────────────────────────────────────────── */
     function toggleVis(id, btn) {
         var tok = document.querySelector('meta[name="csrf-token"]');
         fetch('/admin/navbar-menu/' + id + '/toggle', { 
@@ -341,7 +365,7 @@
             var el = document.getElementById('n-' + id);
             if (d.is_visible) {
                 el.classList.remove('opacity-50'); 
-                btn.title = 'Sembunyikan';
+                btn.title = 'Sembunyikan dari Navbar';
                 btn.className = 'w-[28px] h-[28px] rounded-md border flex items-center justify-center cursor-pointer bg-white transition-colors hover:bg-gray-100 border-gray-200 text-gray-500 hover:text-gray-900';
                 if(btn.classList.contains('w-[24px]')) {
                     btn.className = 'w-[24px] h-[24px] rounded flex items-center justify-center cursor-pointer transition-colors text-gray-400 hover:bg-gray-200 hover:text-gray-800';
@@ -349,7 +373,7 @@
                 btn.innerHTML = '<svg viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>';
             } else {
                 el.classList.add('opacity-50'); 
-                btn.title = 'Tampilkan';
+                btn.title = 'Tampilkan di Navbar';
                 btn.className = 'w-[28px] h-[28px] rounded-md border flex items-center justify-center cursor-pointer bg-white transition-colors hover:bg-gray-100 border-gray-100 text-gray-300 hover:text-gray-600';
                 if(btn.classList.contains('w-[24px]')) {
                     btn.className = 'w-[24px] h-[24px] rounded flex items-center justify-center cursor-pointer transition-colors text-gray-300 hover:bg-gray-200 hover:text-gray-600';
@@ -363,7 +387,7 @@
         });
     }
 
-    /* ── Sortable ───────────────────────────────────── */
+    /* ── Sortable ────────────────────────────────────────────────────────── */
     function dirty() { 
         document.getElementById('unsaved-bar').classList.remove('hidden'); 
         document.getElementById('unsaved-bar').classList.add('flex'); 
@@ -377,7 +401,7 @@
         Sortable.create(el, { handle: '.grip', animation: 150, ghostClass: 'sortable-ghost', onEnd: dirty });
     });
 
-    /* ── Save order ─────────────────────────────────── */
+    /* ── Save order ──────────────────────────────────────────────────────── */
     function saveOrder() {
         var btn = document.getElementById('save-btn');
         var orig = btn.innerHTML;
@@ -415,7 +439,7 @@
         .finally(function() { btn.innerHTML = orig; btn.disabled = false; });
     }
 
-    /* ── Preview ────────────────────────────────────── */
+    /* ── Preview ─────────────────────────────────────────────────────────── */
     function openPreviewModal() {
         buildPreview();
         openModal('m-preview');
@@ -437,7 +461,8 @@
             if (!nameEl) return;
             var name = nameEl.textContent.trim();
             var kids = el.querySelector('[id^="kids-"]');
-            var hasKids = kids && kids.querySelectorAll('li').length > 0;
+            var isOrtom = name.toLowerCase().includes('otonom');
+            var hasKids = (kids && kids.querySelectorAll('li').length > 0) || isOrtom;
 
             // Desktop item
             var di = document.createElement('div');
@@ -462,14 +487,24 @@
                 mg.appendChild(arr2);
                 mb.appendChild(mg);
 
-                kids.querySelectorAll('li').forEach(function(k) {
-                    var cn = k.querySelector('.node-name');
-                    var mc = document.createElement('div');
-                    mc.className = 'px-3 py-1.5 pl-6 text-[12px] text-white/30';
-                    if (k.classList.contains('opacity-50')) { mc.className += ' opacity-30 line-through'; }
-                    mc.textContent = cn ? cn.textContent.trim() : '';
-                    mb.appendChild(mc);
-                });
+                if (isOrtom && (!kids || kids.querySelectorAll('li').length === 0)) {
+                    ['Aisyiyah', 'Pemuda Muhammadiyah', 'Nasyiatul Aisyiyah', 'Hizbul Wathan', 'Tapak Suci'].forEach(function(o) {
+                        var mc = document.createElement('div');
+                        mc.className = 'px-3 py-1.5 pl-6 text-[12px] text-white/30';
+                        if(isDim) mc.className += ' opacity-30 line-through';
+                        mc.textContent = o;
+                        mb.appendChild(mc);
+                    });
+                } else if (kids) {
+                    kids.querySelectorAll('li').forEach(function(k) {
+                        var cn = k.querySelector('.node-name');
+                        var mc = document.createElement('div');
+                        mc.className = 'px-3 py-1.5 pl-6 text-[12px] text-white/30';
+                        if (k.classList.contains('opacity-50')) { mc.className += ' opacity-30 line-through'; }
+                        mc.textContent = cn ? cn.textContent.trim() : '';
+                        mb.appendChild(mc);
+                    });
+                }
             } else {
                 var mi = document.createElement('div');
                 mi.className = 'px-3 py-2 text-[13px] text-white/50 rounded-md';
@@ -483,7 +518,7 @@
         dt.innerHTML += '<div class="flex-1"></div><div class="bg-yellow-500/90 text-gray-900 text-[11px] font-bold py-1.5 px-3 rounded-md whitespace-nowrap flex-shrink-0">Dashboard</div>';
     }
 
-    /* ── Toast ──────────────────────────────────────── */
+    /* ── Toast ───────────────────────────────────────────────────────────── */
     function toast(msg, success) {
         var t = document.createElement('div');
         t.className = 'fixed bottom-5 right-5 z-[99999] px-4 py-2.5 rounded-lg text-sm font-semibold shadow-lg transition-all transform translate-y-0 opacity-100 ';

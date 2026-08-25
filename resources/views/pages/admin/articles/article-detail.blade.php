@@ -158,22 +158,12 @@
                 <h3 class="cm-widget-title"><span>Artikel Terkait</span></h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-[25px]">
                     @foreach($relatedArticles as $rel)
-                        <article class="border border-[#eaeaea] cm-card-shadow">
-                            <a href="{{ route('articles.show', $rel->slug) }}" class="block overflow-hidden no-underline">
-                                <img src="{{ $rel->thumbnail ? asset('storage/' . $rel->thumbnail) : 'https://picsum.photos/seed/pcm-artikel-rel-' . $rel->id . '/600/360' }}"
-                                    alt="{{ $rel->title }}"
-                                    class="w-full aspect-[600/360] object-cover block hover:scale-[1.04] transition-transform duration-500"
-                                    loading="lazy"/>
-                            </a>
-                            <div class="p-4 pt-3">
-                                <h4 class="cm-entry-title text-[14.5px] leading-snug font-semibold m-0 mb-1">
-                                    <a href="{{ route('articles.show', $rel->slug) }}">{{ Str::limit($rel->title, 60) }}</a>
-                                </h4>
-                                <div class="cm-meta">
-                                    <span><i data-lucide="calendar"></i>{{ $tglId($rel->created_at) }}</span>
-                                </div>
-                            </div>
-                        </article>
+                        <x-post-card
+                            :link="route('articles.show', $rel->slug)"
+                            :image="$rel->thumbnail ? asset('storage/' . $rel->thumbnail) : 'https://picsum.photos/seed/pcm-artikel-rel-' . $rel->id . '/600/360'"
+                            :title="Str::limit($rel->title, 60)"
+                            :date="$tglId($rel->created_at)"
+                        />
                     @endforeach
                 </div>
             </section>

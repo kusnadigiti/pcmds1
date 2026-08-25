@@ -168,6 +168,15 @@
         $navMenus = collect();
     }
 
+    try {
+        $navOrtoms = \App\Models\Organisasi::where('is_active', true)
+            ->orderBy('tipe')
+            ->orderBy('nama')
+            ->get();
+    } catch (\Exception $e) {
+        $navOrtoms = collect();
+    }
+
     $contactCm = \App\Models\Contact::first();
     $cmAddress = $contactCm->address ?? 'Gedung Dakwah Muhammadiyah, Jl. Duren Sawit Raya No. 1, Jakarta Timur';
     $cmPhone = $contactCm->phone ?? '+6285280136056';
@@ -186,6 +195,9 @@
     } catch (\Exception $e) {
         $cmTickerItems = collect();
     }
+
+    $hasOrtomNav = $navMenus->contains(fn($m) => Str::contains(strtolower($m->label), 'otonom'));
+    $hasPrmNav = $navMenus->contains(fn($m) => $m->label === 'PRM');
 @endphp
 
 {{-- ═══ HEADER ═══ --}}
@@ -230,7 +242,24 @@
             {{-- Menu desktop --}}
             <ul class="hidden lg:flex list-none m-0 p-0 items-stretch">
                 @foreach($navMenus as $menu)
-                    @if($menu->children->isNotEmpty())
+                    @if(Str::contains(strtolower($menu->label), 'otonom') && $navOrtoms->isNotEmpty())
+                        <li class="cm-nav-item relative">
+                            <button class="flex items-center gap-1 uppercase text-white text-[13px] font-semibold tracking-wide px-3 py-[11px] bg-transparent border-0 cursor-pointer hover:bg-[#2e9e5b] cm-transition">
+                                {{ $menu->label }}
+                                <i data-lucide="chevron-down" class="w-3 h-3 opacity-80"></i>
+                            </button>
+                            <ul class="cm-submenu absolute left-0 top-full z-50 min-w-[220px] list-none m-0 p-1 bg-[#232323] shadow-lg">
+                                @foreach($navOrtoms as $ortom)
+                                    <li>
+                                        <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}"
+                                            class="block px-3 py-2 text-[13px] normal-case font-normal text-[#dddddd] no-underline hover:bg-[#2e9e5b] hover:text-white cm-transition">
+                                            {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @elseif($menu->children->isNotEmpty())
                         <li class="cm-nav-item relative">
                             <button class="flex items-center gap-1 uppercase text-white text-[13px] font-semibold tracking-wide px-3 py-[11px] bg-transparent border-0 cursor-pointer hover:bg-[#2e9e5b] cm-transition">
                                 {{ $menu->label }}
@@ -249,6 +278,26 @@
                         <li class="cm-nav-item">
                             <a href="{{ $menu->url }}" {{ $menu->open_new_tab ? 'target="_blank" rel="noopener"' : '' }}
                                 class="block uppercase text-white text-[13px] font-semibold tracking-wide px-3 py-[11px] no-underline hover:bg-[#2e9e5b] cm-transition">{{ $menu->label }}</a>
+                        </li>
+                    @endif
+
+                    {{-- Sisipkan Organisasi Otonom tepat 1 kali jika belum ada di nav_menus DB --}}
+                    @if(!$hasOrtomNav && $navOrtoms->isNotEmpty() && (($hasPrmNav && $menu->label === 'PRM') || (!$hasPrmNav && $loop->last)))
+                        <li class="cm-nav-item relative">
+                            <button class="flex items-center gap-1 uppercase text-white text-[13px] font-semibold tracking-wide px-3 py-[11px] bg-transparent border-0 cursor-pointer hover:bg-[#2e9e5b] cm-transition">
+                                Organisasi Otonom
+                                <i data-lucide="chevron-down" class="w-3 h-3 opacity-80"></i>
+                            </button>
+                            <ul class="cm-submenu absolute left-0 top-full z-50 min-w-[220px] list-none m-0 p-1 bg-[#232323] shadow-lg">
+                                @foreach($navOrtoms as $ortom)
+                                    <li>
+                                        <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}"
+                                            class="block px-3 py-2 text-[13px] normal-case font-normal text-[#dddddd] no-underline hover:bg-[#2e9e5b] hover:text-white cm-transition">
+                                            {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </li>
                     @endif
                 @endforeach
@@ -281,7 +330,25 @@
         <div x-show="mobileOpen" x-collapse style="display:none;" class="lg:hidden bg-white border-t border-[#eaeaea]">
             <ul class="list-none m-0 p-2">
                 @foreach($navMenus as $menu)
-                    @if($menu->children->isNotEmpty())
+                    @if(Str::contains(strtolower($menu->label), 'otonom') && $navOrtoms->isNotEmpty())
+                        <li x-data="{ sub: false }">
+                            <button @click="sub = !sub"
+                                class="w-full flex items-center justify-between px-3 py-2.5 text-left text-[14px] text-[#333333] bg-transparent border-0 cursor-pointer hover:text-[#2e9e5b]">
+                                {{ $menu->label }}
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-[#888888]"></i>
+                            </button>
+                            <ul x-show="sub" x-collapse style="display:none;" class="list-none m-0 pl-4 pb-1">
+                                @foreach($navOrtoms as $ortom)
+                                    <li>
+                                        <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}"
+                                            class="block px-3 py-2 text-[13px] text-[#555555] no-underline hover:text-[#2e9e5b]">
+                                            {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @elseif($menu->children->isNotEmpty())
                         <li x-data="{ sub: false }">
                             <button @click="sub = !sub"
                                 class="w-full flex items-center justify-between px-3 py-2.5 text-left text-[14px] text-[#333333] bg-transparent border-0 cursor-pointer hover:text-[#2e9e5b]">
@@ -298,6 +365,26 @@
                     @elseif($menu->url)
                         <li><a href="{{ $menu->url }}" {{ $menu->open_new_tab ? 'target="_blank" rel="noopener"' : '' }}
                             class="block px-3 py-2.5 text-[14px] text-[#333333] no-underline hover:text-[#2e9e5b]">{{ $menu->label }}</a></li>
+                    @endif
+
+                    @if(!$hasOrtomNav && $navOrtoms->isNotEmpty() && (($hasPrmNav && $menu->label === 'PRM') || (!$hasPrmNav && $loop->last)))
+                        <li x-data="{ sub: false }">
+                            <button @click="sub = !sub"
+                                class="w-full flex items-center justify-between px-3 py-2.5 text-left text-[14px] text-[#333333] bg-transparent border-0 cursor-pointer hover:text-[#2e9e5b]">
+                                Organisasi Otonom
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-[#888888]"></i>
+                            </button>
+                            <ul x-show="sub" x-collapse style="display:none;" class="list-none m-0 pl-4 pb-1">
+                                @foreach($navOrtoms as $ortom)
+                                    <li>
+                                        <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}"
+                                            class="block px-3 py-2 text-[13px] text-[#555555] no-underline hover:text-[#2e9e5b]">
+                                            {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
                     @endif
                 @endforeach
                 @auth

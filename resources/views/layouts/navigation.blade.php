@@ -15,10 +15,17 @@
         }
 
         // Ortom dinamis (tetap dari DB organisasi)
-        $navOrtoms = \App\Models\Organisasi::where('is_active', true)
-            ->orderBy('tipe')
-            ->orderBy('nama')
-            ->get();
+        try {
+            $navOrtoms = \App\Models\Organisasi::where('is_active', true)
+                ->orderBy('tipe')
+                ->orderBy('nama')
+                ->get();
+        } catch (\Exception $e) {
+            $navOrtoms = collect();
+        }
+
+        $hasOrtomNav = $navMenus->contains(fn($m) => Str::contains(strtolower($m->label), 'otonom'));
+        $hasPrmNav = $navMenus->contains(fn($m) => $m->label === 'PRM');
     @endphp
 
     <div class="max-w-screen-xl mx-auto px-5 h-16 md:h-[72px] flex items-center justify-between">
@@ -40,7 +47,33 @@
         <div class="hidden md:flex items-center gap-0.5">
 
             @foreach($navMenus as $menu)
-                @if($menu->children->isNotEmpty())
+                @if(Str::contains(strtolower($menu->label), 'otonom') && $navOrtoms->isNotEmpty())
+                    {{-- Dropdown menu Organisasi Otonom --}}
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                        <button class="text-white/60 hover:text-white text-[13px] font-medium py-2 px-3.5 rounded-md transition duration-150 flex items-center gap-1.5 cursor-pointer hover:bg-white/[0.06]">
+                            {{ $menu->label }}
+                            <svg class="w-3.5 h-3.5 opacity-50 transition-transform duration-200" :class="open ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div x-show="open"
+                            x-transition:enter="transition ease-out duration-150"
+                            x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-100"
+                            x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1"
+                            style="display:none;"
+                            class="absolute left-0 top-full pt-2 w-56 z-[100]">
+                            <div class="bg-[#0a1e12] border border-white/[0.08] rounded-xl shadow-2xl py-1.5 flex flex-col">
+                                @foreach($navOrtoms as $ortom)
+                                    <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}"
+                                        class="block px-4 py-2.5 text-[13px] text-white/70 hover:text-white hover:bg-white/[0.06] transition duration-150 no-underline">
+                                        {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @elseif($menu->children->isNotEmpty())
                     {{-- Dropdown menu --}}
                     <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
                         <button class="text-white/60 hover:text-white text-[13px] font-medium py-2 px-3.5 rounded-md transition duration-150 flex items-center gap-1.5 cursor-pointer hover:bg-white/[0.06]">
@@ -74,6 +107,33 @@
                         {{ $menu->open_new_tab ? 'target="_blank" rel="noopener"' : '' }}>
                         {{ $menu->label }}
                     </a>
+                @endif
+
+                @if(!$hasOrtomNav && $navOrtoms->isNotEmpty() && (($hasPrmNav && $menu->label === 'PRM') || (!$hasPrmNav && $loop->last)))
+                    <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                        <button class="text-white/60 hover:text-white text-[13px] font-medium py-2 px-3.5 rounded-md transition duration-150 flex items-center gap-1.5 cursor-pointer hover:bg-white/[0.06]">
+                            Organisasi Otonom
+                            <svg class="w-3.5 h-3.5 opacity-50 transition-transform duration-200" :class="open ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div x-show="open"
+                            x-transition:enter="transition ease-out duration-150"
+                            x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-100"
+                            x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1"
+                            style="display:none;"
+                            class="absolute left-0 top-full pt-2 w-56 z-[100]">
+                            <div class="bg-[#0a1e12] border border-white/[0.08] rounded-xl shadow-2xl py-1.5 flex flex-col">
+                                @foreach($navOrtoms as $ortom)
+                                    <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}"
+                                        class="block px-4 py-2.5 text-[13px] text-white/70 hover:text-white hover:bg-white/[0.06] transition duration-150 no-underline">
+                                        {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 @endif
             @endforeach
 
@@ -117,7 +177,25 @@
         <div class="px-5 py-4 flex flex-col gap-0.5">
 
             @foreach($navMenus as $menu)
-                @if($menu->children->isNotEmpty())
+                @if(Str::contains(strtolower($menu->label), 'otonom') && $navOrtoms->isNotEmpty())
+                    <div x-data="{ sub: false }">
+                        <button @click="sub = !sub"
+                            class="w-full text-left py-2.5 px-3 text-[14px] text-white/50 rounded-lg transition duration-150 hover:text-white hover:bg-white/[0.04] flex justify-between items-center">
+                            {{ $menu->label }}
+                            <svg class="w-4 h-4 opacity-40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div x-show="sub" x-collapse class="pl-3 pb-1 space-y-0.5 mt-0.5">
+                            @foreach($navOrtoms as $ortom)
+                                <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}" @click="open = false"
+                                    class="block py-2 px-3 text-[13px] text-white/40 rounded-lg hover:text-white hover:bg-white/[0.04] no-underline">
+                                    {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @elseif($menu->children->isNotEmpty())
                     {{-- Mobile accordion --}}
                     <div x-data="{ sub: false }">
                         <button @click="sub = !sub"
@@ -144,6 +222,26 @@
                         {{ $menu->open_new_tab ? 'target="_blank" rel="noopener"' : '' }}>
                         {{ $menu->label }}
                     </a>
+                @endif
+
+                @if(!$hasOrtomNav && $navOrtoms->isNotEmpty() && (($hasPrmNav && $menu->label === 'PRM') || (!$hasPrmNav && $loop->last)))
+                    <div x-data="{ sub: false }">
+                        <button @click="sub = !sub"
+                            class="w-full text-left py-2.5 px-3 text-[14px] text-white/50 rounded-lg transition duration-150 hover:text-white hover:bg-white/[0.04] flex justify-between items-center">
+                            Organisasi Otonom
+                            <svg class="w-4 h-4 opacity-40 transition-transform duration-200" :class="sub ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div x-show="sub" x-collapse class="pl-3 pb-1 space-y-0.5 mt-0.5">
+                            @foreach($navOrtoms as $ortom)
+                                <a href="{{ route('organisasi-otonom.show', $ortom->slug) }}" @click="open = false"
+                                    class="block py-2 px-3 text-[13px] text-white/40 rounded-lg hover:text-white hover:bg-white/[0.04] no-underline">
+                                    {{ $ortom->nama }} {{ $ortom->singkatan ? '('.$ortom->singkatan.')' : '' }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
                 @endif
             @endforeach
 

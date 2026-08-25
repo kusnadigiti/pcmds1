@@ -137,7 +137,7 @@
                                         <a href="{{ route('berita.show', $first->slug) }}">{{ $first->judul }}</a>
                                     </h2>
                                     <div class="cm-meta mt-1.5">
-                                        <span><i data-lucide="calendar"></i>{{ $tglId($first->created_at) }}</span>
+                                        <span class="flex items-center gap-1"><i data-lucide="calendar" class="size-4"></i>{{ $tglId($first->created_at) }}</span>
                                     </div>
                                     <p class="text-[14px] text-[#444444] leading-relaxed mt-2 mb-0 line-clamp-3">{!! Str::limit(strip_tags($first->isi), 150) !!}</p>
                                 </div>
@@ -158,7 +158,7 @@
                                                 <a href="{{ route('berita.show', $item->slug) }}">{{ $item->judul }}</a>
                                             </h3>
                                             <div class="cm-meta">
-                                                <span><i data-lucide="calendar"></i>{{ $tglId($item->created_at) }}</span>
+                                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="size-4"></i>{{ $tglId($first->created_at) }}</span>
                                             </div>
                                         </div>
                                     </article>
