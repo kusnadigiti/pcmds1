@@ -227,9 +227,6 @@
                 @endphp
                 <a href="{{ $dashboardRoute }}"
                     class="bg-[#2e9e5b] hover:bg-[#268a4f] text-white text-[13px] font-semibold px-4 py-2 rounded-[3px] no-underline cm-transition">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}"
-                    class="border border-[#2e9e5b] text-[#2e9e5b] hover:bg-[#2e9e5b] hover:text-white text-[13px] font-semibold px-4 py-[6px] rounded-[3px] no-underline cm-transition">Login Pengurus</a>
             @endauth
         </div>
     </div>
