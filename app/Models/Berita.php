@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enum\KategoriEnum;
-use App\Enum\StatusEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class Berita extends Model
@@ -17,14 +15,13 @@ class Berita extends Model
         'slug',
         'status',
         'kategori',
-        'user_id'
+        'user_id',
     ];
 
     public function getRouteKeyName()
     {
         return 'slug';
     }
-
 
     public function user()
     {

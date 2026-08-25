@@ -1,89 +1,23 @@
-@extends('layouts.frontend')
+@extends('layouts.colormag')
 
 @section('title', 'Struktur Organisasi | PCM Duren Sawit 1')
 @section('meta_description', 'Bagan dan susunan Pimpinan Cabang Muhammadiyah Duren Sawit 1 beserta jajaran ketua, sekretaris, bendahara, dan majelis.')
 @section('meta_keywords', 'Struktur Organisasi, Pengurus PCM Duren Sawit 1, Muhammadiyah Duren Sawit, Pimpinan Cabang')
-@section('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
+@section('og_image', asset('images/logo.png'))
 
 @section('styles')
     <style>
-        /* ─── Reset & Base ─── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ─── Org Chart ─── */
+        .org-scroll { overflow-x: auto; padding-bottom: 20px; }
 
-        /* ─── Hero ─── */
-        .hero {
-            padding: 120px 24px 56px;
-            text-align: center;
-            border-bottom: 1px solid rgba(13,92,58,0.07);
-        }
-
-        .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #D4A017;
-            margin-bottom: 20px;
-        }
-
-        .hero-eyebrow::before,
-        .hero-eyebrow::after {
-            content: '';
-            display: block;
-            width: 20px;
-            height: 1px;
-            background: currentColor;
-            opacity: 0.5;
-        }
-
-        .hero h1 {
-            font-size: 56px;
-            font-weight: 800;
-            letter-spacing: -0.035em;
-            line-height: 1.0;
-            color: #0f1923;
-            margin-bottom: 14px;
-        }
-
-        .hero h1 em {
-            font-style: italic;
-            font-weight: 300;
-            color: #0d5c3a;
-        }
-
-        .hero p {
-            font-size: 15px;
-            color: #7A7570;
-            font-weight: 400;
-            max-width: 360px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        /* ─── Main Wrap ─── */
-        .org-section {
-            padding: 60px 16px 100px;
-        }
-
-        /* ─── Scroll Container (supaya bisa geser horizontal di mobile) ─── */
-        .org-scroll {
-            overflow-x: auto;
-            padding-bottom: 20px;
-        }
-
-        /* ─── Tree Container ─── */
         .org-tree {
             display: flex;
             flex-direction: column;
             align-items: center;
             min-width: 700px;
-            padding: 0 40px;
+            padding: 10px 40px 30px;
         }
 
-        /* ─── Setiap level/tier ─── */
         .org-tier {
             display: flex;
             flex-direction: column;
@@ -91,15 +25,8 @@
             width: 100%;
         }
 
-        /* ─── Garis vertikal penghubung ─── */
-        .v-line {
-            width: 1px;
-            height: 36px;
-            background: rgba(13,92,58,0.15);
-            flex-shrink: 0;
-        }
+        .v-line { width: 1px; height: 36px; background: rgba(46,158,91,0.25); flex-shrink: 0; }
 
-        /* ─── Area baris kartu + garis horizontal ─── */
         .branch-row {
             display: flex;
             justify-content: center;
@@ -108,7 +35,6 @@
             width: 100%;
         }
 
-        /* ─── Kolom per kartu (atas: garis v, bawah: kartu) ─── */
         .branch-col {
             display: flex;
             flex-direction: column;
@@ -116,140 +42,100 @@
             margin: 0 10px;
         }
 
-        /* ─── Garis horizontal (digambar JS) ─── */
         .h-line {
             position: absolute;
             top: 0;
             height: 1px;
-            background: rgba(13,92,58,0.15);
+            background: rgba(46,158,91,0.25);
             pointer-events: none;
         }
 
-        /* ─── Label tier ─── */
         .tier-label {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: #0d5c3a;
+            color: #2e9e5b;
             margin-bottom: 0;
             align-self: center;
         }
-
         .tier-label::before,
         .tier-label::after {
             content: '';
             display: block;
             width: 24px;
             height: 1px;
-            background: rgba(13,92,58,0.12);
+            background: rgba(46,158,91,0.2);
         }
 
-        /* ─── Kartu ─── */
         .org-card {
             width: 136px;
             padding: 20px 14px 16px;
             background: #ffffff;
-            border: 1px solid rgba(13,92,58,0.07);
-            border-radius: 16px;
+            border: 1px solid #eaeaea;
+            border-radius: 3px;
             text-align: center;
             cursor: default;
-            transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-            /* organisasi masuk */
+            transition: border-color 0.3s linear, transform 0.3s linear, box-shadow 0.3s linear;
             opacity: 0;
             transform: translateY(16px);
         }
-
-        .org-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .org-card.visible { opacity: 1; transform: translateY(0); }
         .org-card:hover {
-            border-color: rgba(13,92,58,0.18);
+            border-color: #2e9e5b;
             transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(13,92,58,0.06);
+            box-shadow: 0 1px 6px 0 rgba(46,158,91,0.18);
         }
 
-        /* Level 1 — lebih besar & menonjol */
-        .org-card.lv1 {
-            width: 156px;
-            padding: 24px 16px 20px;
-            border-color: rgba(13,92,58,0.12);
-            border-radius: 20px;
-        }
+        .org-card.lv1 { width: 156px; padding: 24px 16px 20px; border-top: 3px solid #2e9e5b; }
 
-        /* ─── Avatar ─── */
         .org-avatar {
             width: 52px;
             height: 52px;
             border-radius: 50%;
             margin: 0 auto 12px;
             overflow: hidden;
-            background: #f0eeea;
+            background: #eaf5ee;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
             font-weight: 700;
-            color: #7A7570;
+            color: #2e9e5b;
             flex-shrink: 0;
             transition: transform 0.3s ease;
         }
-
         .org-card.lv1 .org-avatar {
             width: 60px;
             height: 60px;
             font-size: 19px;
-            background: #0d5c3a;
-            color: #f8f5ee;
+            background: #2e9e5b;
+            color: #ffffff;
             margin-bottom: 14px;
         }
+        .org-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .org-card:hover .org-avatar { transform: scale(1.05); }
 
-        .org-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(30%);
-            transition: filter 0.4s ease;
-        }
-
-        .org-card:hover .org-avatar {
-            transform: scale(1.05);
-        }
-
-        .org-card:hover .org-avatar img {
-            filter: grayscale(0%);
-        }
-
-        /* ─── Nama & Peran ─── */
         .org-name {
             font-size: 13px;
             font-weight: 700;
-            color: #0f1923;
+            color: #333333;
             line-height: 1.3;
             margin-bottom: 6px;
         }
-
-        .org-card.lv1 .org-name {
-            font-size: 14px;
-        }
+        .org-card.lv1 .org-name { font-size: 14px; }
 
         .org-role {
             font-size: 11px;
             font-weight: 500;
-            color: #7A7570;
+            color: #888888;
             line-height: 1.3;
         }
+        .org-card.lv1 .org-role { font-size: 12px; }
 
-        .org-card.lv1 .org-role {
-            font-size: 12px;
-        }
-
-        /* ─── Badge untuk pimpinan ─── */
         .lv1-badge {
             display: inline-block;
             font-size: 9px;
@@ -257,138 +143,142 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #ffffff;
-            background: #D4A017;
+            background: #2e9e5b;
             padding: 3px 10px;
-            border-radius: 20px;
+            border-radius: 3px;
             margin-bottom: 14px;
         }
 
-        /* ─── Responsive ─── */
-        @media (max-width: 640px) {
-            .hero h1 { font-size: 40px; }
-            .hero p { font-size: 14px; }
-            .org-section { padding: 40px 8px 80px; }
+        @media (prefers-reduced-motion: reduce) {
+            .org-card { opacity: 1; transform: none; transition: none; }
         }
     </style>
 @endsection
 
 @section('content')
-    {{-- ── HERO ── --}}
-    <section class="hero">
-        <div class="hero-eyebrow">Kepengurusan Aktif</div>
-        <h1>Struktur <em>Organisasi</em></h1>
-        <p>Susunan kepengurusan periode aktif yang siap membawa perubahan nyata.</p>
-    </section>
+    <div class="cm-inner px-2.5">
 
-    {{-- ── ORG CHART ── --}}
-    <section class="org-section">
-        <div class="org-scroll">
-            <div class="org-tree" id="org-tree">
+        {{-- Breadcrumb --}}
+        <nav aria-label="Breadcrumb" class="text-[12px] text-[#888888] mb-4">
+            <a href="/" class="text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">Beranda</a>
+            <span class="mx-1">/</span> Struktur Organisasi
+        </nav>
 
-                @php
-                    $lv1 = $strukturs->where('peran_level', 1);
-                    $lv2 = $strukturs->where('peran_level', 2);
-                    $lv3 = $strukturs->where('peran_level', 3);
-                @endphp
+        {{-- Header --}}
+        <h1 class="cm-widget-title !text-[22px]"><span>Struktur Organisasi</span></h1>
+        <p class="text-[13px] text-[#777777] mt-[-6px] mb-[25px]">
+            Susunan kepengurusan periode aktif PCM Duren Sawit 1.
+        </p>
 
-                {{-- ── LEVEL 1: PIMPINAN ── --}}
-                @if($lv1->count())
-                <div class="org-tier" id="tier-lv1">
-                    <div class="branch-row" id="row-lv1">
-                        @foreach($lv1 as $i => $item)
-                        <div class="branch-col">
-                            {{-- Garis vertikal di atas kartu (kecuali baris pertama, tidak ada garis dari atas) --}}
-                            <div class="v-line" style="background: transparent;"></div>
-                            <div class="org-card lv1" data-delay="{{ $loop->index * 80 }}">
-                                <div class="lv1-badge">Pimpinan</div>
-                                <div class="org-avatar">
-                                    @if($item->image)
-                                        <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->nama }}">
-                                    @else
-                                        {{ strtoupper(substr($item->nama, 0, 1)) }}{{ strtoupper(substr(strstr($item->nama, ' '), 1, 1)) }}
-                                    @endif
+        {{-- Kartu org chart --}}
+        <div class="bg-white border border-[#eaeaea] cm-card-shadow mb-[20px]">
+            <section class="py-10">
+                <div class="org-scroll">
+                    <div class="org-tree" id="org-tree">
+
+                        @php
+                            $lv1 = $strukturs->where('peran_level', 1);
+                            $lv2 = $strukturs->where('peran_level', 2);
+                            $lv3 = $strukturs->where('peran_level', 3);
+                        @endphp
+
+                        {{-- LEVEL 1: PIMPINAN --}}
+                        @if($lv1->count())
+                        <div class="org-tier" id="tier-lv1">
+                            <div class="branch-row" id="row-lv1">
+                                @foreach($lv1 as $i => $item)
+                                <div class="branch-col">
+                                    <div class="v-line" style="background: transparent;"></div>
+                                    <div class="org-card lv1" data-delay="{{ $loop->index * 80 }}">
+                                        <div class="lv1-badge">Pimpinan</div>
+                                        <div class="org-avatar">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->nama }}">
+                                            @else
+                                                {{ strtoupper(substr($item->nama, 0, 1)) }}{{ strtoupper(substr(strstr($item->nama, ' '), 1, 1)) }}
+                                            @endif
+                                        </div>
+                                        <div class="org-name">{{ $item->nama }}</div>
+                                        <div class="org-role">{{ $item->peran }}</div>
+                                    </div>
                                 </div>
-                                <div class="org-name">{{ $item->nama }}</div>
-                                <div class="org-role">{{ $item->peran }}</div>
+                                @endforeach
                             </div>
                         </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
+                        @endif
 
-                {{-- ── CONNECTOR LV1 → LV2 ── --}}
-                @if($lv1->count() && $lv2->count())
-                <div class="v-line"></div>
-                @endif
+                        @if($lv1->count() && $lv2->count())
+                        <div class="v-line"></div>
+                        @endif
 
-                {{-- ── LEVEL 2: SEKRETARIAT & BENDAHARA ── --}}
-                @if($lv2->count())
-                <div class="org-tier" id="tier-lv2">
-                    <div class="tier-label" style="margin-bottom: 0;">Sekretariat &amp; Bendahara</div>
-                    <div class="v-line" style="height: 20px;"></div>
-                    <div class="branch-row" id="row-lv2">
-                        @foreach($lv2 as $item)
-                        <div class="branch-col">
-                            <div class="v-line"></div>
-                            <div class="org-card lv2" data-delay="{{ $loop->index * 80 }}">
-                                <div class="org-avatar">
-                                    @if($item->image)
-                                        <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->nama }}">
-                                    @else
-                                        {{ strtoupper(substr($item->nama, 0, 1)) }}{{ strtoupper(substr(strstr($item->nama, ' '), 1, 1)) }}
-                                    @endif
+                        {{-- LEVEL 2: SEKRETARIAT & BENDAHARA --}}
+                        @if($lv2->count())
+                        <div class="org-tier" id="tier-lv2">
+                            <div class="tier-label">Sekretariat &amp; Bendahara</div>
+                            <div class="v-line" style="height: 20px;"></div>
+                            <div class="branch-row" id="row-lv2">
+                                @foreach($lv2 as $item)
+                                <div class="branch-col">
+                                    <div class="v-line"></div>
+                                    <div class="org-card lv2" data-delay="{{ $loop->index * 80 }}">
+                                        <div class="org-avatar">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->nama }}">
+                                            @else
+                                                {{ strtoupper(substr($item->nama, 0, 1)) }}{{ strtoupper(substr(strstr($item->nama, ' '), 1, 1)) }}
+                                            @endif
+                                        </div>
+                                        <div class="org-name">{{ $item->nama }}</div>
+                                        <div class="org-role">{{ $item->peran }}</div>
+                                    </div>
                                 </div>
-                                <div class="org-name">{{ $item->nama }}</div>
-                                <div class="org-role">{{ $item->peran }}</div>
+                                @endforeach
                             </div>
                         </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
+                        @endif
 
-                {{-- ── CONNECTOR LV2 → LV3 ── --}}
-                @if($lv2->count() && $lv3->count())
-                <div class="v-line"></div>
-                @endif
+                        @if($lv2->count() && $lv3->count())
+                        <div class="v-line"></div>
+                        @endif
 
-                {{-- ── LEVEL 3: Majelis & Lembaga ── --}}
-                @if($lv3->count())
-                <div class="org-tier" id="tier-lv3">
-                    <div class="tier-label" style="margin-bottom: 0;">Majelis &amp; Lembaga</div>
-                    <div class="v-line" style="height: 20px;"></div>
-                    <div class="branch-row" id="row-lv3">
-                        @foreach($lv3 as $item)
-                        <div class="branch-col">
-                            <div class="v-line"></div>
-                            <div class="org-card lv3" data-delay="{{ $loop->index * 60 }}">
-                                <div class="org-avatar">
-                                    @if($item->image)
-                                        <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->nama }}">
-                                    @else
-                                        {{ strtoupper(substr($item->nama, 0, 1)) }}{{ strtoupper(substr(strstr($item->nama, ' '), 1, 1)) }}
-                                    @endif
+                        {{-- LEVEL 3: MAJELIS & LEMBAGA --}}
+                        @if($lv3->count())
+                        <div class="org-tier" id="tier-lv3">
+                            <div class="tier-label">Majelis &amp; Lembaga</div>
+                            <div class="v-line" style="height: 20px;"></div>
+                            <div class="branch-row" id="row-lv3">
+                                @foreach($lv3 as $item)
+                                <div class="branch-col">
+                                    <div class="v-line"></div>
+                                    <div class="org-card lv3" data-delay="{{ $loop->index * 60 }}">
+                                        <div class="org-avatar">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->nama }}">
+                                            @else
+                                                {{ strtoupper(substr($item->nama, 0, 1)) }}{{ strtoupper(substr(strstr($item->nama, ' '), 1, 1)) }}
+                                            @endif
+                                        </div>
+                                        <div class="org-name">{{ $item->nama }}</div>
+                                        <div class="org-role">{{ $item->peran }}</div>
+                                    </div>
                                 </div>
-                                <div class="org-name">{{ $item->nama }}</div>
-                                <div class="org-role">{{ $item->peran }}</div>
+                                @endforeach
                             </div>
                         </div>
-                        @endforeach
+                        @endif
+
                     </div>
                 </div>
-                @endif
-
-            </div>
+            </section>
         </div>
-    </section>
+    </div>
 @endsection
 
 @section('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        // 1. Gambar garis horizontal yang menghubungkan kartu dalam satu baris
+        // Garis horizontal penghubung kartu dalam satu baris
         function drawHLines() {
             ['row-lv1', 'row-lv2', 'row-lv3'].forEach(function (rowId) {
                 var row = document.getElementById(rowId);
@@ -401,7 +291,6 @@
                 var firstRect = cols[0].getBoundingClientRect();
                 var lastRect  = cols[cols.length - 1].getBoundingClientRect();
 
-                // Titik tengah kolom pertama & terakhir
                 var leftX  = firstRect.left  + firstRect.width  / 2 - rowRect.left;
                 var rightX = lastRect.left   + lastRect.width   / 2 - rowRect.left;
 
@@ -415,12 +304,11 @@
 
         drawHLines();
         window.addEventListener('resize', function () {
-            // Hapus h-line lama lalu gambar ulang
             document.querySelectorAll('.h-line').forEach(function (el) { el.remove(); });
             drawHLines();
         });
 
-        // 2. Animasi masuk dengan IntersectionObserver + stagger delay
+        // Animasi masuk dengan IntersectionObserver + stagger delay
         var cards = document.querySelectorAll('.org-card');
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {

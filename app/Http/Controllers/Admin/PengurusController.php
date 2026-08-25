@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pengurus;
 use App\Models\Organisasi;
+use App\Models\Pengurus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class PengurusController extends Controller
 {
@@ -29,21 +28,21 @@ class PengurusController extends Controller
             ['key' => 'foto',           'label' => 'Foto',           'sortable' => false],
         ];
 
-        $rows = $pengurus->map(fn($p) => [
-            'id'              => (string) $p->id,
-            'email'           => (string) $p->id, // Untuk identifier di data-table
-            'nama'            => $p->nama,
-            'organisasi'      => $p->organisasi?->nama ?? '—',
-            'jabatan'         => $p->jabatan,
-            'level'           => $p->level,
-            'bidang'          => $p->bidang ?? '—',
-            'no_hp'           => $p->no_hp ?? '—',
-            'email_pengurus'  => $p->email ?? '—',
-            'periode_mulai'   => $p->periode_mulai,
+        $rows = $pengurus->map(fn ($p) => [
+            'id' => (string) $p->id,
+            'email' => (string) $p->id, // Untuk identifier di data-table
+            'nama' => $p->nama,
+            'organisasi' => $p->organisasi?->nama ?? '—',
+            'jabatan' => $p->jabatan,
+            'level' => $p->level,
+            'bidang' => $p->bidang ?? '—',
+            'no_hp' => $p->no_hp ?? '—',
+            'email_pengurus' => $p->email ?? '—',
+            'periode_mulai' => $p->periode_mulai,
             'periode_selesai' => $p->periode_selesai,
-            'urutan'          => $p->urutan ?? 0,
-            'is_active'       => $p->is_active,
-            'foto'            => $p->foto ? asset('storage/' . $p->foto) : null,
+            'urutan' => $p->urutan ?? 0,
+            'is_active' => $p->is_active,
+            'foto' => $p->foto ? asset('storage/'.$p->foto) : null,
         ])->toArray();
 
         return view('pages.admin.pengurus.index', compact('columns', 'rows', 'pengurus'));
@@ -52,6 +51,7 @@ class PengurusController extends Controller
     public function create()
     {
         $organisasis = Organisasi::aktif()->orderBy('nama')->get();
+
         return view('pages.admin.pengurus.create', compact('organisasis'));
     }
 
@@ -63,13 +63,13 @@ class PengurusController extends Controller
         // Definisikan rules validasi
         $rules = [
             'organisasi_otonom_id' => 'required|exists:organisasi_otonom,id',
-            'nama'                 => 'required|string|max:200',
-            'jabatan'              => 'required|string|max:100',
-            'level'                => 'required|in:inti,majelis,lembaga',
-            'bidang'               => 'nullable|string|max:100',
-            'foto'                 => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
-            'no_hp'                => 'nullable|string|max:20',
-            'email'                => 'nullable|email|max:100',
+            'nama' => 'required|string|max:200',
+            'jabatan' => 'required|string|max:100',
+            'level' => 'required|in:inti,majelis,lembaga',
+            'bidang' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
+            'no_hp' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:100',
             'periode_mulai' => [
                 'required',
                 'numeric',
@@ -85,14 +85,14 @@ class PengurusController extends Controller
                 'gte:periode_mulai',
                 // 'lte:' . ($organisasi->periode_selesai + 1),
             ],
-            'urutan'               => 'nullable|integer|min:0',
-            'is_active'            => 'boolean',
+            'urutan' => 'nullable|integer|min:0',
+            'is_active' => 'boolean',
         ];
 
         // Definisikan pesan error custom
         $messages = [
-            'periode_mulai.gte' => 'Periode mulai tidak boleh kurang dari ' . ($organisasi->periode_mulai - 1),
-            'periode_selesai.lte' => 'Periode selesai tidak boleh lebih dari ' . ($organisasi->periode_selesai + 1),
+            'periode_mulai.gte' => 'Periode mulai tidak boleh kurang dari '.($organisasi->periode_mulai - 1),
+            'periode_selesai.lte' => 'Periode selesai tidak boleh lebih dari '.($organisasi->periode_selesai + 1),
             'periode_selesai.gte' => 'Periode selesai harus lebih besar atau sama dengan periode mulai',
             'organisasi_otonom_id.required' => 'Organisasi wajib dipilih',
             'organisasi_otonom_id.exists' => 'Organisasi tidak valid',
@@ -116,7 +116,7 @@ class PengurusController extends Controller
 
         // Set default values
         $validated['is_active'] = $request->boolean('is_active', true);
-        $validated['urutan']    = $validated['urutan'] ?? 0;
+        $validated['urutan'] = $validated['urutan'] ?? 0;
 
         // Simpan ke database
         Pengurus::create($validated);
@@ -128,8 +128,9 @@ class PengurusController extends Controller
 
     public function edit(string $id)
     {
-        $pengurus    = Pengurus::findOrFail($id);
+        $pengurus = Pengurus::findOrFail($id);
         $organisasis = Organisasi::aktif()->orderBy('nama')->get();
+
         return view('pages.admin.pengurus.edit', compact('pengurus', 'organisasis'));
     }
 
@@ -143,13 +144,13 @@ class PengurusController extends Controller
         // Definisikan rules validasi (sama seperti store)
         $rules = [
             'organisasi_otonom_id' => 'required|exists:organisasi_otonom,id',
-            'nama'                 => 'required|string|max:200',
-            'jabatan'              => 'required|string|max:100',
-            'level'                => 'required|in:inti,majelis,lembaga',
-            'bidang'               => 'nullable|string|max:100',
-            'foto'                 => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
-            'no_hp'                => 'nullable|string|max:20',
-            'email'                => 'nullable|email|max:100',
+            'nama' => 'required|string|max:200',
+            'jabatan' => 'required|string|max:100',
+            'level' => 'required|in:inti,majelis,lembaga',
+            'bidang' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif,svg|max:2048',
+            'no_hp' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:100',
             'periode_mulai' => [
                 'required',
                 'numeric',
@@ -165,14 +166,14 @@ class PengurusController extends Controller
                 'gte:periode_mulai',
                 // 'lte:' . ($organisasi->periode_selesai + 1),
             ],
-            'urutan'               => 'nullable|integer|min:0',
-            'is_active'            => 'boolean',
+            'urutan' => 'nullable|integer|min:0',
+            'is_active' => 'boolean',
         ];
 
         // Definisikan pesan error custom
         $messages = [
-            'periode_mulai.gte' => 'Periode mulai tidak boleh kurang dari ' . ($organisasi->periode_mulai - 1) . ' (periode organisasi: ' . $organisasi->periode_mulai . ')',
-            'periode_selesai.lte' => 'Periode selesai tidak boleh lebih dari ' . ($organisasi->periode_selesai + 1) . ' (periode organisasi: ' . $organisasi->periode_selesai . ')',
+            'periode_mulai.gte' => 'Periode mulai tidak boleh kurang dari '.($organisasi->periode_mulai - 1).' (periode organisasi: '.$organisasi->periode_mulai.')',
+            'periode_selesai.lte' => 'Periode selesai tidak boleh lebih dari '.($organisasi->periode_selesai + 1).' (periode organisasi: '.$organisasi->periode_selesai.')',
             'periode_selesai.gte' => 'Periode selesai harus lebih besar atau sama dengan periode mulai',
         ];
 
@@ -192,7 +193,7 @@ class PengurusController extends Controller
 
         // Set default values
         $validated['is_active'] = $request->boolean('is_active');
-        $validated['urutan']    = $validated['urutan'] ?? $pengurus->urutan;
+        $validated['urutan'] = $validated['urutan'] ?? $pengurus->urutan;
 
         // Update ke database
         $pengurus->update($validated);

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Article;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class ArticleSeeder extends Seeder
@@ -14,9 +14,9 @@ class ArticleSeeder extends Seeder
             Article::create([
                 'title' => "Article Title $i",
                 'slug' => Str::slug("Article Title $i"),
-                'author' => "Bintang",
+                'author' => 'Bintang',
                 'content' => "Ini adalah contoh konten artikel ke-$i. Isinya bisa panjang banget, tapi ini dummy aja buat testing UI.",
-                'thumbnail' => null // nanti bisa isi manual
+                'thumbnail' => null, // nanti bisa isi manual
             ]);
         }
     }

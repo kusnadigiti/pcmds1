@@ -77,8 +77,8 @@ class NavMenuSeeder extends Seeder
 
         // Sub-items: PRM
         DB::table('nav_menus')->insert([
-            ['label' => 'Kegiatan', 'url' => '/#kegiatan', 'parent_id' => $prm, 'order' => 1, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Amal Usaha', 'url' => '/#amal-usaha', 'parent_id' => $prm, 'order' => 2, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Kegiatan', 'url' => '/prm#kegiatan', 'parent_id' => $prm, 'order' => 1, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Amal Usaha', 'url' => '/prm#amal-usaha', 'parent_id' => $prm, 'order' => 2, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Sub-items: Amal Usaha

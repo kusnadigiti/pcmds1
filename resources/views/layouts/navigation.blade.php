@@ -26,7 +26,7 @@
         {{-- Logo --}}
         <a href="/" class="flex items-center gap-3 no-underline group">
             <div class="w-10 h-10 rounded-lg overflow-hidden border border-white/10 flex-shrink-0 bg-white/5 flex items-center justify-center">
-                <img src="https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg"
+                <img src="{{ asset('images/logo.png') }}"
                     class="w-full h-full object-cover"
                     alt="Logo PCM Duren Sawit 1" />
             </div>

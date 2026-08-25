@@ -36,15 +36,15 @@ class StrukturOrganisasiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'        => 'required|string|max:100',
-            'peran'       => 'required|string|max:100',
+            'nama' => 'required|string|max:100',
+            'peran' => 'required|string|max:100',
             'peran_level' => 'required|integer',
-            'image'       => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $data = [
-            'nama'        => $validated['nama'],
-            'peran'       => $validated['peran'],
+            'nama' => $validated['nama'],
+            'peran' => $validated['peran'],
             'peran_level' => $validated['peran_level'],
         ];
 
@@ -58,7 +58,7 @@ class StrukturOrganisasiController extends Controller
             'success' => true,
             'message' => 'Anggota berhasil ditambahkan',
             'id' => $item->id,
-            'data' => $item
+            'data' => $item,
         ]);
     }
 
@@ -68,13 +68,13 @@ class StrukturOrganisasiController extends Controller
     public function update(Request $request, StrukturOrganisasi $strukturOrganisasi)
     {
         $validated = $request->validate([
-            'nama'  => 'required|string|max:100',
+            'nama' => 'required|string|max:100',
             'peran' => 'required|string|max:100',
             'image' => 'nullable|image|max:2048',
         ]);
 
         $data = [
-            'nama'  => $validated['nama'],
+            'nama' => $validated['nama'],
             'peran' => $validated['peran'],
         ];
 
@@ -92,7 +92,7 @@ class StrukturOrganisasiController extends Controller
             'success' => true,
             'message' => 'Data berhasil diperbarui',
             'id' => $strukturOrganisasi->id,
-            'data' => $strukturOrganisasi->fresh()
+            'data' => $strukturOrganisasi->fresh(),
         ]);
     }
 
@@ -111,19 +111,21 @@ class StrukturOrganisasiController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Anggota berhasil dihapus'
+                'message' => 'Anggota berhasil dihapus',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal menghapus: ' . $e->getMessage()
+                'message' => 'Gagal menghapus: '.$e->getMessage(),
             ], 500);
         }
     }
 
     private function seedDefaultSlots()
     {
-        if (StrukturOrganisasi::count() > 0) return;
+        if (StrukturOrganisasi::count() > 0) {
+            return;
+        }
 
         $slots = [
             // Level 1

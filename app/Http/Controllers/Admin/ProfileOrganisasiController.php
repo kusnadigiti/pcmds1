@@ -24,13 +24,13 @@ class ProfileOrganisasiController extends Controller
             ['key' => 'image',   'label' => 'Image',   'sortable' => false],
         ];
 
-        $rows = $profile->map(fn($p) => [
-            'nama'    => $p->nama,
-            'visi'    => $p->visi,
-            'misi'    => $p->misi,
+        $rows = $profile->map(fn ($p) => [
+            'nama' => $p->nama,
+            'visi' => $p->visi,
+            'misi' => $p->misi,
             'tagline' => $p->tagline,
-            'image'   => asset('storage/' . $p->image),
-            'id'      => $p->id,
+            'image' => asset('storage/'.$p->image),
+            'id' => $p->id,
         ])->toArray();
 
         return view('pages.admin.profile-org.profile-organisasi', compact('profile', 'columns', 'rows', 'hero'));
@@ -64,6 +64,7 @@ class ProfileOrganisasiController extends Controller
     public function edit($id)
     {
         $profile = ProfileOrganisasi::findOrFail($id);
+
         return view('pages.admin.profile-org.profile-organisasi-edit', compact('profile'));
     }
 
@@ -90,6 +91,7 @@ class ProfileOrganisasiController extends Controller
         }
 
         $profile->update($validated);
+
         return redirect()->route('admin.profile-organisasi')->with('success', 'Data profile berhasil diperbarui');
     }
 
@@ -106,12 +108,12 @@ class ProfileOrganisasiController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Data berhasil dihapus'
+                'message' => 'Data berhasil dihapus',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

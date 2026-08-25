@@ -24,9 +24,9 @@ class NavMenuController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'label'        => 'required|string|max:100',
-            'url'          => 'nullable|string|max:500',
-            'parent_id'    => 'nullable|exists:nav_menus,id',
+            'label' => 'required|string|max:100',
+            'url' => 'nullable|string|max:500',
+            'parent_id' => 'nullable|exists:nav_menus,id',
             'open_new_tab' => 'boolean',
         ]);
 
@@ -34,11 +34,11 @@ class NavMenuController extends Controller
         $maxOrder = NavMenu::where('parent_id', $validated['parent_id'] ?? null)->max('order') ?? 0;
 
         NavMenu::create([
-            'label'        => $validated['label'],
-            'url'          => $validated['url'] ?? null,
-            'parent_id'    => $validated['parent_id'] ?? null,
-            'order'        => $maxOrder + 1,
-            'is_visible'   => true,
+            'label' => $validated['label'],
+            'url' => $validated['url'] ?? null,
+            'parent_id' => $validated['parent_id'] ?? null,
+            'order' => $maxOrder + 1,
+            'is_visible' => true,
             'open_new_tab' => $validated['open_new_tab'] ?? false,
         ]);
 
@@ -51,14 +51,14 @@ class NavMenuController extends Controller
     public function update(Request $request, NavMenu $navMenu)
     {
         $validated = $request->validate([
-            'label'        => 'required|string|max:100',
-            'url'          => 'nullable|string|max:500',
+            'label' => 'required|string|max:100',
+            'url' => 'nullable|string|max:500',
             'open_new_tab' => 'boolean',
         ]);
 
         $navMenu->update([
-            'label'        => $validated['label'],
-            'url'          => $validated['url'] ?? null,
+            'label' => $validated['label'],
+            'url' => $validated['url'] ?? null,
             'open_new_tab' => $validated['open_new_tab'] ?? false,
         ]);
 
@@ -83,7 +83,7 @@ class NavMenuController extends Controller
         $navMenu->update(['is_visible' => ! $navMenu->is_visible]);
 
         return response()->json([
-            'success'    => true,
+            'success' => true,
             'is_visible' => $navMenu->is_visible,
         ]);
     }
@@ -95,15 +95,15 @@ class NavMenuController extends Controller
     public function reorder(Request $request)
     {
         $request->validate([
-            'items'            => 'required|array',
-            'items.*.id'       => 'required|exists:nav_menus,id',
-            'items.*.order'    => 'required|integer|min:0',
+            'items' => 'required|array',
+            'items.*.id' => 'required|exists:nav_menus,id',
+            'items.*.order' => 'required|integer|min:0',
             'items.*.parent_id' => 'nullable|exists:nav_menus,id',
         ]);
 
         foreach ($request->items as $item) {
             NavMenu::where('id', $item['id'])->update([
-                'order'     => $item['order'],
+                'order' => $item['order'],
                 'parent_id' => $item['parent_id'] ?? null,
             ]);
         }

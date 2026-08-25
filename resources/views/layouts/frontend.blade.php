@@ -19,8 +19,8 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')">
     <meta property="og:description" content="@yield('meta_description', 'Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit. Update informasi, berita, kajian, program unggulan, dan layanan sosial.')">
-    <meta property="og:image" content="@yield('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')">
-    <meta property="og:image:secure_url" content="@yield('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo.png'))">
+    <meta property="og:image:secure_url" content="@yield('og_image', asset('images/logo.png'))">
     <meta property="og:site_name" content="PCM Duren Sawit 1">
     <meta property="og:locale" content="id_ID">
 
@@ -29,7 +29,7 @@
     <meta name="twitter:url" content="{{ url()->current() }}">
     <meta name="twitter:title" content="@yield('title', 'PCM Duren Sawit 1 | Muhammadiyah Berkemajuan')">
     <meta name="twitter:description" content="@yield('meta_description', 'Pimpinan Cabang Muhammadiyah Duren Sawit 1 - Mencerahkan Semesta, Memajukan Duren Sawit. Update informasi, berita, kajian, program unggulan, dan layanan sosial.')">
-    <meta name="twitter:image" content="@yield('og_image', 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/logo.png'))">
 
     @yield('meta')
     @stack('meta')

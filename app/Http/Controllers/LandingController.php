@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\AmalUsaha;
 use App\Models\Article;
 use App\Models\Berita;
+use App\Models\HeroSections;
 use App\Models\Jadwal;
 use App\Models\Organisasi;
 use App\Models\Pengurus;
 use App\Models\ProfileOrganisasi;
 use App\Models\StrukturOrganisasi;
-use App\Models\HeroSections;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class LandingController extends Controller
 {
-
     public function index()
     {
         $hero = ProfileOrganisasi::latest('created_at')->first();
@@ -26,12 +25,12 @@ class LandingController extends Controller
         $totalArticlesCount = Article::where('status', 'published')->count();
         $articles = Article::where('status', 'published')
             ->latest('created_at')
-            ->limit(3)
+            ->limit(6)
             ->get();
 
         $latestBerita = Berita::where('status', 'published')
             ->latest('created_at')
-            ->limit(3)
+            ->limit(7)
             ->get();
 
         $jadwals = Jadwal::where('tanggal', '>=', today())
@@ -51,7 +50,7 @@ class LandingController extends Controller
                         ->orderBy('urutan', 'asc')
                         ->orderBy('jabatan', 'asc');
                 },
-                'amalUsaha'
+                'amalUsaha',
             ])
             ->orderBy('tipe')
             ->orderBy('nama')
@@ -72,12 +71,11 @@ class LandingController extends Controller
             })
             ->values();
 
-
         $totalAnggota = Pengurus::where('is_active', true)->count();
 
         $tahunMulai = Organisasi::min('periode_mulai') ?? date('Y');
         $tahunSelesai = Organisasi::max('periode_selesai') ?? date('Y') + 5;
-        $periode = $tahunMulai . '–' . $tahunSelesai;
+        $periode = $tahunMulai.'–'.$tahunSelesai;
 
         foreach ($organisasis as $org) {
             // Cari ketua
@@ -100,33 +98,75 @@ class LandingController extends Controller
         $kajianPerTahun = Jadwal::whereYear('tanggal', $currentYear)->count();
 
         return view('welcome', [
-            'hero'            => $hero,
-            'articles'        => $articles,
+            'hero' => $hero,
+            'articles' => $articles,
             'totalArticlesCount' => $totalArticlesCount,
-            'latestBerita'    => $latestBerita,
-            'jadwals'         => $jadwals,
-            'jadwalJson'      => $allJadwalsRaw->map(fn($j) => [
+            'latestBerita' => $latestBerita,
+            'jadwals' => $jadwals,
+            'jadwalJson' => $allJadwalsRaw->map(fn ($j) => [
                 'nama_kegiatan' => $j->nama_kegiatan,
-                'tanggal'       => \Carbon\Carbon::parse($j->tanggal)->format('Y-m-d'),
-                'waktu'         => \Carbon\Carbon::parse($j->waktu)->format('H:i'),
-                'lokasi'        => $j->lokasi,
-                'deskripsi'     => $j->deskripsi,
+                'tanggal' => Carbon::parse($j->tanggal)->format('Y-m-d'),
+                'waktu' => Carbon::parse($j->waktu)->format('H:i'),
+                'lokasi' => $j->lokasi,
+                'deskripsi' => $j->deskripsi,
             ])->values(),
-            'jadwalCount'     => $allJadwalsRaw->count(),
-            'kajianPerTahun'  => $kajianPerTahun,
-            'currentYear'     => $currentYear,
-            'organisasis'     => $organisasis,
-            'totalAnggota'    => $totalAnggota,
-            'periode'         => $periode,
+            'jadwalCount' => $allJadwalsRaw->count(),
+            'kajianPerTahun' => $kajianPerTahun,
+            'currentYear' => $currentYear,
+            'organisasis' => $organisasis,
+            'totalAnggota' => $totalAnggota,
+            'periode' => $periode,
             'amalUsahaGrouped' => $amalUsahaGrouped,
-            'amalUsahaList'   => $amalUsahaList,
+            'amalUsahaList' => $amalUsahaList,
             'heroSections' => $heroSections,
+        ]);
+    }
+
+    public function showProfil()
+    {
+        $profil = ProfileOrganisasi::latest('created_at')->first();
+
+        return view('pages.profil', compact('profil'));
+    }
+
+    public function showKontak()
+    {
+        return view('pages.kontak');
+    }
+
+    public function showPrm()
+    {
+        $jadwals = Jadwal::where('tanggal', '>=', today())
+            ->orderBy('tanggal', 'asc')
+            ->orderBy('waktu', 'asc')
+            ->limit(9)
+            ->get();
+
+        $amalUsahaList = AmalUsaha::with('organisasiOtonom')
+            ->whereHas('organisasiOtonom')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $amalUsahaGrouped = $amalUsahaList->groupBy('tipe')
+            ->map(function ($items, $tipe) {
+                return [
+                    'tipe' => $tipe,
+                    'items' => $items,
+                    'count' => $items->count(),
+                ];
+            })
+            ->values();
+
+        return view('pages.prm', [
+            'jadwals' => $jadwals,
+            'amalUsahaGrouped' => $amalUsahaGrouped,
         ]);
     }
 
     public function showArticle($slug)
     {
         $article = Article::where('slug', $slug)->firstOrFail();
+
         return view('pages.admin.articles.article-detail', compact('article'));
     }
 
@@ -152,7 +192,7 @@ class LandingController extends Controller
     {
         $kategori = $request->query('kategori');
 
-        $query = Berita::where('status', 'published')->latest();
+        $query = Berita::with('user')->where('status', 'published')->latest();
 
         if ($kategori && in_array($kategori, ['dakwah', 'pendidikan', 'sosial', 'organisasi'])) {
             $query->where('kategori', $kategori);
@@ -160,15 +200,16 @@ class LandingController extends Controller
 
         $berita = $query->paginate(10)->through(function ($item) {
             return [
-                'id'         => $item->id,
-                'judul'      => $item->judul,
-                'slug'       => $item->slug,
-                'isi'        => $item->isi,
-                'excerpt'    => Str::limit(strip_tags($item->isi), 140),
-                'gambar'     => $item->gambar ? asset('storage/' . $item->gambar) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&fit=crop',
-                'kategori'   => $item->kategori,
-                'status'     => $item->status,
+                'id' => $item->id,
+                'judul' => $item->judul,
+                'slug' => $item->slug,
+                'isi' => $item->isi,
+                'excerpt' => Str::limit(strip_tags($item->isi), 140),
+                'gambar' => $item->gambar ? asset('storage/'.$item->gambar) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&fit=crop',
+                'kategori' => $item->kategori,
+                'status' => $item->status,
                 'created_at' => $item->created_at,
+                'author' => $item->user->name ?? 'Tim Redaksi',
             ];
         });
 
@@ -182,7 +223,7 @@ class LandingController extends Controller
             ->firstOrFail();
 
         $berita->gambar = $berita->gambar
-            ? asset('storage/' . $berita->gambar)
+            ? asset('storage/'.$berita->gambar)
             : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&fit=crop';
 
         return view('pages.berita.berita-detail', compact('berita'));
@@ -192,11 +233,11 @@ class LandingController extends Controller
     {
         $org = Organisasi::aktif()
             ->where('slug', $slug)
-            ->with(['pengurus' => fn($q) => $q->orderBy('urutan')->orderBy('jabatan')])
+            ->with(['pengurus' => fn ($q) => $q->orderBy('urutan')->orderBy('jabatan')])
             ->firstOrFail();
 
         // Pengurus inti (ketua, sekretaris, bendahara)
-        $pengurusInti = $org->pengurus->filter(fn($p) => $p->level === 'inti');
+        $pengurusInti = $org->pengurus->filter(fn ($p) => $p->level === 'inti');
 
         // Semua pengurus
         $allPengurus = $org->pengurus;
@@ -205,9 +246,9 @@ class LandingController extends Controller
         $totalPengurus = $org->pengurus->where('is_active', true)->count();
 
         // Resolusi jabatan inti
-        $org->ketua = $pengurusInti->first(fn($p) => strtolower(trim($p->jabatan)) === 'ketua')?->nama;
-        $org->sekretaris = $pengurusInti->first(fn($p) => strtolower(trim($p->jabatan)) === 'sekretaris')?->nama;
-        $org->bendahara = $pengurusInti->first(fn($p) => strtolower(trim($p->jabatan)) === 'bendahara')?->nama;
+        $org->ketua = $pengurusInti->first(fn ($p) => strtolower(trim($p->jabatan)) === 'ketua')?->nama;
+        $org->sekretaris = $pengurusInti->first(fn ($p) => strtolower(trim($p->jabatan)) === 'sekretaris')?->nama;
+        $org->bendahara = $pengurusInti->first(fn ($p) => strtolower(trim($p->jabatan)) === 'bendahara')?->nama;
 
         return view('pages.otonom.show-organisasi-otonom', compact(
             'org',
@@ -238,13 +279,13 @@ class LandingController extends Controller
     {
         // Mapping slug URL → enum di DB
         $tipeMappings = [
-            'bidang-pendidikan'         => 'bidang_pendidikan',
-            'bidang-kesehatan'          => 'bidang_kesehatan',
+            'bidang-pendidikan' => 'bidang_pendidikan',
+            'bidang-kesehatan' => 'bidang_kesehatan',
             'bidang-kesejahteraan-sosial' => 'bidang_sosial',
-            'bidang-sosial'             => 'bidang_sosial',
+            'bidang-sosial' => 'bidang_sosial',
         ];
 
-        if (!array_key_exists($kategori, $tipeMappings)) {
+        if (! array_key_exists($kategori, $tipeMappings)) {
             abort(404);
         }
 
@@ -252,8 +293,8 @@ class LandingController extends Controller
 
         $labelMappings = [
             'bidang_pendidikan' => 'Bidang Pendidikan',
-            'bidang_kesehatan'  => 'Bidang Kesehatan',
-            'bidang_sosial'     => 'Bidang Kesejahteraan Sosial',
+            'bidang_kesehatan' => 'Bidang Kesehatan',
+            'bidang_sosial' => 'Bidang Kesejahteraan Sosial',
         ];
 
         $amalUsahaList = AmalUsaha::with('organisasiOtonom')

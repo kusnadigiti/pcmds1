@@ -34,7 +34,6 @@ class ManageUserController extends Controller
         return view('pages.admin.manage-user.index', compact('columns', 'rows'));
     }
 
-
     public function create()
     {
         return view('pages.admin.manage-user.create');
@@ -69,12 +68,12 @@ class ManageUserController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $manage_user->id,
+            'email' => 'required|email|unique:users,email,'.$manage_user->id,
             'password' => 'nullable|min:6',
             'role' => 'required|in:admin,penulis,bendahara',
         ]);
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);
         } else {
             unset($validated['password']);
@@ -92,7 +91,7 @@ class ManageUserController extends Controller
         if (auth()->id() == $id) {
             return response()->json([
                 'success' => false,
-                'message' => 'Anda tidak dapat menghapus akun Anda sendiri!'
+                'message' => 'Anda tidak dapat menghapus akun Anda sendiri!',
             ], 400);
         }
 
@@ -102,7 +101,7 @@ class ManageUserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'User berhasil dihapus!'
+            'message' => 'User berhasil dihapus!',
         ]);
     }
 }

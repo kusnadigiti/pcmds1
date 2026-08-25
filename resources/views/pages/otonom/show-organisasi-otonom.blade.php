@@ -1,172 +1,119 @@
-@extends('layouts.frontend')
+@extends('layouts.colormag')
 
 @section('title', $org->nama . ' — PCM Duren Sawit 1')
 @section('meta_description', 'Profil ' . $org->nama . ' (' . ($org->singkatan ?? 'Ortom') . ') Pimpinan Cabang Muhammadiyah Duren Sawit 1. Visi, misi, dan susunan kepengurusan.')
 @section('meta_keywords', $org->nama . ', ' . ($org->singkatan ?? 'Ortom') . ', Organisasi Otonom Muhammadiyah, PCM Duren Sawit 1')
-@section('og_image', $org->logo ? asset('storage/' . $org->logo) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg')
+@section('og_image', $org->logo ? asset('storage/' . $org->logo) : asset('images/logo.png'))
 
-@section('styles')
-    <style>
-        .font-serif {
-            font-family: 'Playfair Display', Georgia, serif;
-        }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.55s cubic-bezier(.22, .68, 0, 1.2) forwards;
-        }
-
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .delay-1 { animation-delay: 0.05s; }
-        .delay-2 { animation-delay: 0.12s; }
-        .delay-3 { animation-delay: 0.20s; }
-        .delay-4 { animation-delay: 0.28s; }
-        .delay-5 { animation-delay: 0.36s; }
-        .delay-6 { animation-delay: 0.44s; }
-
-        .pengurus-card:hover .pengurus-arrow {
-            transform: translateX(4px);
-        }
-
-        .pengurus-arrow {
-            transition: transform 0.2s ease;
-        }
-    </style>
-@endsection
+@php
+    $tipeLabel = ['otonom' => 'Organisasi Otonom', 'lembaga' => 'Lembaga', 'majelis' => 'Majelis'];
+@endphp
 
 @section('content')
-    <div class="pt-14">
-        <header class="max-w-6xl mx-auto px-6 pt-16 pb-12 border-b border-gray-100">
-            <div class="fade-up">
-                <p class="flex items-center gap-2 text-[10px] uppercase tracking-[.14em] text-gray-400 mb-6">
-                    <span class="inline-block w-5 h-px bg-gray-300"></span>
-                    {{ ucfirst($org->tipe) }} · Periode {{ $org->periode_mulai }}–{{ $org->periode_selesai }}
-                </p>
-            </div>
+    <div class="cm-inner px-2.5">
 
-            <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end">
-                <div class="fade-up delay-1">
-                    <div class="flex items-start gap-5 mb-6 flex-col">
-                        <div
-                            class="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0 mt-1">
-                            @if ($org->logo)
-                                <img src="{{ asset('storage/' . $org->logo) }}" alt="{{ $org->nama }}"
-                                    class="w-full h-full object-contain">
-                            @else
-                                <span class="text-[13px] font-medium text-gray-500">{{ $org->singkatan }}</span>
-                            @endif
-                        </div>
-                        <div>
-                            <h1 class="font-serif text-[38px] lg:text-[52px] leading-[1.1] font-normal tracking-tight">
-                                {{ $org->nama }}
-                            </h1>
-                        </div>
+        {{-- Breadcrumb --}}
+        <nav aria-label="Breadcrumb" class="text-[12px] text-[#888888] mb-4">
+            <a href="/" class="text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">Beranda</a>
+            <span class="mx-1">/</span> {{ $org->nama }}
+        </nav>
+
+        {{-- Header organisasi --}}
+        <div class="bg-white border border-[#eaeaea] cm-card-shadow p-5 md:p-8 mb-[30px]">
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-center">
+                <div class="flex items-start gap-4">
+                    <div class="w-16 h-16 bg-white border border-[#eaeaea] rounded-[3px] flex items-center justify-center overflow-hidden shrink-0">
+                        @if ($org->logo)
+                            <img src="{{ asset('storage/' . $org->logo) }}" alt="{{ $org->nama }}" class="w-full h-full object-contain"/>
+                        @else
+                            <span class="text-[15px] font-bold text-[#2e9e5b]">{{ $org->singkatan }}</span>
+                        @endif
                     </div>
-
-                    @if ($org->deskripsi)
-                        <p class="text-[15px] text-gray-500 leading-relaxed max-w-xl">
-                            {{ $org->deskripsi }}
-                        </p>
-                    @endif
+                    <div class="min-w-0">
+                        <div class="mb-1.5">
+                            <span class="cm-cat-badge">{{ $tipeLabel[$org->tipe] ?? ucfirst($org->tipe) }}</span>
+                        </div>
+                        <h1 class="text-[24px] md:text-[30px] leading-tight font-semibold text-[#333333] m-0 mb-2">
+                            {{ $org->nama }}
+                        </h1>
+                        @if ($org->deskripsi)
+                            <p class="text-[14px] text-[#555555] leading-relaxed m-0 max-w-[65ch]">{{ $org->deskripsi }}</p>
+                        @endif
+                    </div>
                 </div>
 
                 {{-- Stats --}}
-                <div class="fade-up delay-2 flex gap-8 lg:flex-col lg:gap-5 lg:text-right pb-1">
+                <div class="flex lg:flex-col gap-6 border-t lg:border-t-0 border-l-0 pt-4 lg:pt-0 lg:text-right lg:border-[#eeeeee]">
                     <div>
-                        <div class="text-[28px] font-medium leading-none">{{ $pengurusInti->count() }}</div>
-                        <div class="text-[11px] text-gray-400 mt-1 uppercase tracking-[.06em]">Pengurus Inti</div>
+                        <div class="text-[26px] font-bold text-[#2e9e5b] leading-none">{{ $pengurusInti->count() }}</div>
+                        <div class="text-[11px] uppercase tracking-wide text-[#888888] mt-1">Pengurus Inti</div>
                     </div>
-                    <div class="w-px bg-gray-100 lg:hidden"></div>
                     <div>
-                        <div class="text-[28px] font-medium leading-none">{{ $totalPengurus }}</div>
-                        <div class="text-[11px] text-gray-400 mt-1 uppercase tracking-[.06em]">Total Anggota</div>
+                        <div class="text-[26px] font-bold text-[#2e9e5b] leading-none">{{ $totalPengurus }}</div>
+                        <div class="text-[11px] uppercase tracking-wide text-[#888888] mt-1">Total Anggota</div>
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
 
-        {{-- ─── PENGURUS INTI ────────────────────────── --}}
-        <section class="max-w-6xl mx-auto px-6 py-12 border-b border-gray-100">
-            <div class="fade-up delay-2">
-                <p class="text-[10px] uppercase tracking-[.14em] text-gray-400 mb-8 flex items-center gap-2">
-                    <span class="w-4 h-px bg-gray-300 inline-block"></span>
-                    Pimpinan Organisasi
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-gray-100 rounded-xl overflow-hidden fade-up delay-3">
-                @foreach ([['Ketua', $org->ketua, 'Pimpinan utama organisasi'], ['Sekretaris', $org->sekretaris, 'Pengelola administrasi'], ['Bendahara', $org->bendahara, 'Pengelola keuangan']] as [$jabatan, $nama, $desc])
-                    <div class="bg-white px-7 py-7">
-                        <div class="text-[10px] uppercase tracking-[.10em] text-gray-400 mb-5">{{ $jabatan }}
+        {{-- Pengurus inti --}}
+        <section class="mb-[35px]" aria-label="Pimpinan organisasi">
+            <h3 class="cm-widget-title"><span>Pimpinan Organisasi</span></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-[25px]">
+                @foreach ([['Ketua', $org->ketua], ['Sekretaris', $org->sekretaris], ['Bendahara', $org->bendahara]] as [$jabatan, $nama])
+                    <div class="bg-white border border-[#eaeaea] cm-card-shadow p-5 border-t-2 !border-t-[#2e9e5b]">
+                        <div class="text-[11px] uppercase tracking-wide text-[#888888] mb-3">{{ $jabatan }}</div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-[#eaf5ee] text-[#2e9e5b] flex items-center justify-center text-[13px] font-bold overflow-hidden shrink-0">
+                                @if($nama)
+                                    {{ strtoupper(substr($nama, 0, 1)) }}
+                                @else
+                                    ?
+                                @endif
+                            </div>
+                            <div class="text-[15px] font-semibold text-[#333333]">{{ $nama ?? 'Belum diisi' }}</div>
                         </div>
-                        <div class="text-[17px] font-medium leading-snug mb-1">{{ $nama ?? '—' }}</div>
-                        <div class="text-[11px] text-gray-400">{{ $desc }}</div>
                     </div>
                 @endforeach
             </div>
         </section>
 
-        {{-- ─── SEMUA PENGURUS ──────────────────────── --}}
+        {{-- Semua pengurus --}}
         @if ($allPengurus->count())
-            <section class="max-w-6xl mx-auto px-6 py-12 border-b border-gray-100">
-                <div class="fade-up delay-3">
-                    <div class="flex items-end justify-between mb-8">
-                        <p class="text-[10px] uppercase tracking-[.14em] text-gray-400 flex items-center gap-2">
-                            <span class="w-4 h-px bg-gray-300 inline-block"></span>
-                            Seluruh Pengurus
-                        </p>
-                        <span class="text-[11px] text-gray-400">{{ $allPengurus->count() }} orang</span>
-                    </div>
-                </div>
+            <section class="mb-[35px]" aria-label="Seluruh pengurus">
+                <h3 class="cm-widget-title"><span>Seluruh Pengurus <small class="font-normal text-white/80 text-[13px]">({{ $allPengurus->count() }} orang)</small></span></h3>
 
-                {{-- Group by level/bidang --}}
                 @php
                     $grouped = $allPengurus->groupBy('bidang');
                     $grouped = $grouped->sortKeys();
                 @endphp
 
-                <div class="space-y-10 fade-up delay-4">
+                <div class="space-y-[25px]">
                     @foreach ($grouped as $bidang => $members)
                         <div>
                             @if ($bidang && $bidang !== '—')
-                                <div
-                                    class="text-[10px] uppercase tracking-[.12em] text-gray-400 mb-4 pb-3 border-b border-gray-100">
-                                    {{ $bidang }}
-                                </div>
+                                <h4 class="text-[14px] font-bold text-[#333333] border-b-2 border-[#2e9e5b] inline-block pb-1 mb-4 mt-0">{{ $bidang }}</h4>
                             @endif
 
-                            <div
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-100 rounded-xl overflow-hidden">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[15px]">
                                 @foreach ($members->sortBy('urutan') as $p)
-                                    <div class="pengurus-card bg-white px-5 py-5 group">
+                                    <div class="bg-white border border-[#eaeaea] cm-card-shadow px-4 py-4 hover:border-[#2e9e5b] cm-transition">
                                         <div class="flex items-start gap-3">
-                                            {{-- Avatar --}}
-                                            <div
-                                                class="w-10 h-10 rounded-full bg-gray-100 overflow-hidden flex-shrink-0">
+                                            <div class="w-11 h-11 rounded-full bg-[#eaf5ee] overflow-hidden flex-shrink-0 flex items-center justify-center">
                                                 @if ($p->foto)
-                                                    <img src="{{ asset('storage/' . $p->foto) }}"
-                                                        alt="{{ $p->nama }}" class="w-full h-full object-cover">
+                                                    <img src="{{ asset('storage/' . $p->foto) }}" alt="{{ $p->nama }}" class="w-full h-full object-cover"/>
                                                 @else
-                                                    <div
-                                                        class="w-full h-full flex items-center justify-center text-[11px] font-medium text-gray-400">
-                                                        {{ strtoupper(substr($p->nama, 0, 2)) }}
-                                                    </div>
+                                                    <span class="text-[12px] font-bold text-[#2e9e5b]">{{ strtoupper(substr($p->nama, 0, 2)) }}</span>
                                                 @endif
                                             </div>
                                             <div class="min-w-0 flex-1">
-                                                <div class="text-[13px] font-medium leading-snug truncate">
-                                                    {{ $p->nama }}</div>
-                                                <div class="text-[11px] text-gray-400 mt-0.5">{{ $p->jabatan }}</div>
+                                                <div class="text-[13.5px] font-semibold text-[#333333] leading-snug truncate">{{ $p->nama }}</div>
+                                                <div class="text-[12px] text-[#888888] mt-0.5">{{ $p->jabatan }}</div>
                                                 @if ($p->no_hp)
-                                                    <div class="text-[10px] text-gray-300 mt-1.5 font-mono">
-                                                        {{ $p->no_hp }}</div>
+                                                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $p->no_hp) }}" target="_blank" rel="noopener"
+                                                        class="inline-flex items-center gap-1 text-[11px] text-[#2e9e5b] hover:text-[#268a4f] mt-1.5 no-underline cm-transition">
+                                                        <i data-lucide="phone" class="w-3 h-3"></i> {{ $p->no_hp }}
+                                                    </a>
                                                 @endif
                                             </div>
                                         </div>
@@ -179,47 +126,37 @@
             </section>
         @endif
 
-        {{-- ─── INFORMASI TAMBAHAN ──────────────────── --}}
-        <section class="max-w-6xl mx-auto px-6 py-12">
-            <div class="fade-up delay-5">
-                <p class="text-[10px] uppercase tracking-[.14em] text-gray-400 mb-8 flex items-center gap-2">
-                    <span class="w-4 h-px bg-gray-300 inline-block"></span>
-                    Informasi Organisasi
-                </p>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-gray-100 rounded-xl overflow-hidden fade-up delay-5">
-                <div class="bg-white px-6 py-6">
-                    <div class="text-[10px] uppercase tracking-[.08em] text-gray-400 mb-3">Singkatan</div>
-                    <div class="text-[22px] font-medium">{{ $org->singkatan }}</div>
+        {{-- Informasi tambahan --}}
+        <section class="mb-[20px]" aria-label="Informasi organisasi">
+            <h3 class="cm-widget-title"><span>Informasi Organisasi</span></h3>
+            <div class="bg-white border border-[#eaeaea] cm-card-shadow grid grid-cols-2 md:grid-cols-4 divide-x divide-[#eeeeee]">
+                <div class="p-5">
+                    <div class="text-[11px] uppercase tracking-wide text-[#888888] mb-2">Singkatan</div>
+                    <div class="text-[18px] font-bold text-[#333333]">{{ $org->singkatan }}</div>
                 </div>
-                <div class="bg-white px-6 py-6">
-                    <div class="text-[10px] uppercase tracking-[.08em] text-gray-400 mb-3">Tipe</div>
-                    <div class="text-[15px] font-medium capitalize">{{ $org->tipe }}</div>
+                <div class="p-5">
+                    <div class="text-[11px] uppercase tracking-wide text-[#888888] mb-2">Tipe</div>
+                    <div class="text-[14px] font-semibold capitalize text-[#333333]">{{ $tipeLabel[$org->tipe] ?? $org->tipe }}</div>
                 </div>
-                <div class="bg-white px-6 py-6">
-                    <div class="text-[10px] uppercase tracking-[.08em] text-gray-400 mb-3">Periode Aktif</div>
-                    <div class="text-[15px] font-medium">{{ $org->periode_mulai }}–{{ $org->periode_selesai }}</div>
+                <div class="p-5">
+                    <div class="text-[11px] uppercase tracking-wide text-[#888888] mb-2">Periode Aktif</div>
+                    <div class="text-[14px] font-semibold text-[#333333]">{{ $org->periode_mulai }} - {{ $org->periode_selesai }}</div>
                 </div>
-                <div class="bg-white px-6 py-6">
-                    <div class="text-[10px] uppercase tracking-[.08em] text-gray-400 mb-3">Status</div>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span
-                            class="w-1.5 h-1.5 rounded-full {{ $org->is_active ? 'bg-emerald-400' : 'bg-gray-300' }}"></span>
-                        <span class="text-[13px]">{{ $org->is_active ? 'Aktif' : 'Tidak Aktif' }}</span>
-                    </div>
+                <div class="p-5">
+                    <div class="text-[11px] uppercase tracking-wide text-[#888888] mb-2">Status</div>
+                    <div class="text-[14px] font-semibold {{ $org->is_active ? 'text-[#2e9e5b]' : 'text-[#888888]' }}">{{ $org->is_active ? 'Aktif' : 'Tidak Aktif' }}</div>
                 </div>
             </div>
 
-            {{-- Bottom CTA --}}
-            <div class="fade-up delay-6 mt-10 flex items-center justify-between pt-8 border-t border-gray-100">
-                <a href="{{ route('home') }}"
-                    class="text-[11px] uppercase tracking-[.08em] text-gray-400 hover:text-gray-900 transition-colors nav-link">
-                    <i data-lucide="arrow-left" class="w-3.5 h-3.5 mr-1 align-middle inline-block"></i> Kembali ke daftar
+            {{-- CTA bawah --}}
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+                <a href="/" onclick="if(document.referrer && window.history.length > 1) { window.history.back(); return false; }"
+                    class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#888888] hover:text-[#2e9e5b] no-underline cm-transition">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali
                 </a>
                 <a href="{{ route('anggota-organisasi.show', $org->slug) }}"
-                    class="text-[11px] uppercase tracking-[.08em] px-5 py-2.5 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-50 transition-colors">
-                    Lihat semua anggota <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1 align-middle inline-block"></i>
+                    class="inline-flex items-center gap-1.5 bg-[#2e9e5b] hover:bg-[#268a4f] text-white text-[12px] font-bold uppercase tracking-wide px-5 py-2.5 rounded-[3px] no-underline cm-transition">
+                    Lihat Semua Anggota <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                 </a>
             </div>
         </section>

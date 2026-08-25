@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Bendahara;
 
 use App\Http\Controllers\Controller;
 use App\Models\Finance;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {

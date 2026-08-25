@@ -57,13 +57,15 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('penulis.dashboard', absolute: false));
         }
 
-        if($role === 'bendahara') {
+        if ($role === 'bendahara') {
             session(['2fa_passed' => false]);
+
             return redirect()->route('bendahara.2fa.verify');
         }
 
         return redirect('/');
     }
+
     /**
      * Destroy an authenticated session.
      */

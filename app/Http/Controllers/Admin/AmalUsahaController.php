@@ -13,10 +13,10 @@ class AmalUsahaController extends Controller
     private function formatTipe($value): string
     {
         return match ($value) {
-            'bidang_sosial'     => 'Bidang Sosial',
-            'bidang_kesehatan'  => 'Bidang Kesehatan',
+            'bidang_sosial' => 'Bidang Sosial',
+            'bidang_kesehatan' => 'Bidang Kesehatan',
             'bidang_pendidikan' => 'Bidang Pendidikan',
-            default             => '-',
+            default => '-',
         };
     }
 
@@ -33,12 +33,12 @@ class AmalUsahaController extends Controller
             ->get()
             ->map(function ($item) {
                 return [
-                    'id'                => $item->id,
-                    'email'             => $item->id,
+                    'id' => $item->id,
+                    'email' => $item->id,
                     'organisasi_otonom' => $item->organisasiOtonom?->nama,
-                    'nama'              => $item->nama,
-                    'tipe'              => $this->formatTipe($item->tipe),
-                    'deskripsi'         => $item->deskripsi,
+                    'nama' => $item->nama,
+                    'tipe' => $this->formatTipe($item->tipe),
+                    'deskripsi' => $item->deskripsi,
                 ];
             });
 
@@ -56,19 +56,19 @@ class AmalUsahaController extends Controller
     {
         $validated = $request->validate([
             'organisasi_otonom_id' => ['required', 'exists:organisasi_otonom,id'],
-            'nama'                 => ['required', 'string', 'max:255'],
-            'deskripsi'            => ['nullable', 'string'],
-            'tipe'                 => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
-            'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp,gif,svg', 'max:2048'],
+            'nama' => ['required', 'string', 'max:255'],
+            'deskripsi' => ['nullable', 'string'],
+            'tipe' => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
+            'foto' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp,gif,svg', 'max:2048'],
         ], [
             'organisasi_otonom_id.required' => 'Organisasi ortonom wajib dipilih.',
-            'organisasi_otonom_id.exists'   => 'Organisasi ortonom tidak ditemukan.',
-            'nama.required'                 => 'Nama amal usaha wajib diisi.',
-            'tipe.required'                 => 'Tipe bidang wajib dipilih.',
-            'tipe.in'                       => 'Tipe bidang tidak valid.',
-            'foto.image'                    => 'File harus berupa gambar.',
-            'foto.mimes'                    => 'Format gambar harus PNG, JPG, JPEG, WEBP, GIF, atau SVG.',
-            'foto.max'                      => 'Ukuran gambar maksimal 2MB.',
+            'organisasi_otonom_id.exists' => 'Organisasi ortonom tidak ditemukan.',
+            'nama.required' => 'Nama amal usaha wajib diisi.',
+            'tipe.required' => 'Tipe bidang wajib dipilih.',
+            'tipe.in' => 'Tipe bidang tidak valid.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format gambar harus PNG, JPG, JPEG, WEBP, GIF, atau SVG.',
+            'foto.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -96,19 +96,19 @@ class AmalUsahaController extends Controller
 
         $validated = $request->validate([
             'organisasi_otonom_id' => ['required', 'exists:organisasi_otonom,id'],
-            'nama'                 => ['required', 'string', 'max:255'],
-            'deskripsi'            => ['nullable', 'string'],
-            'tipe'                 => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
-            'foto'                 => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp,gif,svg', 'max:2048'],
+            'nama' => ['required', 'string', 'max:255'],
+            'deskripsi' => ['nullable', 'string'],
+            'tipe' => ['required', 'in:bidang_sosial,bidang_kesehatan,bidang_pendidikan'],
+            'foto' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp,gif,svg', 'max:2048'],
         ], [
             'organisasi_otonom_id.required' => 'Organisasi ortonom wajib dipilih.',
-            'organisasi_otonom_id.exists'   => 'Organisasi ortonom tidak ditemukan.',
-            'nama.required'                 => 'Nama amal usaha wajib diisi.',
-            'tipe.required'                 => 'Tipe bidang wajib dipilih.',
-            'tipe.in'                       => 'Tipe bidang tidak valid.',
-            'foto.image'                    => 'File harus berupa gambar.',
-            'foto.mimes'                    => 'Format gambar harus PNG, JPG, JPEG, WEBP, GIF, atau SVG.',
-            'foto.max'                      => 'Ukuran gambar maksimal 2MB.',
+            'organisasi_otonom_id.exists' => 'Organisasi ortonom tidak ditemukan.',
+            'nama.required' => 'Nama amal usaha wajib diisi.',
+            'tipe.required' => 'Tipe bidang wajib dipilih.',
+            'tipe.in' => 'Tipe bidang tidak valid.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format gambar harus PNG, JPG, JPEG, WEBP, GIF, atau SVG.',
+            'foto.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -139,12 +139,12 @@ class AmalUsahaController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Amal Usaha berhasil dihapus'
+                'message' => 'Amal Usaha berhasil dihapus',
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal menghapus amal usaha: ' . $e->getMessage()
+                'message' => 'Gagal menghapus amal usaha: '.$e->getMessage(),
             ], 500);
         }
     }

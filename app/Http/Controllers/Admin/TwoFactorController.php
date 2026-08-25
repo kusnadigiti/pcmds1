@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use PragmaRX\Google2FA\Google2FA;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -18,13 +19,13 @@ class TwoFactorController extends Controller
             return redirect()->route('bendahara.dashboard');
         }
 
-        if (!$user->google2fa_secret) {
-            $google2fa = new Google2FA();
+        if (! $user->google2fa_secret) {
+            $google2fa = new Google2FA;
             $user->google2fa_secret = $google2fa->generateSecretKey();
             $user->save();
         }
 
-        $google2fa = new Google2FA();
+        $google2fa = new Google2FA;
 
         $qrCodeUrl = $google2fa->getQRCodeUrl(
             'PCMDurenSawit01',
@@ -43,9 +44,9 @@ class TwoFactorController extends Controller
         $request->validate(['otp' => 'required']);
 
         $user = Auth::user();
-        $google2fa = new Google2FA();
+        $google2fa = new Google2FA;
 
-        \Illuminate\Support\Facades\Log::info('2FA Activation attempt', [
+        Log::info('2FA Activation attempt', [
             'user_id' => $user->id,
             'email' => $user->email,
             'server_time' => now()->toDateTimeString(),
@@ -60,10 +61,11 @@ class TwoFactorController extends Controller
             10 // Toleransi ekstrim (sekitar 5 menit)
         );
 
-        if (!$valid) {
-            \Illuminate\Support\Facades\Log::warning('2FA Activation failed (Invalid OTP)', [
+        if (! $valid) {
+            Log::warning('2FA Activation failed (Invalid OTP)', [
                 'user_id' => $user->id,
             ]);
+
             return back()->withErrors(['otp' => 'Kode salah']);
         }
 
@@ -72,7 +74,7 @@ class TwoFactorController extends Controller
 
         session(['2fa_passed' => true]);
 
-        \Illuminate\Support\Facades\Log::info('2FA Activation successful', ['user_id' => $user->id]);
+        Log::info('2FA Activation successful', ['user_id' => $user->id]);
 
         return redirect()->route('bendahara.dashboard');
     }
@@ -81,7 +83,7 @@ class TwoFactorController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user->google2fa_enabled) {
+        if (! $user->google2fa_enabled) {
             return redirect()->route('bendahara.2fa.setup');
         }
 
@@ -98,20 +100,21 @@ class TwoFactorController extends Controller
 
         $user = Auth::user();
 
-        \Illuminate\Support\Facades\Log::info('2FA Verification attempt', [
+        Log::info('2FA Verification attempt', [
             'user_id' => $user->id,
             'email' => $user->email,
             'server_time' => now()->toDateTimeString(),
         ]);
 
-        if (!$user->google2fa_secret) {
-            \Illuminate\Support\Facades\Log::error('2FA Verification failed (No secret key found)', ['user_id' => $user->id]);
+        if (! $user->google2fa_secret) {
+            Log::error('2FA Verification failed (No secret key found)', ['user_id' => $user->id]);
+
             return redirect()
                 ->route('bendahara.2fa.setup')
                 ->with('error', 'Silakan aktifkan Google Authenticator terlebih dahulu.');
         }
 
-        $google2fa = new Google2FA();
+        $google2fa = new Google2FA;
 
         // Hapus spasi jika user tidak sengaja mengetik spasi
         $otp = str_replace(' ', '', $request->otp);
@@ -122,16 +125,17 @@ class TwoFactorController extends Controller
             10 // Toleransi ekstrim (sekitar 5 menit)
         );
 
-        if (!$valid) {
-            \Illuminate\Support\Facades\Log::warning('2FA Verification failed (Invalid OTP)', [
+        if (! $valid) {
+            Log::warning('2FA Verification failed (Invalid OTP)', [
                 'user_id' => $user->id,
             ]);
+
             return back()->withErrors(['otp' => 'Kode salah']);
         }
 
         session(['2fa_passed' => true]);
 
-        \Illuminate\Support\Facades\Log::info('2FA Verification successful', ['user_id' => $user->id]);
+        Log::info('2FA Verification successful', ['user_id' => $user->id]);
 
         return redirect()->route('bendahara.dashboard');
     }

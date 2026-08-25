@@ -14,5 +14,6 @@ class ProfileOrganisasi extends Model
         'misi',
         'image',
         'tagline',
+        'sejarah',
     ];
 }

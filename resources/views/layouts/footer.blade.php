@@ -28,7 +28,7 @@
                         <div
                             class="absolute -inset-0.5 rounded-full bg-gradient-to-br from-secondary to-primary opacity-60">
                         </div>
-                        <img src="https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg"
+                        <img src="{{ asset('images/logo.png') }}"
                             class="w-10 h-10 rounded-full bg-white p-0.5 relative" alt="Logo">
                     </div>
                     <div>

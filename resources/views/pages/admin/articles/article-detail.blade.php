@@ -1,307 +1,193 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.colormag')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ $article->title }} — PCM Duren Sawit 1</title>
+@section('title', $article->title . ' — PCM Duren Sawit 1')
+@section('meta_description', Str::limit(strip_tags($article->content), 150))
+@section('meta_keywords', 'Artikel, PCM Duren Sawit 1, ' . ($article->author ?? 'PCM Duren Sawit 1') . ', ' . implode(', ', array_slice(explode(' ', $article->title), 0, 5)))
+@section('og_type', 'article')
+@section('og_image', $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/logo.png'))
 
-    <meta name="description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
-    <meta name="keywords" content="Artikel, PCM Duren Sawit 1, {{ $article->author ?? 'PCM Duren Sawit 1' }}, {{ implode(', ', array_slice(explode(' ', $article->title), 0, 5)) }}">
-    <meta name="author" content="{{ $article->author ?? 'PCM Duren Sawit 1' }}">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{{ url()->current() }}" />
+@php
+    $cmBulan = [1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    $tglId = function ($date) use ($cmBulan) {
+        $d = \Carbon\Carbon::parse($date);
+        return $d->format('j') . ' ' . ($cmBulan[(int)$d->format('n')] ?? '') . ' ' . $d->format('Y');
+    };
+    $wordCount = str_word_count(strip_tags($article->content));
+    $readMin = max(1, ceil($wordCount / 200));
+@endphp
 
-    <!-- Open Graph / Facebook / WhatsApp -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="{{ $article->title }} — PCM Duren Sawit 1">
-    <meta property="og:description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
-    <meta property="og:image" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
-    <meta property="og:image:secure_url" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="PCM Duren Sawit 1">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title" content="{{ $article->title }} — PCM Duren Sawit 1">
-    <meta name="twitter:description" content="{{ Str::limit(strip_tags($article->content), 150) }}">
-    <meta name="twitter:image" content="{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}">
-
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@@context": "https://schema.org",
-      "@@type": "Article",
-      "headline": "{{ addslashes($article->title) }}",
-      "image": ["{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : 'https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg' }}"],
-      "datePublished": "{{ $article->created_at ? $article->created_at->toIso8601String() : now()->toIso8601String() }}",
-      "dateModified": "{{ $article->updated_at ? $article->updated_at->toIso8601String() : now()->toIso8601String() }}",
-      "author": [{
-          "@@type": "Person",
-          "name": "{{ addslashes($article->author ?? 'PCM Duren Sawit 1') }}"
-      }],
-      "publisher": {
-        "@@type": "Organization",
-        "name": "PCM Duren Sawit 1",
-        "logo": {
-          "@@type": "ImageObject",
-          "url": "https://i.pinimg.com/564x/29/e9/30/29e9307518d8366f97a6d26e888c6bf4.jpg"
-        }
-      },
-      "description": "{{ addslashes(Str::limit(strip_tags($article->content), 150)) }}"
+@section('schema')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Article",
+  "headline": "{{ addslashes($article->title) }}",
+  "image": ["{{ $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/logo.png') }}"],
+  "datePublished": "{{ $article->created_at ? $article->created_at->toIso8601String() : now()->toIso8601String() }}",
+  "dateModified": "{{ $article->updated_at ? $article->updated_at->toIso8601String() : now()->toIso8601String() }}",
+  "author": [{
+      "@@type": "Person",
+      "name": "{{ addslashes($article->author ?? 'PCM Duren Sawit 1') }}"
+  }],
+  "publisher": {
+    "@@type": "Organization",
+    "name": "PCM Duren Sawit 1",
+    "logo": {
+      "@@type": "ImageObject",
+      "url": "{{ asset('images/logo.png') }}"
     }
-    </script>
+  },
+  "description": "{{ addslashes(Str::limit(strip_tags($article->content), 150)) }}"
+}
+</script>
+@endsection
 
-    {{-- Tailwind CDN --}}
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    {{-- Fonts --}}
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
-        rel="stylesheet" />
-
+@section('styles')
     <style>
-        body {
-            font-family: 'DM Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .serif {
-            font-family: 'DM Serif Display', serif;
-        }
-
-        /* Reading progress bar */
-        #read-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-            height: 2px;
-            width: 0%;
-            background: #c8a96e;
+        #read-progress {
+            position: fixed; top: 0; left: 0; z-index: 200;
+            height: 3px; width: 0%;
+            background: #2e9e5b;
             transition: width .1s linear;
+            pointer-events: none;
         }
 
-        /* Drop cap */
-        .article-body>p:first-of-type::first-letter {
-            font-family: 'DM Serif Display', serif;
-            font-size: 4.4em;
-            line-height: .75;
-            float: left;
-            margin: .07em .1em -.05em 0;
-            color: #c8a96e;
+        .article-content > p:first-child::first-letter {
+            font-size: 3.6rem; font-weight: 700;
+            float: left; line-height: .82;
+            margin: .08em .12em 0 0;
+            color: #2e9e5b;
         }
-
-        /* Article typography */
-        .article-body p {
-            margin-bottom: 1.65em;
-            font-size: 1.08rem;
-            line-height: 1.85;
-            color: #1c1c1c;
+        .article-content p {
+            font-size: 16px; line-height: 1.7;
+            color: #444444; margin-bottom: 1.5rem;
         }
-
-        .article-body h2 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.8rem;
-            margin: 2.5em 0 .7em;
-            color: #0d0d0d;
+        .article-content h2 {
+            font-size: 24px; font-weight: 600; line-height: 1.25;
+            color: #333333; margin: 2.2rem 0 .9rem;
         }
-
-        .article-body h3 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin: 2em 0 .5em;
-            color: #0d0d0d;
+        .article-content h3 {
+            font-size: 18px; font-weight: 600;
+            color: #333333; margin: 1.8rem 0 .7rem;
         }
-
-        .article-body blockquote {
-            border-left: 2px solid #c8a96e;
-            padding: 2px 0 2px 24px;
-            margin: 2.2em 0;
-            font-family: 'DM Serif Display', serif;
-            font-style: italic;
-            font-size: 1.3rem;
-            line-height: 1.55;
-            color: #5a5a5a;
+        .article-content ul, .article-content ol { margin: 0 0 1.5rem 1.5rem; }
+        .article-content li {
+            font-size: 15px; line-height: 1.7;
+            color: #444444; margin-bottom: .35rem;
         }
-
-        .article-body a {
-            color: #c8a96e;
-            text-underline-offset: 3px;
+        .article-content blockquote {
+            margin: 2rem 0; padding: 1.2rem 1.6rem;
+            border-left: 3px solid #2e9e5b;
+            background: #f8f8f8;
         }
-
-        /* Thumb zoom */
-        .thumb-img {
-            transition: transform 7s ease;
-        }
-
-        .thumb-wrap:hover .thumb-img {
-            transform: scale(1.04);
-        }
-
-        /* Fade up animations */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .au {
-            animation: fadeUp .6s cubic-bezier(.4, 0, .2, 1) both;
-        }
-
-        .d1 {
-            animation-delay: .05s;
-        }
-
-        .d2 {
-            animation-delay: .15s;
-        }
-
-        .d3 {
-            animation-delay: .25s;
-        }
-
-        .d4 {
-            animation-delay: .35s;
-        }
-
-        .d5 {
-            animation-delay: .45s;
-        }
+        .article-content blockquote p::first-letter { all: unset; }
+        .article-content a { color: #2e9e5b; text-decoration: underline; text-underline-offset: 3px; }
+        .article-content strong { font-weight: 700; color: #333333; }
+        .article-content img { max-width: 100%; height: auto; margin: 1.4rem 0; }
     </style>
-</head>
+@endsection
 
-<body class="bg-[#F5F3EF]">
+@section('content')
+    <div id="read-progress"></div>
 
-    {{-- Reading progress --}}
-    <div id="read-bar"></div>
+    <div class="cm-inner px-2.5">
 
-    @include('layouts.navigation')
+        {{-- Breadcrumb --}}
+        <nav aria-label="Breadcrumb" class="text-[12px] text-[#888888] mb-4">
+            <a href="/" class="text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">Beranda</a>
+            <span class="mx-1">/</span>
+            <a href="{{ route('articles.show-all') }}" class="text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">Artikel &amp; Opini</a>
+            <span class="mx-1">/</span> {{ Str::limit($article->title, 40) }}
+        </nav>
 
+        {{-- Kartu artikel --}}
+        <article class="bg-white border border-[#eaeaea] cm-card-shadow p-5 md:p-8 mb-[30px]">
+            <div class="mb-1.5">
+                <span class="cm-cat-badge">Artikel</span>
+            </div>
 
+            <h1 class="text-[26px] md:text-[32px] leading-tight font-semibold text-[#333333] m-0 mb-3">
+                {{ $article->title }}
+            </h1>
 
-    {{-- ══════════════════ HERO ══════════════════ --}}
-    <div class="max-w-3xl mx-auto px-6 pt-36 pb-12">
+            {{-- Meta row --}}
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 py-3 border-t border-b border-[#eeeeee] cm-meta">
+                <span><i data-lucide="user"></i>{{ $article->author ?? 'Tim Redaksi' }}</span>
+                <span><i data-lucide="calendar"></i>{{ $tglId($article->created_at) }}</span>
+                <span><i data-lucide="clock"></i>{{ $readMin }} menit baca</span>
+            </div>
 
-        {{-- Eyebrow --}}
-        <div class="flex items-center gap-4 mb-10 au d1">
-            <span class="w-10 h-px bg-[#c8a96e] block"></span>
-            <span class="text-xs font-semibold tracking-[.14em] uppercase text-[#c8a96e]">Artikel</span>
-        </div>
-
-        {{-- Title --}}
-        <h1 class="serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-[#0d0d0d] mb-10 au d2 tracking-tight">
-            {{ $article->title }}
-        </h1>
-
-        {{-- Meta --}}
-        <div class="flex flex-wrap items-center gap-6 py-5 border-t border-b border-[#e8e4dc] au d3">
-
-            {{-- Author --}}
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full flex items-center justify-center text-white serif text-sm flex-shrink-0"
-                    style="background: linear-gradient(135deg, #c8a96e, #8b6840)">
-                    {{ strtoupper(substr($article->author ?? 'A', 0, 1)) }}
+            {{-- Thumbnail --}}
+            @if($article->thumbnail)
+                <div class="mt-5 overflow-hidden">
+                    <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}"
+                        class="w-full aspect-[800/445] object-cover block"/>
                 </div>
-                <div>
-                    <p class="text-sm font-semibold text-[#0d0d0d] leading-none mb-0.5">
-                        {{ $article->author ?? 'Unknown' }}</p>
-                    <p class="text-xs text-[#6b6b6b]">Penulis</p>
+            @endif
+
+            {{-- Isi --}}
+            <div class="mt-6">
+                <div class="article-content">
+                    {!! nl2br(e($article->content)) !!}
                 </div>
             </div>
 
-            <span class="w-px h-7 bg-[#e8e4dc] block"></span>
-
-            <p class="text-xs text-[#6b6b6b]">
-                {{ $article->created_at->translatedFormat('d F Y') }}
-            </p>
-
-            @php
-                $wordCount = str_word_count(strip_tags($article->content));
-                $readMin = max(1, ceil($wordCount / 200));
-            @endphp
-            <p class="ml-auto text-xs font-semibold tracking-wider uppercase text-[#6b6b6b]">
-                {{ $readMin }} menit baca
-            </p>
-
-        </div>
-    </div>
-
-    {{-- ══════════════════ THUMBNAIL ══════════════════ --}}
-    <div class="max-w-5xl mx-auto px-6 mb-20 au d4">
-        @if($article->thumbnail)
-            <div class="thumb-wrap relative rounded-lg overflow-hidden" style="aspect-ratio:16/7">
-                <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="{{ $article->title }}"
-                    class="thumb-img w-full h-full object-cover block" />
-                <div class="absolute inset-0 pointer-events-none"
-                    style="background: linear-gradient(to top, rgba(0,0,0,.18), transparent)"></div>
+            {{-- Footer --}}
+            <div class="mt-10 pt-5 border-t border-[#eeeeee] flex flex-wrap items-center justify-between gap-4">
+                <div class="text-[13px] text-[#777777]">
+                    Ditulis oleh <strong class="text-[#333333]">{{ $article->author ?? 'Tim Redaksi' }}</strong>
+                </div>
+                <a href="{{ url()->previous() }}"
+                    class="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali
+                </a>
             </div>
-        @else
-            <div class="relative rounded-lg overflow-hidden bg-[#e8e4dc] flex items-center justify-center"
-                style="aspect-ratio:16/7">
-                <svg class="w-12 h-12 text-[#c4bfb3]" fill="none" stroke="currentColor" stroke-width="1.5"
-                    viewBox="0 0 24 24">
-                    <rect x="3" y="3" width="18" height="18" rx="3" />
-                    <path d="M3 15l5-5 4 4 3-3 6 5" />
-                </svg>
-            </div>
+        </article>
+
+        {{-- Related articles --}}
+        @php
+            $relatedArticles = \App\Models\Article::where('status', 'published')
+                ->where('id', '!=', $article->id)
+                ->latest('created_at')
+                ->limit(3)
+                ->get();
+        @endphp
+
+        @if($relatedArticles->count() > 0)
+            <section class="mb-[20px]" aria-label="Artikel terkait">
+                <h3 class="cm-widget-title"><span>Artikel Terkait</span></h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-[25px]">
+                    @foreach($relatedArticles as $rel)
+                        <article class="border border-[#eaeaea] cm-card-shadow">
+                            <a href="{{ route('articles.show', $rel->slug) }}" class="block overflow-hidden no-underline">
+                                <img src="{{ $rel->thumbnail ? asset('storage/' . $rel->thumbnail) : 'https://picsum.photos/seed/pcm-artikel-rel-' . $rel->id . '/600/360' }}"
+                                    alt="{{ $rel->title }}"
+                                    class="w-full aspect-[600/360] object-cover block hover:scale-[1.04] transition-transform duration-500"
+                                    loading="lazy"/>
+                            </a>
+                            <div class="p-4 pt-3">
+                                <h4 class="cm-entry-title text-[14.5px] leading-snug font-semibold m-0 mb-1">
+                                    <a href="{{ route('articles.show', $rel->slug) }}">{{ Str::limit($rel->title, 60) }}</a>
+                                </h4>
+                                <div class="cm-meta">
+                                    <span><i data-lucide="calendar"></i>{{ $tglId($rel->created_at) }}</span>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </section>
         @endif
     </div>
+@endsection
 
-    {{-- ══════════════════ ARTICLE BODY ══════════════════ --}}
-    <div class="max-w-2xl mx-auto px-6 mb-24 au d5">
-        <div class="article-body">
-            {!! nl2br(e($article->content)) !!}
-        </div>
-    </div>
-
-    {{-- ══════════════════ FOOTER ══════════════════ --}}
-    <div class="max-w-2xl mx-auto px-6">
-        <div class="py-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
-            style="border-top: 1px solid #e8e4dc">
-
-            <a href="{{ url()->previous() }}"
-                class="inline-flex items-center gap-2.5 text-sm font-semibold text-[#0d0d0d] px-6 py-3 rounded-full transition-all duration-200 hover:text-white"
-                style="border: 1px solid #0d0d0d" onmouseover="this.style.background='#0d0d0d'"
-                onmouseout="this.style.background='transparent'">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M15 19l-7-7 7-7" />
-                </svg>
-                Kembali ke Artikel
-            </a>
-
-            <div>
-                <p class="text-xs font-semibold tracking-[.12em] uppercase text-[#6b6b6b] mb-1">Ditulis oleh</p>
-                <p class="sans text-xl text-[#0d0d0d]">{{ $article->author ?? 'Unknown' }}</p>
-            </div>
-        </div>
-
-        <p class="serif text-center text-2xl pb-16 select-none" style="color:#e0dbd2">— ✦ —</p>
-    </div>
-
+@section('scripts')
     <script>
-        // Reading progress bar
         window.addEventListener('scroll', function () {
-            var doc = document.documentElement;
-            var scroll = doc.scrollTop || document.body.scrollTop;
-            var height = doc.scrollHeight - doc.clientHeight;
-            document.getElementById('read-bar').style.width = (height > 0 ? (scroll / height) * 100 : 0) + '%';
+            var scrollTop = window.scrollY || document.documentElement.scrollTop;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            document.getElementById('read-progress').style.width = Math.min(pct, 100) + '%';
         });
-
-        // Mobile menu toggle
     </script>
-
-</body>
-
-</html>
+@endsection
