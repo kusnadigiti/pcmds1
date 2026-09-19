@@ -163,7 +163,10 @@
 @php
     try {
         $navMenus = \App\Models\NavMenu::topLevel()->visible()->with(['children' => function($q) {
-            $q->visible()->orderBy('order');
+            $q->visible()
+                ->whereRaw('LOWER(label) NOT LIKE ?', ['%sejarah%'])
+                ->whereRaw('LOWER(label) NOT LIKE ?', ['%visi misi%'])
+                ->orderBy('order');
         }])->get();
     } catch (\Exception $e) {
         $navMenus = collect();
@@ -264,6 +267,12 @@
                                 <i data-lucide="chevron-down" class="w-3 h-3 opacity-80"></i>
                             </button>
                             <ul class="cm-submenu absolute left-0 top-full z-50 min-w-[200px] list-none m-0 p-1 bg-[#232323] shadow-lg">
+                                @if(Str::contains(strtolower($menu->label), 'amal usaha') && !$menu->children->contains('url', '/amal-usaha'))
+                                    <li>
+                                        <a href="{{ route('amal-usaha.index') }}"
+                                            class="block px-3 py-2 text-[13px] normal-case font-normal text-[#dddddd] no-underline hover:bg-[#2e9e5b] hover:text-white cm-transition">Semua Amal Usaha</a>
+                                    </li>
+                                @endif
                                 @foreach($menu->children as $child)
                                     <li>
                                         <a href="{{ $child->url }}" {{ $child->open_new_tab ? 'target="_blank" rel="noopener"' : '' }}
@@ -354,6 +363,10 @@
                                 <i data-lucide="chevron-down" class="w-4 h-4 text-[#888888]"></i>
                             </button>
                             <ul x-show="sub" x-collapse style="display:none;" class="list-none m-0 pl-4 pb-1">
+                                @if(Str::contains(strtolower($menu->label), 'amal usaha') && !$menu->children->contains('url', '/amal-usaha'))
+                                    <li><a href="{{ route('amal-usaha.index') }}"
+                                        class="block px-3 py-2 text-[13px] text-[#555555] no-underline hover:text-[#2e9e5b]">Semua Amal Usaha</a></li>
+                                @endif
                                 @foreach($menu->children as $child)
                                     <li><a href="{{ $child->url }}" {{ $child->open_new_tab ? 'target="_blank" rel="noopener"' : '' }}
                                         class="block px-3 py-2 text-[13px] text-[#555555] no-underline hover:text-[#2e9e5b]">{{ $child->label }}</a></li>
@@ -427,11 +440,11 @@
         <div>
             <h4 class="cm-widget-title"><span class="!text-white">Tautan Cepat</span></h4>
             <ul class="list-none m-0 p-0">
-                <li class="border-b border-white/10"><a href="{{ route('profil') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Profil &amp; Sejarah</a></li>
+                <li class="border-b border-white/10"><a href="{{ route('profil') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Profil PCM</a></li>
                 <li class="border-b border-white/10"><a href="{{ route('struktur-organisasi') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Struktur Organisasi</a></li>
                 <li class="border-b border-white/10"><a href="{{ route('berita.all') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Berita &amp; Informasi</a></li>
                 <li class="border-b border-white/10"><a href="{{ route('articles.show-all') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Artikel &amp; Opini</a></li>
-                <li class="border-b border-white/10"><a href="{{ route('amal-usaha.by-kategori', 'bidang-pendidikan') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Amal Usaha Pendidikan</a></li>
+                <li class="border-b border-white/10"><a href="{{ route('amal-usaha.index') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Amal Usaha Muhammadiyah</a></li>
                 <li class="border-b border-white/10"><a href="{{ route('amal-usaha.by-kategori', 'bidang-kesehatan') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Amal Usaha Kesehatan</a></li>
                 <li class="border-b border-white/10"><a href="{{ route('kontak') }}" class="block py-[7px] text-[13px] text-white no-underline hover:text-[#2e9e5b] cm-transition">Hubungi Kami</a></li>
             </ul>

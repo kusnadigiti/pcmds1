@@ -275,6 +275,60 @@ class LandingController extends Controller
         return view('pages.otonom.organisasi-anggota', compact('penguruses', 'organisasi'));
     }
 
+    public function showAmalUsaha()
+    {
+        $amalUsahaList = AmalUsaha::with('organisasiOtonom')
+            ->whereHas('organisasiOtonom')
+            ->orderBy('tipe')
+            ->orderBy('nama')
+            ->get();
+
+        $kategori = collect([
+            [
+                'tipe' => 'bidang_pendidikan',
+                'slug' => 'bidang-pendidikan',
+                'label' => 'Bidang Pendidikan',
+                'icon' => 'graduation-cap',
+                'description' => 'Sekolah dan layanan pendidikan Muhammadiyah untuk membentuk generasi berilmu dan berakhlak.',
+            ],
+            [
+                'tipe' => 'bidang_kesehatan',
+                'slug' => 'bidang-kesehatan',
+                'label' => 'Bidang Kesehatan',
+                'icon' => 'heart-pulse',
+                'description' => 'Layanan kesehatan yang hadir untuk membantu kebutuhan masyarakat Duren Sawit.',
+            ],
+            [
+                'tipe' => 'bidang_sosial',
+                'slug' => 'bidang-kesejahteraan-sosial',
+                'label' => 'Kesejahteraan Sosial',
+                'icon' => 'hand-heart',
+                'description' => 'Gerakan sosial dan pelayanan umat yang memberi manfaat langsung bagi masyarakat.',
+            ],
+        ])->map(function ($item) use ($amalUsahaList) {
+            $item['count'] = $amalUsahaList->where('tipe', $item['tipe'])->count();
+
+            return $item;
+        });
+
+        $organisasiCounts = $amalUsahaList
+            ->groupBy('organisasi_otonom_id')
+            ->map(function ($items) {
+                return [
+                    'organisasi' => $items->first()->organisasiOtonom,
+                    'count' => $items->count(),
+                ];
+            })
+            ->sortBy(fn ($group) => $group['organisasi']->nama)
+            ->values();
+
+        return view('pages.amal-usaha.landing', [
+            'amalUsahaList' => $amalUsahaList,
+            'kategoriList' => $kategori,
+            'organisasiCounts' => $organisasiCounts,
+        ]);
+    }
+
     public function showAmalUsahaByKategori(string $kategori)
     {
         // Mapping slug URL → enum di DB

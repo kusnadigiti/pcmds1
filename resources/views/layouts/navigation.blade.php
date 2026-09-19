@@ -8,7 +8,10 @@
         // Baca menu dari DB, fallback ke kosong jika tabel belum ada
         try {
             $navMenus = \App\Models\NavMenu::topLevel()->visible()->with(['children' => function($q) {
-                $q->visible()->orderBy('order');
+                $q->visible()
+                    ->whereRaw('LOWER(label) NOT LIKE ?', ['%sejarah%'])
+                    ->whereRaw('LOWER(label) NOT LIKE ?', ['%visi misi%'])
+                    ->orderBy('order');
             }])->get();
         } catch (\Exception $e) {
             $navMenus = collect();

@@ -12,7 +12,7 @@
   "@@type": "BreadcrumbList",
   "itemListElement": [
     { "@@type": "ListItem", "position": 1, "name": "Beranda", "item": "{{ url('/') }}" },
-    { "@@type": "ListItem", "position": 2, "name": "Amal Usaha", "item": "{{ url('/#amal-usaha') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Amal Usaha", "item": "{{ route('amal-usaha.index') }}" },
     { "@@type": "ListItem", "position": 3, "name": "{{ $label }}", "item": "{{ url()->current() }}" }
   ]
 }
@@ -25,7 +25,7 @@
         {{-- Breadcrumb --}}
         <nav aria-label="Breadcrumb" class="text-[12px] text-[#888888] mb-4">
             <a href="/" class="text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">Beranda</a>
-            <span class="mx-1">/</span> Amal Usaha
+            <span class="mx-1">/</span> <a href="{{ route('amal-usaha.index') }}" class="text-[#2e9e5b] no-underline hover:text-[#268a4f] cm-transition">Amal Usaha</a>
             <span class="mx-1">/</span> {{ $label }}
         </nav>
 

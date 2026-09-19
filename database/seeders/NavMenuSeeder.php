@@ -69,10 +69,9 @@ class NavMenuSeeder extends Seeder
 
         // Sub-items: Tentang PCM
         DB::table('nav_menus')->insert([
-            ['label' => 'Sejarah & Visi Misi', 'url' => '/#profil', 'parent_id' => $tentang, 'order' => 1, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Struktur Organisasi', 'url' => '/struktur-organisasi', 'parent_id' => $tentang, 'order' => 2, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Artikel Terbaru', 'url' => '/articles/all', 'parent_id' => $tentang, 'order' => 3, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Berita & Kegiatan', 'url' => '/berita/show-all', 'parent_id' => $tentang, 'order' => 4, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Struktur Organisasi', 'url' => '/struktur-organisasi', 'parent_id' => $tentang, 'order' => 1, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Artikel Terbaru', 'url' => '/articles/all', 'parent_id' => $tentang, 'order' => 2, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Berita & Kegiatan', 'url' => '/berita/show-all', 'parent_id' => $tentang, 'order' => 3, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Sub-items: PRM
@@ -83,9 +82,10 @@ class NavMenuSeeder extends Seeder
 
         // Sub-items: Amal Usaha
         DB::table('nav_menus')->insert([
-            ['label' => 'Bidang Pendidikan', 'url' => '/amal-usaha/bidang-pendidikan', 'parent_id' => $amalUsaha, 'order' => 1, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Bidang Kesehatan', 'url' => '/amal-usaha/bidang-kesehatan', 'parent_id' => $amalUsaha, 'order' => 2, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
-            ['label' => 'Bidang Kesejahteraan Sosial', 'url' => '/amal-usaha/bidang-kesejahteraan-sosial', 'parent_id' => $amalUsaha, 'order' => 3, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Semua Amal Usaha', 'url' => '/amal-usaha', 'parent_id' => $amalUsaha, 'order' => 1, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Bidang Pendidikan', 'url' => '/amal-usaha/bidang-pendidikan', 'parent_id' => $amalUsaha, 'order' => 2, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Bidang Kesehatan', 'url' => '/amal-usaha/bidang-kesehatan', 'parent_id' => $amalUsaha, 'order' => 3, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
+            ['label' => 'Bidang Kesejahteraan Sosial', 'url' => '/amal-usaha/bidang-kesejahteraan-sosial', 'parent_id' => $amalUsaha, 'order' => 4, 'is_visible' => true, 'open_new_tab' => false, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }
